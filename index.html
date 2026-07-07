@@ -1263,8 +1263,14 @@ function inicializarTela(id) {
 }
 
 // ---------- BUSCA UNIVERSAL (HOME) ----------
-function normalizarTexto(s) {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function normalizarTexto(str) {
+  if (!str) return '';
+  return str
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ');
 }
 
 function initBuscaUniversal() {
@@ -1287,16 +1293,23 @@ function renderBuscaUniversal() {
 
   const resultados = [];
 
-  const candidatosVistos = new Set();
+  // Agrupa por nome normalizado (blinda contra grafias diferentes do mesmo
+  // candidato entre eleições, ex: "Fabio Trad" / "Fábio Trad") e exibe a
+  // grafia da ocorrência mais recente (maior ano).
+  const candidatosPorChave = {};
   for (const v of DB.votos) {
     if (!v.candidato) continue;
-    if (candidatosVistos.has(v.candidato)) continue;
-    if (normalizarTexto(v.candidato).includes(termo)) {
-      candidatosVistos.add(v.candidato);
-      resultados.push({ tipo:'Candidato', label:v.candidato, valor:v.candidato });
+    const chave = normalizarTexto(v.candidato);
+    if (!normalizarTexto(v.candidato).includes(termo)) continue;
+    const atual = candidatosPorChave[chave];
+    if (!atual || Number(v.ano) > Number(atual.ano)) {
+      candidatosPorChave[chave] = { candidato: v.candidato, ano: v.ano };
     }
-    if (resultados.length >= 40) break;
   }
+  Object.values(candidatosPorChave).forEach(c => {
+    resultados.push({ tipo:'Candidato', label:c.candidato, valor:c.candidato });
+    if (resultados.length >= 40) return;
+  });
 
   DB.meta.municipios.forEach(m => {
     if (normalizarTexto(m).includes(termo)) {
@@ -1357,17 +1370,18 @@ function initBuscarCandidato() {
 }
 
 function renderBuscaCandidato() {
-  const termo = document.getElementById('buscaCandidatoInput').value.trim().toLowerCase();
+  const termo = normalizarTexto(document.getElementById('buscaCandidatoInput').value.trim());
   const out = document.getElementById('resultadoBuscaCandidato');
   if (termo.length < 3) { out.innerHTML = telaVazia('Digite ao menos 3 letras do nome do candidato para buscar.'); return; }
 
-  const achados = DB.votos.filter(v => v.candidato && v.candidato.toLowerCase().includes(termo));
+  const achados = DB.votos.filter(v => v.candidato && normalizarTexto(v.candidato).includes(termo));
   if (achados.length === 0) { out.innerHTML = telaVazia('Nenhum candidato encontrado com esse nome.'); return; }
 
-  // agrupa por nome+partido+cargo (candidato pode aparecer em vários municípios/anos)
+  // agrupa por nome normalizado+partido+cargo+ano (blinda contra grafias
+  // diferentes do mesmo candidato entre municípios do mesmo ano)
   const porCandidato = {};
   achados.forEach(v => {
-    const key = v.candidato + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
+    const key = normalizarTexto(v.candidato) + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
     if (!porCandidato[key]) porCandidato[key] = { ...v, votosTotal:0, municipios:0 };
     porCandidato[key].votosTotal += v.votos;
     porCandidato[key].municipios += 1;
@@ -1414,10 +1428,12 @@ function renderRanking() {
   let filtrado = DB.votos.filter(v => v.ano===ano && v.cargo===cargo && v.candidato && v.turno==='1');
   if (municipio) filtrado = filtrado.filter(v => v.municipio===municipio);
 
-  // agrega votos por candidato (soma entre municípios se "todos")
+  // agrega votos por candidato (soma entre municípios se "todos");
+  // chave normalizada blinda contra grafias diferentes do mesmo candidato
+  // entre municípios (ex: "Fabio Trad" / "Fábio Trad")
   const agr = {};
   filtrado.forEach(v => {
-    const key = v.candidato+'|'+v.partido;
+    const key = normalizarTexto(v.candidato)+'|'+v.partido;
     if (!agr[key]) agr[key] = { candidato:v.candidato, partido:v.partido, votos:0, resultado:v.resultado };
     agr[key].votos += v.votos;
   });
@@ -1680,12 +1696,12 @@ function initEvolucao() {
 }
 
 function renderEvolucao() {
-  const termo = document.getElementById('evo_busca').value.trim().toLowerCase();
+  const termo = normalizarTexto(document.getElementById('evo_busca').value.trim());
   const municipio = document.getElementById('evo_municipio').value;
   const out = document.getElementById('resultadoEvolucao');
   if (termo.length < 3) { out.innerHTML = telaVazia('Digite o nome de um candidato para ver sua evolução de votos ao longo dos anos.'); return; }
 
-  let achados = DB.votos.filter(v => v.candidato && v.candidato.toLowerCase().includes(termo));
+  let achados = DB.votos.filter(v => v.candidato && normalizarTexto(v.candidato).includes(termo));
   if (municipio) achados = achados.filter(v=>v.municipio===municipio);
   if (achados.length===0) { out.innerHTML = telaVazia('Nenhum resultado encontrado.'); return; }
 
@@ -1697,8 +1713,12 @@ function renderEvolucao() {
   const anos = DB.meta.anos.filter(a => porAno[a] !== undefined);
   const pontos = anos.map(a => ({ x:a, y:porAno[a] }));
 
-  const nomeExemplo = achados[0].candidato;
-  const cargoExemplo = achados[0].cargo;
+  // exibe a grafia da ocorrência mais recente (maior ano), não a primeira
+  // encontrada — blinda contra grafias diferentes do mesmo candidato
+  // entre eleições (ex: "Fabio Trad" / "Fábio Trad")
+  const maisRecente = achados.reduce((a,b)=> Number(b.ano) > Number(a.ano) ? b : a);
+  const nomeExemplo = maisRecente.candidato;
+  const cargoExemplo = maisRecente.cargo;
 
   out.innerHTML = `
     <div class="card">
