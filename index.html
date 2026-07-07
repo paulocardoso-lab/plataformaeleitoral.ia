@@ -1062,6 +1062,29 @@ const CARGO_LABEL = {
   'deputado federal':'Deputado Federal','deputado estadual':'Deputado Estadual'
 };
 
+const CARGOS_POR_TIPO_ELEICAO = {
+  municipal: ['prefeito', 'vereador'],
+  geral: ['deputado estadual', 'deputado federal', 'governador', 'presidente', 'senador']
+};
+
+function tipoEleicaoDoAno(ano) {
+  return ['2012','2016','2020','2024'].includes(ano) ? 'municipal' : 'geral';
+}
+
+function cargosDisponiveisParaAno(ano) {
+  return CARGOS_POR_TIPO_ELEICAO[tipoEleicaoDoAno(ano)];
+}
+
+function atualizarCargosPorAno(anoSelectId, cargoSelectId) {
+  const anoEl = document.getElementById(anoSelectId);
+  const cargoEl = document.getElementById(cargoSelectId);
+  const cargoAnterior = cargoEl.value;
+  const cargosValidos = cargosDisponiveisParaAno(anoEl.value);
+  preencherSelect(cargoEl, cargosValidos);
+  cargoEl.value = cargosValidos.includes(cargoAnterior) ? cargoAnterior : cargosValidos[0];
+  cargoEl.dispatchEvent(new Event('change'));
+}
+
 // ---------- CARREGAMENTO DE DADOS ----------
 function carregarDados() {
   const b64 = document.getElementById('dataset-b64').textContent.trim();
@@ -1290,9 +1313,10 @@ let rankingInit = false;
 function initRanking() {
   if (!rankingInit) {
     preencherSelect(document.getElementById('rk_ano'), DB.meta.anos.slice().reverse());
-    preencherSelect(document.getElementById('rk_cargo'), DB.meta.cargos);
+    preencherSelect(document.getElementById('rk_cargo'), cargosDisponiveisParaAno(document.getElementById('rk_ano').value));
     preencherSelect(document.getElementById('rk_municipio'), DB.meta.municipios, true, 'Todos os municípios');
-    ['rk_ano','rk_cargo','rk_municipio'].forEach(id => document.getElementById(id).addEventListener('change', renderRanking));
+    document.getElementById('rk_ano').addEventListener('change', () => atualizarCargosPorAno('rk_ano','rk_cargo'));
+    ['rk_cargo','rk_municipio'].forEach(id => document.getElementById(id).addEventListener('change', renderRanking));
     rankingInit = true;
   }
   renderRanking();
@@ -1470,8 +1494,9 @@ function initComparar() {
       document.getElementById('cmp_mun_a').value = preferido;
     }
     preencherSelect(document.getElementById('cmp_ano'), DB.meta.anos.slice().reverse());
-    preencherSelect(document.getElementById('cmp_cargo'), DB.meta.cargos);
-    ['cmp_mun_a','cmp_mun_b','cmp_ano','cmp_cargo'].forEach(id => document.getElementById(id).addEventListener('change', renderComparar));
+    preencherSelect(document.getElementById('cmp_cargo'), cargosDisponiveisParaAno(document.getElementById('cmp_ano').value));
+    document.getElementById('cmp_ano').addEventListener('change', () => atualizarCargosPorAno('cmp_ano','cmp_cargo'));
+    ['cmp_mun_a','cmp_mun_b','cmp_cargo'].forEach(id => document.getElementById(id).addEventListener('change', renderComparar));
     compararInit = true;
   }
   renderComparar();
@@ -1582,9 +1607,10 @@ let partidosInit = false;
 function initPartidos() {
   if (!partidosInit) {
     preencherSelect(document.getElementById('pt_ano'), DB.meta.anos.slice().reverse());
-    preencherSelect(document.getElementById('pt_cargo'), DB.meta.cargos);
+    preencherSelect(document.getElementById('pt_cargo'), cargosDisponiveisParaAno(document.getElementById('pt_ano').value));
     preencherSelect(document.getElementById('pt_municipio'), DB.meta.municipios, true, 'Todos os municípios');
-    ['pt_ano','pt_cargo','pt_municipio'].forEach(id => document.getElementById(id).addEventListener('change', renderPartidos));
+    document.getElementById('pt_ano').addEventListener('change', () => atualizarCargosPorAno('pt_ano','pt_cargo'));
+    ['pt_cargo','pt_municipio'].forEach(id => document.getElementById(id).addEventListener('change', renderPartidos));
     partidosInit = true;
   }
   renderPartidos();
@@ -1628,7 +1654,7 @@ let pv_cargoAtivo = 'prefeito';
 function initPrefVer() {
   if (!prefVerInit) {
     preencherSelect(document.getElementById('pv_municipio'), DB.meta.municipios);
-    preencherSelect(document.getElementById('pv_ano'), DB.meta.anos.slice().reverse());
+    preencherSelect(document.getElementById('pv_ano'), ['2024','2020','2016','2012']);
     const preferido = obterMunicipioPreferido();
     if (preferido && DB.meta.municipios.includes(preferido)) {
       document.getElementById('pv_municipio').value = preferido;
@@ -1683,7 +1709,7 @@ let pg_cargoAtivo = 'presidente';
 function initPresGov() {
   if (!presGovInit) {
     preencherSelect(document.getElementById('pg_municipio'), DB.meta.municipios);
-    preencherSelect(document.getElementById('pg_ano'), DB.meta.anos.slice().reverse());
+    preencherSelect(document.getElementById('pg_ano'), ['2022','2018','2014','2010']);
     const preferido = obterMunicipioPreferido();
     if (preferido && DB.meta.municipios.includes(preferido)) {
       document.getElementById('pg_municipio').value = preferido;
