@@ -67,10 +67,11 @@ html, body {
 
 /* ===== TOPBAR ===== */
 .topbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 40px 1fr 60px;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 8px;
+  padding: 10px 16px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -103,17 +104,45 @@ html, body {
   visibility: hidden;
 }
 
-.topbar h1 {
+.marca-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.marca-icone {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.marca-topbar.tela-interna .marca-icone,
+.marca-topbar.tela-interna .marca-subtitulo {
+  display: none;
+}
+
+.marca-texto {
+  text-align: center;
+  line-height: 1.15;
+}
+
+.marca-nome {
   font-family: 'Playfair Display', serif;
   font-size: 1.125rem;
   font-weight: 700;
-  margin: 0;
-  flex: 1;
   letter-spacing: -0.5px;
   background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.marca-subtitulo {
+  font-size: 0.5625rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 .topbar .badge {
@@ -122,6 +151,7 @@ html, body {
   color: var(--neon-magenta);
   text-transform: uppercase;
   font-weight: 700;
+  text-align: right;
 }
 
 /* ===== HOME HERO ===== */
@@ -752,7 +782,13 @@ canvas {
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="voltar hidden" id="btnVoltar" onclick="voltarHome()">‹</div>
-    <h1 id="tituloTela">Eleições MS</h1>
+    <div class="marca-topbar" id="marcaTopbar">
+      <img src="/icons/icon-32.png" alt="PE.IA" class="marca-icone">
+      <div class="marca-texto">
+        <div class="marca-nome" id="tituloTela">PE.IA</div>
+        <div class="marca-subtitulo">Plataforma Eleitoral Inteligente</div>
+      </div>
+    </div>
     <div class="badge">2010–24</div>
   </div>
 
@@ -1223,6 +1259,7 @@ function abrirTela(id) {
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById('tela-'+id).classList.add('ativa');
   document.getElementById('tituloTela').textContent = BOTOES.find(b=>b.id===id).titulo;
+  document.getElementById('marcaTopbar').classList.add('tela-interna');
   document.getElementById('btnVoltar').classList.remove('hidden');
   telaAtual = id;
   inicializarTela(id);
@@ -1231,7 +1268,8 @@ function abrirTela(id) {
 function voltarHome() {
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById('tela-home').classList.add('ativa');
-  document.getElementById('tituloTela').textContent = 'Eleições MS';
+  document.getElementById('tituloTela').textContent = 'PE.IA';
+  document.getElementById('marcaTopbar').classList.remove('tela-interna');
   document.getElementById('btnVoltar').classList.add('hidden');
   telaAtual = 'home';
 }
@@ -1643,6 +1681,13 @@ function initComparar() {
   renderComparar();
 }
 
+function top10PorMunicipio(votos, ano, cargo, municipio, turno='1') {
+  return votos
+    .filter(v => v.ano === ano && v.cargo === cargo && v.municipio === municipio && v.candidato && v.turno === turno)
+    .sort((a, b) => b.votos - a.votos)
+    .slice(0, 10);
+}
+
 function renderComparar() {
   const munA = document.getElementById('cmp_mun_a').value;
   const munB = document.getElementById('cmp_mun_b').value;
@@ -1661,6 +1706,8 @@ function renderComparar() {
   const resB = DB.resumo.find(r=>r.municipio===munB && r.ano===ano && r.cargo===cargo && r.turno===turnoB);
   const vencA = topEleito(DB.votos, ano, cargo, munA, turnoA);
   const vencB = topEleito(DB.votos, ano, cargo, munB, turnoB);
+  const top10A = top10PorMunicipio(DB.votos, ano, cargo, munA, turnoA);
+  const top10B = top10PorMunicipio(DB.votos, ano, cargo, munB, turnoB);
 
   if (!resA && !resB) { out.innerHTML = telaVazia('Sem dados para essa combinação.'); return; }
 
@@ -1686,6 +1733,38 @@ function renderComparar() {
           ${miniStat('Aptos', resB?formatarNumCurto(resB.aptos):'—')}
           ${vencB ? miniStat('Mais votado', vencB.candidato) : ''}
           ${vencB ? miniStat('Votos', formatarNum(vencB.votos)) : ''}
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-titulo">Top 10 candidatos</p>
+      <div class="compare-cols">
+        <div>
+          ${top10A.map((v,i) => `
+            <div class="linha-item">
+              <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
+              <div class="item-info">
+                <div class="item-nome">${v.candidato}</div>
+                <div class="item-detalhe">${v.partido}</div>
+                ${badgeResultado(v.resultado)}
+              </div>
+              <div class="item-valor">${formatarNum(v.votos)}</div>
+            </div>
+          `).join('') || '<p class="card-sub" style="text-align:center;">Sem dados</p>'}
+        </div>
+        <div>
+          ${top10B.map((v,i) => `
+            <div class="linha-item">
+              <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
+              <div class="item-info">
+                <div class="item-nome">${v.candidato}</div>
+                <div class="item-detalhe">${v.partido}</div>
+                ${badgeResultado(v.resultado)}
+              </div>
+              <div class="item-valor">${formatarNum(v.votos)}</div>
+            </div>
+          `).join('') || '<p class="card-sub" style="text-align:center;">Sem dados</p>'}
         </div>
       </div>
     </div>
