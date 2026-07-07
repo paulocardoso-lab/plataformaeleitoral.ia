@@ -1,11 +1,22 @@
-# Node
+# Node (se adicionar dependencies depois)
 node_modules/
 npm-debug.log
+package-lock.json
 
 # VS Code
 .vscode/settings.json
-.DS_Store
+.vscode/extensions.json
 
-# Build
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Build/dist
 dist/
 build/

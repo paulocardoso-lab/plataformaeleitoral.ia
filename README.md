@@ -1,29 +1,51 @@
-# Eleições MS 2010–2024
+# PE26 Eleitoral — Eleições MS 2010–2024
 
 PWA offline-first com resultados eleitorais dos 79 municípios de Mato Grosso do Sul.
 
-## Estrutura
+**Desenvolvido por**: Girassol Inteligência  
+**URL ao vivo**: https://plataformaeleitoral.ia.br  
+**Dados**: TSE (2010-2024)
 
-- `index.html` - App completo (1.94 MB, dataset embutido)
-- `manifest.json` - Metadados PWA
-- `service-worker.js` - Cache offline
-- `vercel.json` - Config de headers e cache
-- `icons/` - Ícones do app (192px, 512px, etc)
+## Arquivos
+
+```
+PE26ELEITORAL/
+├── index.html           (app completo, 1.94 MB)
+├── manifest.json        (metadados PWA)
+├── service-worker.js    (cache offline)
+├── vercel.json          (config headers)
+├── icons/               (ícones do app)
+├── README.md
+├── DEVELOPMENT.md
+└── .gitignore
+```
 
 ## Deploy
 
-Connected ao Vercel. Push em `main` dispara deploy automático em ~30s.
+**Connected ao GitHub + Vercel.**
 
+Fluxo:
 ```bash
-git add .
-git commit -m "sua mensagem"
-git push origin main
+# No VS Code: Source Control → Message → Commit (✓) → Push (...)
+# Resultado: Vercel deploya em ~30s em https://plataformaeleitoral.ia.br
 ```
 
-## URL ao vivo
+## Design
 
-https://plataformaeleitoral.ia.br
+- **Mobile-first absoluto**: 100% otimizado pra toque em celular
+- **Neon premium**: preto profundo + verde, ciano, magenta, amarelo
+- **Tipografia**: Playfair Display (títulos) + Inter (corpo)
+- **Ícones**: SVG stroke vetorial, sem emojis
+- **9 telas**: busca candidato, ranking, município, comparação, evolução, partidos, prefeito, presidente, sobre
 
 ## Dados
 
-Filtrado para 2010-2024, 79 municípios MS, 7 cargos. Fonte: TSE.
+Pré-agregados em JSON gzip (base64 embutido no HTML):
+- 163.329 registros de votos
+- 79 municípios MS
+- 7 cargos eleitorais
+- 8 eleições (2010-2024)
+- 100% offline após 1ª visita (Service Worker)
+
+---
+Desenvolvido em 2026 · Girassol Inteligência
