@@ -657,6 +657,32 @@ canvas {
   font-weight: 300;
 }
 
+.rodape-fixo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.rodape-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.rodape-texto {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -836,6 +862,11 @@ canvas {
       
       <div style="height: 20px;"></div>
     </div>
+  </div>
+
+  <div class="rodape-fixo">
+    <img src="data:image/png;base64,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" alt="Girassol Inteligência" class="rodape-logo">
+    <span class="rodape-texto">Girassol Inteligência — Todos os Direitos Reservados</span>
   </div>
 
 </div>
@@ -1085,6 +1116,32 @@ function atualizarCargosPorAno(anoSelectId, cargoSelectId) {
   cargoEl.dispatchEvent(new Event('change'));
 }
 
+function existeSegundoTurno(ano, cargo, municipio) {
+  return DB.votos.some(v => v.ano===ano && v.cargo===cargo && v.municipio===municipio && v.turno==='2');
+}
+
+function chipsTurno(idPrefix, turnoAtivo) {
+  return `
+    <p class="card-sub">Esta eleição teve 2 turnos</p>
+    <div class="chip-toggle" id="${idPrefix}_chip_turno">
+      <div class="chip ${turnoAtivo==='1'?'ativo':''}" data-turno="1">1º Turno</div>
+      <div class="chip ${turnoAtivo==='2'?'ativo':''}" data-turno="2">2º Turno</div>
+    </div>
+  `;
+}
+
+function ativarChipsTurno(idPrefix, onChange) {
+  const el = document.getElementById(idPrefix+'_chip_turno');
+  if (!el) return;
+  el.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      el.querySelectorAll('.chip').forEach(c=>c.classList.remove('ativo'));
+      chip.classList.add('ativo');
+      onChange(chip.dataset.turno);
+    });
+  });
+}
+
 // ---------- CARREGAMENTO DE DADOS ----------
 function carregarDados() {
   const b64 = document.getElementById('dataset-b64').textContent.trim();
@@ -1328,7 +1385,7 @@ function renderRanking() {
   const municipio = document.getElementById('rk_municipio').value;
   const out = document.getElementById('resultadoRanking');
 
-  let filtrado = DB.votos.filter(v => v.ano===ano && v.cargo===cargo && v.candidato);
+  let filtrado = DB.votos.filter(v => v.ano===ano && v.cargo===cargo && v.candidato && v.turno==='1');
   if (municipio) filtrado = filtrado.filter(v => v.municipio===municipio);
 
   // agrega votos por candidato (soma entre municípios se "todos")
@@ -1363,6 +1420,7 @@ function renderRanking() {
 
 // ---------- TELA 3: MEU MUNICÍPIO ----------
 let meuMunicipioInit = false;
+let mm_turnoAtivo = '2';
 function initMeuMunicipio() {
   if (!meuMunicipioInit) {
     preencherSelect(document.getElementById('mm_municipio'), DB.meta.municipios);
@@ -1386,17 +1444,28 @@ function renderMeuMunicipio() {
   const ano = document.getElementById('mm_ano').value;
   const out = document.getElementById('resultadoMeuMunicipio');
 
-  const resumos = DB.resumo.filter(r => r.municipio===municipio && r.ano===ano);
+  // prefeito e presidente/governador nunca têm 2º turno no mesmo ano
+  // (anos municipais x anos gerais são mutuamente exclusivos), então
+  // há no máximo um cargo com 2º turno disponível por vez nesta tela.
+  const tem2TurnoPrefeito = existeSegundoTurno(ano, 'prefeito', municipio);
+  const tem2TurnoPresidente = existeSegundoTurno(ano, 'presidente', municipio);
+  const tem2TurnoGovernador = existeSegundoTurno(ano, 'governador', municipio);
+  const tem2Turno = tem2TurnoPrefeito || tem2TurnoPresidente || tem2TurnoGovernador;
+  const turno = tem2Turno ? mm_turnoAtivo : '1';
+
+  const resumos = DB.resumo.filter(r => r.municipio===municipio && r.ano===ano && r.turno===turno);
   if (resumos.length===0) { out.innerHTML = telaVazia('Sem dados para esse município/ano.'); return; }
 
   // pega o resumo do cargo mais "geral" disponível (prefeito ou presidente)
   const principal = resumos.find(r=>r.cargo==='prefeito') || resumos.find(r=>r.cargo==='presidente') || resumos[0];
 
-  const vencedorPrefeito = topEleito(DB.votos, ano, 'prefeito', municipio);
-  const vencedorPresidente = topEleito(DB.votos, ano, 'presidente', municipio);
-  const vencedorGovernador = topEleito(DB.votos, ano, 'governador', municipio);
+  const vencedorPrefeito = topEleito(DB.votos, ano, 'prefeito', municipio, tem2TurnoPrefeito ? turno : '1');
+  const vencedorPresidente = topEleito(DB.votos, ano, 'presidente', municipio, tem2TurnoPresidente ? turno : '1');
+  const vencedorGovernador = topEleito(DB.votos, ano, 'governador', municipio, tem2TurnoGovernador ? turno : '1');
 
   out.innerHTML = `
+    ${tem2Turno ? chipsTurno('mm', turno) : ''}
+
     <div class="stat-grid">
       <div class="stat-card"><div class="stat-valor">${formatarNumCurto(principal.aptos)}</div><div class="stat-label">Eleitores aptos</div></div>
       <div class="stat-card"><div class="stat-valor">${principal.pct_comparecimento.toFixed(1)}%</div><div class="stat-label">Comparecimento</div></div>
@@ -1458,10 +1527,17 @@ function renderMeuMunicipio() {
       </div>
     </div>
   `;
+
+  if (tem2Turno) {
+    ativarChipsTurno('mm', (novoTurno) => {
+      mm_turnoAtivo = novoTurno;
+      renderMeuMunicipio();
+    });
+  }
 }
 
-function topEleito(votos, ano, cargo, municipio) {
-  const cands = votos.filter(v=>v.ano===ano && v.cargo===cargo && v.municipio===municipio && v.candidato);
+function topEleito(votos, ano, cargo, municipio, turno='1') {
+  const cands = votos.filter(v=>v.ano===ano && v.cargo===cargo && v.municipio===municipio && v.candidato && v.turno===turno);
   if (cands.length===0) return null;
   return cands.reduce((a,b)=> b.votos>a.votos?b:a);
 }
@@ -1484,6 +1560,7 @@ function cardVencedor(titulo, v) {
 
 // ---------- TELA 4: COMPARAR MUNICÍPIOS ----------
 let compararInit = false;
+let cmp_turnoAtivo = '2';
 function initComparar() {
   if (!compararInit) {
     preencherSelect(document.getElementById('cmp_mun_a'), DB.meta.municipios);
@@ -1509,19 +1586,29 @@ function renderComparar() {
   const cargo = document.getElementById('cmp_cargo').value;
   const out = document.getElementById('resultadoComparar');
 
-  const resA = DB.resumo.find(r=>r.municipio===munA && r.ano===ano && r.cargo===cargo);
-  const resB = DB.resumo.find(r=>r.municipio===munB && r.ano===ano && r.cargo===cargo);
-  const vencA = topEleito(DB.votos, ano, cargo, munA);
-  const vencB = topEleito(DB.votos, ano, cargo, munB);
+  const aTem2Turno = existeSegundoTurno(ano, cargo, munA);
+  const bTem2Turno = existeSegundoTurno(ano, cargo, munB);
+  const algumTem2Turno = aTem2Turno || bTem2Turno;
+  const turno = algumTem2Turno ? cmp_turnoAtivo : '1';
+  const turnoA = aTem2Turno ? turno : '1';
+  const turnoB = bTem2Turno ? turno : '1';
+
+  const resA = DB.resumo.find(r=>r.municipio===munA && r.ano===ano && r.cargo===cargo && r.turno===turnoA);
+  const resB = DB.resumo.find(r=>r.municipio===munB && r.ano===ano && r.cargo===cargo && r.turno===turnoB);
+  const vencA = topEleito(DB.votos, ano, cargo, munA, turnoA);
+  const vencB = topEleito(DB.votos, ano, cargo, munB, turnoB);
 
   if (!resA && !resB) { out.innerHTML = telaVazia('Sem dados para essa combinação.'); return; }
 
   out.innerHTML = `
+    ${algumTem2Turno ? chipsTurno('cmp', turno) : ''}
+
     <div class="card">
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <div class="compare-cols">
         <div>
           <p class="card-sub" style="text-align:center;font-weight:800;color:#F0C863;">${munA}</p>
+          ${algumTem2Turno && !aTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resA?resA.pct_comparecimento.toFixed(1)+'%':'—')}
           ${miniStat('Aptos', resA?formatarNumCurto(resA.aptos):'—')}
           ${vencA ? miniStat('Mais votado', vencA.candidato) : ''}
@@ -1529,6 +1616,7 @@ function renderComparar() {
         </div>
         <div>
           <p class="card-sub" style="text-align:center;font-weight:800;color:#F0C863;">${munB}</p>
+          ${algumTem2Turno && !bTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resB?resB.pct_comparecimento.toFixed(1)+'%':'—')}
           ${miniStat('Aptos', resB?formatarNumCurto(resB.aptos):'—')}
           ${vencB ? miniStat('Mais votado', vencB.candidato) : ''}
@@ -1537,6 +1625,13 @@ function renderComparar() {
       </div>
     </div>
   `;
+
+  if (algumTem2Turno) {
+    ativarChipsTurno('cmp', (novoTurno) => {
+      cmp_turnoAtivo = novoTurno;
+      renderComparar();
+    });
+  }
 }
 
 function miniStat(label, valor) {
@@ -1622,7 +1717,7 @@ function renderPartidos() {
   const municipio = document.getElementById('pt_municipio').value;
   const out = document.getElementById('resultadoPartidos');
 
-  let filtrado = DB.partidos.filter(p => p.ano===ano && p.cargo===cargo);
+  let filtrado = DB.partidos.filter(p => p.ano===ano && p.cargo===cargo && p.turno==='1');
   if (municipio) filtrado = filtrado.filter(p=>p.municipio===municipio);
 
   const agr = {};
@@ -1651,6 +1746,7 @@ function renderPartidos() {
 // ---------- TELA 7: PREFEITO & VEREADOR ----------
 let prefVerInit = false;
 let pv_cargoAtivo = 'prefeito';
+let pv_turnoAtivo = '2';
 function initPrefVer() {
   if (!prefVerInit) {
     preencherSelect(document.getElementById('pv_municipio'), DB.meta.municipios);
@@ -1679,12 +1775,17 @@ function renderPrefVer() {
   const ano = document.getElementById('pv_ano').value;
   const out = document.getElementById('resultadoPrefVer');
 
-  const lista = DB.votos.filter(v=>v.municipio===municipio && v.ano===ano && v.cargo===pv_cargoAtivo && v.candidato)
+  const tem2Turno = existeSegundoTurno(ano, pv_cargoAtivo, municipio);
+  const turno = tem2Turno ? pv_turnoAtivo : '1';
+
+  const lista = DB.votos.filter(v=>v.municipio===municipio && v.ano===ano && v.cargo===pv_cargoAtivo && v.candidato && v.turno===turno)
     .sort((a,b)=>b.votos-a.votos).slice(0,40);
 
   if (lista.length===0) { out.innerHTML = telaVazia('Sem dados para esse município/ano/cargo.'); return; }
 
   out.innerHTML = `
+    ${tem2Turno ? chipsTurno('pv', turno) : ''}
+
     <div class="card">
       <p class="card-titulo">${CARGO_LABEL[pv_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
@@ -1701,11 +1802,19 @@ function renderPrefVer() {
       `).join('')}
     </div>
   `;
+
+  if (tem2Turno) {
+    ativarChipsTurno('pv', (novoTurno) => {
+      pv_turnoAtivo = novoTurno;
+      renderPrefVer();
+    });
+  }
 }
 
 // ---------- TELA 8: PRESIDENTE & GOVERNADOR ----------
 let presGovInit = false;
 let pg_cargoAtivo = 'presidente';
+let pg_turnoAtivo = '2';
 function initPresGov() {
   if (!presGovInit) {
     preencherSelect(document.getElementById('pg_municipio'), DB.meta.municipios);
@@ -1734,12 +1843,17 @@ function renderPresGov() {
   const ano = document.getElementById('pg_ano').value;
   const out = document.getElementById('resultadoPresGov');
 
-  const lista = DB.votos.filter(v=>v.municipio===municipio && v.ano===ano && v.cargo===pg_cargoAtivo && v.candidato)
+  const tem2Turno = existeSegundoTurno(ano, pg_cargoAtivo, municipio);
+  const turno = tem2Turno ? pg_turnoAtivo : '1';
+
+  const lista = DB.votos.filter(v=>v.municipio===municipio && v.ano===ano && v.cargo===pg_cargoAtivo && v.candidato && v.turno===turno)
     .sort((a,b)=>b.votos-a.votos).slice(0,40);
 
   if (lista.length===0) { out.innerHTML = telaVazia('Sem dados para esse município/ano/cargo.'); return; }
 
   out.innerHTML = `
+    ${tem2Turno ? chipsTurno('pg', turno) : ''}
+
     <div class="card">
       <p class="card-titulo">${CARGO_LABEL[pg_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
@@ -1756,6 +1870,13 @@ function renderPresGov() {
       `).join('')}
     </div>
   `;
+
+  if (tem2Turno) {
+    ativarChipsTurno('pg', (novoTurno) => {
+      pg_turnoAtivo = novoTurno;
+      renderPresGov();
+    });
+  }
 }
 
 // ---------- TELA 9: SOBRE ----------
