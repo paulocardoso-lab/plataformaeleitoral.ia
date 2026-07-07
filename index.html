@@ -929,6 +929,21 @@ canvas {
   transition: all 0.2s;
 }
 
+.rodape-btn-sobre {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
 .rodape-btn-acessibilidade.ativo {
   background: var(--neon-cyan);
   color: var(--bg-0);
@@ -1178,8 +1193,26 @@ canvas {
     <div class="conteudo" id="resultadoPresGov"></div>
   </div>
 
-  <!-- TELA 9: SOBRE -->
+  <!-- TELA 9: MEU ESTADO -->
   <div class="tela" id="tela-9">
+    <div class="filtros">
+      <div class="chip-toggle" id="me_chip_secao">
+        <div class="chip ativo" data-secao="territorio">Território</div>
+        <div class="chip" data-secao="demografia">Demografia</div>
+        <div class="chip" data-secao="eleitores">Eleitores</div>
+        <div class="chip" data-secao="emprego_renda">Emprego</div>
+        <div class="chip" data-secao="educacao">Educação</div>
+        <div class="chip" data-secao="saude">Saúde</div>
+        <div class="chip" data-secao="seguranca">Segurança</div>
+        <div class="chip" data-secao="infraestrutura">Infraestrutura</div>
+        <div class="chip" data-secao="economia">Economia</div>
+      </div>
+    </div>
+    <div class="conteudo" id="resultadoMeuEstado"></div>
+  </div>
+
+  <!-- TELA SOBRE -->
+  <div class="tela" id="tela-sobre">
     <div class="conteudo" style="overflow-y:auto;">
       <div class="sec-titulo">Sobre este aplicativo</div>
       <p class="sobre-p">Resultados oficiais das eleições de <b>Mato Grosso do Sul</b> entre <b>2010 e 2024</b>, cobrindo os <b>79 municípios</b> do estado.</p>
@@ -1198,6 +1231,11 @@ canvas {
 
       <div class="sec-titulo">Histórico de versões</div>
       <div class="historico-versoes">
+        <div class="versao-item">
+          <span class="versao-numero">v2.4</span>
+          <span class="versao-data">Julho 2026</span>
+          <p class="versao-desc">Novo painel "Meu Estado" com dados socioeconômicos, demográficos e eleitorais de MS. Acesso à tela Sobre movido para o rodapé.</p>
+        </div>
         <div class="versao-item">
           <span class="versao-numero">v2.3</span>
           <span class="versao-data">Julho 2026</span>
@@ -1243,6 +1281,9 @@ canvas {
     <button class="rodape-btn-acessibilidade" id="btnFonteMenor" onclick="diminuirTamanhoFonte()" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A-</button>
     <button class="rodape-btn-acessibilidade" id="btnFonteGrande" onclick="aumentarTamanhoFonte()" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
     <button class="rodape-btn-estilo" id="btnEstilo" onclick="alternarEstilo()" aria-label="Alternar estilo visual" title="Alternar estilo: Neon / Aeroporto">◧</button>
+    <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
+      <svg width="16" height="16" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
+    </button>
     <span class="rodape-versao">v 2.3</span>
   </div>
 
@@ -1287,6 +1328,10 @@ canvas {
     <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
     <line x1="12" y1="7" x2="12" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     <circle cx="12" cy="17" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-estado" viewBox="0 0 24 24">
+    <path d="M3 8l6-3 6 3 6-3v13l-6 3-6-3-6 3V8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M9 5v13M15 8v13" stroke="currentColor" stroke-width="2"/>
   </symbol>
   <symbol id="icon-microfone" viewBox="0 0 24 24">
     <rect x="9" y="2" width="6" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -1459,7 +1504,8 @@ const ICONES = {
   partidos: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><path d="M4 21V10M10 21V4M16 21v-7M4 10l6-6 6 3 4-4"/></svg>',
   prefver: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="1"/><path d="M9 21v-6h6v6M9 10V6l3-3 3 3v4"/></svg>',
   presgov: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><path d="M4 20h16M6 20V10l6-6 6 6v10M10 20v-5h4v5"/></svg>',
-  sobre: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>'
+  sobre: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>',
+  estado: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><path d="M3 8l6-3 6 3 6-3v13l-6 3-6-3-6 3V8z" stroke-linejoin="round"/><path d="M9 5v13M15 8v13"/></svg>'
 };
 
 const BOTOES = [
@@ -1471,13 +1517,151 @@ const BOTOES = [
   { id:6, icone:'partidos', rotulo:'Ranking de\nPartidos',    titulo:'Ranking de Partidos' },
   { id:7, icone:'prefver',  rotulo:'Prefeito &\nVereador',    titulo:'Prefeito & Vereador' },
   { id:8, icone:'presgov',  rotulo:'Presidente &\nGovernador',titulo:'Presidente & Governador' },
-  { id:9, icone:'sobre',    rotulo:'Sobre',                   titulo:'Sobre' },
+  { id:9, icone:'estado',   rotulo:'Meu\nEstado',             titulo:'Meu Estado' },
 ];
 
 const CARGO_LABEL = {
   'prefeito':'Prefeito','vereador':'Vereador','governador':'Governador',
   'presidente':'Presidente','senador':'Senador',
   'deputado federal':'Deputado Federal','deputado estadual':'Deputado Estadual'
+};
+
+// Fonte: SEMADESC/MS - Perfil Estatístico de Mato Grosso do Sul 2025 (atualizado 2026-07)
+const DADOS_MEU_ESTADO = {
+  "meta": { "fonte": "SEMADESC/MS - Perfil Estatístico de Mato Grosso do Sul 2025", "atualizado": "2026-07" },
+  "territorio": {
+    "area_km2": "357.145,534",
+    "populacao_2022": "2.757.013",
+    "capital": "Campo Grande",
+    "data_criacao": "11/10/1977",
+    "data_instalacao": "01/01/1979",
+    "primeiro_governador": "Harry Amorim Costa",
+    "municipios_faixa_fronteira": 41,
+    "biomas": [
+      { "nome": "Cerrado", "area_km2": "222.245,73", "percentual": "62,24%" },
+      { "nome": "Pantanal", "area_km2": "97.417,22", "percentual": "27,28%" },
+      { "nome": "Mata Atlântica", "area_km2": "37.423,53", "percentual": "10,48%" }
+    ],
+    "especies": [
+      { "grupo": "Plantas", "quantidade": 3500 },
+      { "grupo": "Aves", "quantidade": 656 },
+      { "grupo": "Peixes", "quantidade": 325 },
+      { "grupo": "Mamíferos", "quantidade": 159 },
+      { "grupo": "Répteis", "quantidade": 98 },
+      { "grupo": "Anfíbios", "quantidade": 53 }
+    ]
+  },
+  "demografia": {
+    "populacao_total": "2.757.013",
+    "ano": 2022,
+    "genero": [
+      { "categoria": "Mulheres", "percentual": "50,8%" },
+      { "categoria": "Homens", "percentual": "49,2%" }
+    ],
+    "cor_raca": [
+      { "categoria": "Parda", "pessoas": "1.293.797", "percentual": "46,9%" },
+      { "categoria": "Branca", "pessoas": "1.168.407", "percentual": "42,4%" },
+      { "categoria": "Preta", "pessoas": "179.101", "percentual": "6,5%" },
+      { "categoria": "Indígena", "pessoas": "96.029", "percentual": "3,5%" },
+      { "categoria": "Amarela", "pessoas": "19.616", "percentual": "0,7%" }
+    ],
+    "densidade_demografica": "7,72 hab/km²"
+  },
+  "emprego_renda": {
+    "renda_per_capita_ms": "R$ 1.929/mês",
+    "extrema_pobreza": "2,4%",
+    "pobreza": "8,6%",
+    "gini": "0,48",
+    "ocupacao_setor": [
+      { "setor": "Comércio, reparação de veículos e motocicletas", "mil_pessoas": 296 },
+      { "setor": "Administração pública, defesa, educação, saúde", "mil_pessoas": 278 },
+      { "setor": "Indústria geral", "mil_pessoas": 148 },
+      { "setor": "Informação, financeiro, imobiliário, profissional", "mil_pessoas": 146 },
+      { "setor": "Agricultura, pecuária, produção florestal, pesca", "mil_pessoas": 139 },
+      { "setor": "Construção", "mil_pessoas": 106 }
+    ],
+    "emprego_formal_2023": {
+      "total": "829.312",
+      "celetista": "645.981",
+      "estatutario": "183.331",
+      "remuneracao_media": "R$ 3.968,08"
+    }
+  },
+  "educacao": {
+    "matriculas_2023": [
+      { "nivel": "Ensino Fundamental", "quantidade": "393.616" },
+      { "nivel": "Ensino Médio", "quantidade": "103.814" },
+      { "nivel": "Ensino Infantil", "quantidade": "145.792" },
+      { "nivel": "Educação Especial", "quantidade": "26.155" }
+    ],
+    "taxa_alfabetizacao": "94,6%",
+    "ideb_2023": [
+      { "etapa": "Anos Iniciais", "ms": "5,6", "brasil": "6,0" },
+      { "etapa": "Anos Finais - Fundamental", "ms": "4,8", "brasil": "5,0" },
+      { "etapa": "Ensino Médio", "ms": "4,0", "brasil": "4,3" }
+    ],
+    "instituicoes_ensino_superior": 40
+  },
+  "eleitores": {
+    "ano": 2024,
+    "sexo": [
+      { "categoria": "Mulheres", "percentual": "52,5%" },
+      { "categoria": "Homens", "percentual": "47,5%" }
+    ],
+    "escolaridade": [
+      { "categoria": "Fundamental Incompleto", "percentual": "24,88%" },
+      { "categoria": "Médio Completo", "percentual": "23,36%" },
+      { "categoria": "Médio Incompleto", "percentual": "15,86%" },
+      { "categoria": "Superior Completo", "percentual": "13,88%" },
+      { "categoria": "Fundamental Completo", "percentual": "5,92%" },
+      { "categoria": "Superior Incompleto", "percentual": "7,25%" },
+      { "categoria": "Lê e Escreve", "percentual": "5,67%" },
+      { "categoria": "Analfabeto", "percentual": "3,18%" }
+    ],
+    "faixa_etaria": [
+      { "categoria": "25 a 34 anos", "percentual": "20,65%" },
+      { "categoria": "35 a 44 anos", "percentual": "20,54%" },
+      { "categoria": "45 a 55 anos", "percentual": "19,23%" },
+      { "categoria": "56 a 69 anos", "percentual": "18,28%" },
+      { "categoria": "18 a 24 anos", "percentual": "11,51%" },
+      { "categoria": "70 anos ou mais", "percentual": "8,87%" },
+      { "categoria": "16 a 17 anos", "percentual": "0,93%" }
+    ]
+  },
+  "saude": {
+    "obitos_2022": "20.434",
+    "leitos_total": "5.868",
+    "leitos_sus": "3.987",
+    "leitos_nao_sus": "1.881",
+    "estabelecimentos_total": "6.151"
+  },
+  "seguranca": {
+    "ano_referencia": 2024,
+    "cvli_total_2024": 419,
+    "homicidio_doloso_2024": 353,
+    "feminicidio_2024": 35,
+    "furto_2024": "32.977",
+    "roubo_2024": "3.128",
+    "trafico_drogas_2024": "4.064"
+  },
+  "infraestrutura": {
+    "rodovias_estaduais": 145,
+    "extensao_rodoviaria_km": "15.400",
+    "frota_veiculos_total": "1.891.920",
+    "aeroportos_internacionais": ["Campo Grande", "Corumbá", "Ponta Porã"],
+    "aeroportos_regionais": ["Bonito", "Dourados", "Três Lagoas"],
+    "capacidade_energia_mw": "7.172",
+    "consumo_energia_per_capita_kwh": "2.214"
+  },
+  "economia": {
+    "nota": "Séries históricas completas (1978-2024) disponíveis para agricultura, pecuária, indústria — resumo abaixo",
+    "safra_2023_2024": {
+      "cana_acucar_toneladas": "52.421.929",
+      "acucar_toneladas": "2.264.901",
+      "etanol_cana_m3": "2.919.355",
+      "etanol_milho_m3": "962.184"
+    }
+  }
 };
 
 const CARGOS_POR_TIPO_ELEICAO = {
@@ -1664,7 +1848,7 @@ function inicializarTela(id) {
   if (id===6) initPartidos();
   if (id===7) initPrefVer();
   if (id===8) initPresGov();
-  if (id===9) initSobre();
+  if (id===9) initMeuEstado();
 }
 
 // ---------- BUSCA UNIVERSAL (HOME) ----------
@@ -2496,7 +2680,206 @@ function renderPresGov() {
   }
 }
 
-// ---------- TELA 9: SOBRE ----------
+// ---------- TELA 9: MEU ESTADO ----------
+let meuEstadoInit = false;
+let me_secaoAtiva = 'territorio';
+
+function initMeuEstado() {
+  if (!meuEstadoInit) {
+    document.querySelectorAll('#me_chip_secao .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#me_chip_secao .chip').forEach(c => c.classList.remove('ativo'));
+        chip.classList.add('ativo');
+        me_secaoAtiva = chip.dataset.secao;
+        renderMeuEstado();
+      });
+    });
+    meuEstadoInit = true;
+  }
+  renderMeuEstado();
+}
+
+function renderMeuEstado() {
+  const out = document.getElementById('resultadoMeuEstado');
+  const d = DADOS_MEU_ESTADO;
+
+  if (me_secaoAtiva === 'territorio') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Território</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.territorio.area_km2}</div><div class="stat-label">km² de área</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.territorio.populacao_2022}</div><div class="stat-label">habitantes (2022)</div></div>
+        </div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Capital</div></div><div class="item-valor">${d.territorio.capital}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Criação do estado</div></div><div class="item-valor">${d.territorio.data_criacao}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Instalação do estado</div></div><div class="item-valor">${d.territorio.data_instalacao}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Primeiro governador</div></div><div class="item-valor">${d.territorio.primeiro_governador}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Municípios na Faixa de Fronteira</div></div><div class="item-valor">${d.territorio.municipios_faixa_fronteira}</div></div>
+      </div>
+      <div class="card">
+        <p class="card-titulo">Biomas</p>
+        ${d.territorio.biomas.map(b => `
+          <div class="linha-item"><div class="item-info"><div class="item-nome">${b.nome}</div><div class="item-detalhe">${b.area_km2} km²</div></div><div class="item-valor">${b.percentual}</div></div>
+        `).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">Espécies catalogadas</p>
+        ${d.territorio.especies.map(e => `
+          <div class="linha-item"><div class="item-info"><div class="item-nome">${e.grupo}</div></div><div class="item-valor">${formatarNum(e.quantidade)}</div></div>
+        `).join('')}
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'demografia') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">População</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.demografia.populacao_total}</div><div class="stat-label">habitantes (${d.demografia.ano})</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.demografia.densidade_demografica}</div><div class="stat-label">densidade</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card-titulo">Por gênero</p>
+        ${d.demografia.genero.map(g => `<div class="linha-item"><div class="item-info"><div class="item-nome">${g.categoria}</div></div><div class="item-valor">${g.percentual}</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">Por cor/raça</p>
+        ${d.demografia.cor_raca.map(c => `<div class="linha-item"><div class="item-info"><div class="item-nome">${c.categoria}</div><div class="item-detalhe">${c.pessoas} pessoas</div></div><div class="item-valor">${c.percentual}</div></div>`).join('')}
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'eleitores') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Perfil do Eleitorado (${d.eleitores.ano})</p>
+        <p class="card-sub">Fonte: Sistema ELO</p>
+        ${d.eleitores.sexo.map(s => `<div class="linha-item"><div class="item-info"><div class="item-nome">${s.categoria}</div></div><div class="item-valor">${s.percentual}</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">Por escolaridade</p>
+        ${d.eleitores.escolaridade.map(e => `<div class="linha-item"><div class="item-info"><div class="item-nome">${e.categoria}</div></div><div class="item-valor">${e.percentual}</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">Por faixa etária</p>
+        ${d.eleitores.faixa_etaria.map(f => `<div class="linha-item"><div class="item-info"><div class="item-nome">${f.categoria}</div></div><div class="item-valor">${f.percentual}</div></div>`).join('')}
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'emprego_renda') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Renda e Pobreza</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.emprego_renda.renda_per_capita_ms}</div><div class="stat-label">renda per capita</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.emprego_renda.gini}</div><div class="stat-label">índice Gini</div></div>
+        </div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Extrema pobreza</div></div><div class="item-valor">${d.emprego_renda.extrema_pobreza}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Pobreza</div></div><div class="item-valor">${d.emprego_renda.pobreza}</div></div>
+      </div>
+      <div class="card">
+        <p class="card-titulo">Ocupação por setor</p>
+        ${d.emprego_renda.ocupacao_setor.map(o => `<div class="linha-item"><div class="item-info"><div class="item-nome">${o.setor}</div></div><div class="item-valor">${o.mil_pessoas}k</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">Emprego formal (2023)</p>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Total de vínculos</div></div><div class="item-valor">${d.emprego_renda.emprego_formal_2023.total}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Celetista</div></div><div class="item-valor">${d.emprego_renda.emprego_formal_2023.celetista}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Estatutário</div></div><div class="item-valor">${d.emprego_renda.emprego_formal_2023.estatutario}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Remuneração média</div></div><div class="item-valor">${d.emprego_renda.emprego_formal_2023.remuneracao_media}</div></div>
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'educacao') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Educação</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.educacao.taxa_alfabetizacao}</div><div class="stat-label">alfabetização</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.educacao.instituicoes_ensino_superior}</div><div class="stat-label">IES no estado</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card-titulo">Matrículas (2023)</p>
+        ${d.educacao.matriculas_2023.map(m => `<div class="linha-item"><div class="item-info"><div class="item-nome">${m.nivel}</div></div><div class="item-valor">${m.quantidade}</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <p class="card-titulo">IDEB 2023 (MS vs Brasil)</p>
+        ${d.educacao.ideb_2023.map(i => `<div class="linha-item"><div class="item-info"><div class="item-nome">${i.etapa}</div></div><div class="item-valor">${i.ms} <span style="color:var(--text-muted);font-size:0.7em;">/ ${i.brasil} BR</span></div></div>`).join('')}
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'saude') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Saúde</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.saude.leitos_total}</div><div class="stat-label">leitos totais</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.saude.estabelecimentos_total}</div><div class="stat-label">estabelecimentos</div></div>
+        </div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Leitos SUS</div></div><div class="item-valor">${d.saude.leitos_sus}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Leitos não-SUS</div></div><div class="item-valor">${d.saude.leitos_nao_sus}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Óbitos (2022)</div></div><div class="item-valor">${d.saude.obitos_2022}</div></div>
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'seguranca') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Segurança Pública (${d.seguranca.ano_referencia})</p>
+        <p class="card-sub">Fonte: SIGO/SEJUSP</p>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">CVLI total</div></div><div class="item-valor">${formatarNum(d.seguranca.cvli_total_2024)}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Homicídio doloso</div></div><div class="item-valor">${formatarNum(d.seguranca.homicidio_doloso_2024)}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Feminicídio</div></div><div class="item-valor">${formatarNum(d.seguranca.feminicidio_2024)}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Furto</div></div><div class="item-valor">${d.seguranca.furto_2024}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Roubo</div></div><div class="item-valor">${d.seguranca.roubo_2024}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Tráfico de drogas</div></div><div class="item-valor">${d.seguranca.trafico_drogas_2024}</div></div>
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'infraestrutura') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Infraestrutura</p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-valor">${d.infraestrutura.rodovias_estaduais}</div><div class="stat-label">rodovias estaduais</div></div>
+          <div class="stat-card"><div class="stat-valor">${d.infraestrutura.frota_veiculos_total}</div><div class="stat-label">veículos registrados</div></div>
+        </div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Extensão rodoviária</div></div><div class="item-valor">${d.infraestrutura.extensao_rodoviaria_km} km</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Aeroportos internacionais</div></div><div class="item-valor">${d.infraestrutura.aeroportos_internacionais.join(', ')}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Aeroportos regionais</div></div><div class="item-valor">${d.infraestrutura.aeroportos_regionais.join(', ')}</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Capacidade de energia</div></div><div class="item-valor">${d.infraestrutura.capacidade_energia_mw} MW</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Consumo per capita</div></div><div class="item-valor">${d.infraestrutura.consumo_energia_per_capita_kwh} kWh</div></div>
+      </div>
+    `;
+  }
+  else if (me_secaoAtiva === 'economia') {
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Economia — Safra 2023/2024</p>
+        <p class="card-sub">Fonte: BIOSUL</p>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Cana-de-açúcar</div></div><div class="item-valor">${d.economia.safra_2023_2024.cana_acucar_toneladas} t</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Açúcar</div></div><div class="item-valor">${d.economia.safra_2023_2024.acucar_toneladas} t</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Etanol (cana)</div></div><div class="item-valor">${d.economia.safra_2023_2024.etanol_cana_m3} m³</div></div>
+        <div class="linha-item"><div class="item-info"><div class="item-nome">Etanol (milho)</div></div><div class="item-valor">${d.economia.safra_2023_2024.etanol_milho_m3} m³</div></div>
+        <p class="card-sub" style="margin-top:8px;">${d.economia.nota}</p>
+      </div>
+    `;
+  }
+}
+
+// ---------- TELA SOBRE ----------
+function abrirTelaSobre() {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById('tela-sobre').classList.add('ativa');
+  document.getElementById('tituloTela').textContent = 'Sobre';
+  document.getElementById('marcaTopbar').classList.add('tela-interna');
+  document.getElementById('btnVoltar').classList.remove('hidden');
+  telaAtual = 'sobre';
+  initSobre();
+}
+
 function initSobre() {
   document.getElementById('sobreDataGeracao').textContent = 'Dados gerados em: ' + DB.meta.gerado_em;
 }
