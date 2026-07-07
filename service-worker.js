@@ -45,6 +45,14 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Permite que o cliente force a troca imediata do worker em espera
+// (usado pelo banner "Nova versão disponível" no index.html)
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 // Cache-first: serve do cache imediatamente; só vai à rede se não tiver nada salvo
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;

@@ -779,6 +779,40 @@ canvas {
   margin-left: auto;
 }
 
+#bannerAtualizacao.visivel {
+  display: flex;
+}
+
+#bannerAtualizacao {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--neon-cyan);
+  color: var(--bg-0);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  animation: slideUp 0.3s ease;
+}
+
+#bannerAtualizacao button {
+  background: var(--bg-0);
+  color: var(--neon-cyan);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 .rodape-btn-acessibilidade {
   background: var(--bg-2);
   border: 1px solid var(--border);
@@ -1053,6 +1087,11 @@ canvas {
       
       <div style="height: 20px;"></div>
     </div>
+  </div>
+
+  <div id="bannerAtualizacao">
+    <span>Nova versão disponível</span>
+    <button onclick="aplicarAtualizacao()">Atualizar</button>
   </div>
 
   <div class="rodape-fixo">
@@ -2321,6 +2360,47 @@ async function exportarComoImagem(elementoId, nomeArquivo) {
   } finally {
     document.body.removeChild(container);
   }
+}
+
+// ---------- SERVICE WORKER: registro e detecção de atualização ----------
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+      // Há uma versão nova instalada e pronta, mas o app ainda está
+      // rodando a versão antiga (só troca sozinho no próximo carregamento)
+      registration.addEventListener('updatefound', () => {
+        const novoWorker = registration.installing;
+        novoWorker.addEventListener('statechange', () => {
+          if (novoWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            mostrarBannerAtualizacao();
+          }
+        });
+      });
+    }).catch(() => {});
+
+    // Verifica atualização toda vez que o app volta ao primeiro plano
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        navigator.serviceWorker.getRegistration().then((reg) => {
+          if (reg) reg.update();
+        });
+      }
+    });
+  });
+}
+
+function mostrarBannerAtualizacao() {
+  const banner = document.getElementById('bannerAtualizacao');
+  if (banner) banner.classList.add('visivel');
+}
+
+function aplicarAtualizacao() {
+  navigator.serviceWorker.getRegistration().then((reg) => {
+    if (reg && reg.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+    location.reload();
+  });
 }
 
 // ============================================================
