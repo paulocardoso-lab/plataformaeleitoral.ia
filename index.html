@@ -752,6 +752,31 @@ canvas {
   color: var(--bg-0);
 }
 
+.barra-exportar {
+  padding: 8px 14px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-exportar-fixo {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--neon-cyan);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-exportar-fixo:active {
+  background: var(--neon-cyan);
+  color: var(--bg-0);
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -827,6 +852,9 @@ canvas {
       </div>
       <div class="select-box"><label>Município</label><select id="rk_municipio"></select></div>
     </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('cardExportarRanking', 'ranking')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
+    </div>
     <div class="conteudo" id="resultadoRanking"></div>
   </div>
 
@@ -837,6 +865,9 @@ canvas {
         <div class="select-box"><label>Município</label><select id="mm_municipio"></select></div>
         <div class="select-box"><label>Ano</label><select id="mm_ano"></select></div>
       </div>
+    </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('resultadoMeuMunicipio', 'municipio')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
     </div>
     <div class="conteudo" id="resultadoMeuMunicipio"></div>
   </div>
@@ -852,6 +883,9 @@ canvas {
         <div class="select-box"><label>Ano</label><select id="cmp_ano"></select></div>
         <div class="select-box"><label>Cargo</label><select id="cmp_cargo"></select></div>
       </div>
+    </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('cardExportarComparar', 'comparar')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
     </div>
     <div class="conteudo" id="resultadoComparar"></div>
   </div>
@@ -877,6 +911,9 @@ canvas {
       </div>
       <div class="select-box"><label>Município</label><select id="pt_municipio"></select></div>
     </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('cardExportarPartidos', 'partidos')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
+    </div>
     <div class="conteudo" id="resultadoPartidos"></div>
   </div>
 
@@ -891,6 +928,9 @@ canvas {
         <div class="select-box"><label>Município</label><select id="pv_municipio"></select></div>
         <div class="select-box"><label>Ano</label><select id="pv_ano"></select></div>
       </div>
+    </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('cardExportarPrefVer', 'prefver')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
     </div>
     <div class="conteudo" id="resultadoPrefVer"></div>
   </div>
@@ -909,6 +949,9 @@ canvas {
         <div class="select-box"><label>Município</label><select id="pg_municipio"></select></div>
         <div class="select-box"><label>Ano</label><select id="pg_ano"></select></div>
       </div>
+    </div>
+    <div class="barra-exportar">
+      <button onclick="exportarComoImagem('cardExportarPresGov', 'presgov')" class="btn-exportar-fixo">⬇ Exportar resultado</button>
     </div>
     <div class="conteudo" id="resultadoPresGov"></div>
   </div>
@@ -1541,7 +1584,6 @@ function renderRanking() {
 
   out.innerHTML = `
     <div class="card" id="cardExportarRanking">
-      <button onclick="exportarComoImagem('cardExportarRanking', 'ranking-${ano}-${cargo}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">Top ${lista.length} — ${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
       ${lista.map((v,i)=>`
@@ -1557,6 +1599,8 @@ function renderRanking() {
       `).join('')}
     </div>
   `;
+  document.querySelector('#tela-2 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('cardExportarRanking', 'ranking-${ano}-${cargo}')`);
 }
 
 // ---------- TELA 3: MEU MUNICÍPIO ----------
@@ -1605,8 +1649,6 @@ function renderMeuMunicipio() {
   const vencedorGovernador = topEleito(DB.votos, ano, 'governador', municipio, tem2TurnoGovernador ? turno : '1');
 
   out.innerHTML = `
-    <button onclick="exportarComoImagem('resultadoMeuMunicipio', 'municipio-${municipio}-${ano}')" class="btn-exportar" style="float:none; margin:0 14px 8px; display:inline-block;" aria-label="Exportar como imagem">⬇ Exportar</button>
-
     ${tem2Turno ? chipsTurno('mm', turno) : ''}
 
     <div class="stat-grid">
@@ -1670,6 +1712,8 @@ function renderMeuMunicipio() {
       </div>
     </div>
   `;
+  document.querySelector('#tela-3 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('resultadoMeuMunicipio', 'municipio-${municipio}-${ano}')`);
 
   if (tem2Turno) {
     ativarChipsTurno('mm', (novoTurno) => {
@@ -1747,8 +1791,6 @@ function renderComparar() {
   const resB = DB.resumo.find(r=>r.municipio===munB && r.ano===ano && r.cargo===cargo && r.turno===turnoB);
   const vencA = topEleito(DB.votos, ano, cargo, munA, turnoA);
   const vencB = topEleito(DB.votos, ano, cargo, munB, turnoB);
-  const top10A = top10PorMunicipio(DB.votos, ano, cargo, munA, turnoA);
-  const top10B = top10PorMunicipio(DB.votos, ano, cargo, munB, turnoB);
 
   if (!resA && !resB) { out.innerHTML = telaVazia('Sem dados para essa combinação.'); return; }
 
@@ -1756,7 +1798,6 @@ function renderComparar() {
     ${algumTem2Turno ? chipsTurno('cmp', turno) : ''}
 
     <div class="card" id="cardExportarComparar">
-      <button onclick="exportarComoImagem('cardExportarComparar', 'comparar-${munA}-${munB}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <div class="compare-cols">
         <div>
@@ -1777,39 +1818,9 @@ function renderComparar() {
         </div>
       </div>
     </div>
-
-    <div class="card">
-      <p class="card-titulo">Top 10 candidatos</p>
-      <div class="compare-cols">
-        <div>
-          ${top10A.map((v,i) => `
-            <div class="linha-item">
-              <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
-              <div class="item-info">
-                <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-                <div class="item-detalhe">${v.partido}</div>
-                ${badgeResultado(v.resultado)}
-              </div>
-              <div class="item-valor">${formatarNum(v.votos)}</div>
-            </div>
-          `).join('') || '<p class="card-sub" style="text-align:center;">Sem dados</p>'}
-        </div>
-        <div>
-          ${top10B.map((v,i) => `
-            <div class="linha-item">
-              <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
-              <div class="item-info">
-                <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-                <div class="item-detalhe">${v.partido}</div>
-                ${badgeResultado(v.resultado)}
-              </div>
-              <div class="item-valor">${formatarNum(v.votos)}</div>
-            </div>
-          `).join('') || '<p class="card-sub" style="text-align:center;">Sem dados</p>'}
-        </div>
-      </div>
-    </div>
   `;
+  document.querySelector('#tela-4 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('cardExportarComparar', 'comparar-${munA}-${munB}-${ano}')`);
 
   if (algumTem2Turno) {
     ativarChipsTurno('cmp', (novoTurno) => {
@@ -1934,12 +1945,13 @@ function renderPartidos() {
     ${tem2Turno ? chipsTurno('pt', turno) : ''}
 
     <div class="card" id="cardExportarPartidos">
-      <button onclick="exportarComoImagem('cardExportarPartidos', 'partidos-${ano}-${cargo}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
       <canvas id="canvasPartidos" style="width:100%;height:${Math.max(180, lista.length*34)}px;"></canvas>
     </div>
   `;
+  document.querySelector('#tela-6 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('cardExportarPartidos', 'partidos-${ano}-${cargo}')`);
 
   requestAnimationFrame(() => {
     const c = document.getElementById('canvasPartidos');
@@ -1998,7 +2010,6 @@ function renderPrefVer() {
     ${tem2Turno ? chipsTurno('pv', turno) : ''}
 
     <div class="card" id="cardExportarPrefVer">
-      <button onclick="exportarComoImagem('cardExportarPrefVer', 'prefver-${pv_cargoAtivo}-${municipio}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[pv_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
       ${lista.map((v,i)=>`
@@ -2014,6 +2025,8 @@ function renderPrefVer() {
       `).join('')}
     </div>
   `;
+  document.querySelector('#tela-7 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('cardExportarPrefVer', 'prefver-${pv_cargoAtivo}-${municipio}-${ano}')`);
 
   if (tem2Turno) {
     ativarChipsTurno('pv', (novoTurno) => {
@@ -2067,7 +2080,6 @@ function renderPresGov() {
     ${tem2Turno ? chipsTurno('pg', turno) : ''}
 
     <div class="card" id="cardExportarPresGov">
-      <button onclick="exportarComoImagem('cardExportarPresGov', 'presgov-${pg_cargoAtivo}-${municipio}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[pg_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
       ${lista.map((v,i)=>`
@@ -2083,6 +2095,8 @@ function renderPresGov() {
       `).join('')}
     </div>
   `;
+  document.querySelector('#tela-8 .btn-exportar-fixo').setAttribute('onclick',
+    `exportarComoImagem('cardExportarPresGov', 'presgov-${pg_cargoAtivo}-${municipio}-${ano}')`);
 
   if (tem2Turno) {
     ativarChipsTurno('pg', (novoTurno) => {
@@ -2140,8 +2154,6 @@ async function exportarComoImagem(elementoId, nomeArquivo) {
 
   const cardClone = elementoOriginal.cloneNode(true);
   cardClone.style.margin = '0 0 16px 0';
-  const btnClone = cardClone.querySelector('.btn-exportar');
-  if (btnClone) btnClone.remove();
 
   // cloneNode() não copia o conteúdo desenhado de <canvas> (limitação do
   // DOM) — redesenha manualmente cada canvas clonado a partir do original
