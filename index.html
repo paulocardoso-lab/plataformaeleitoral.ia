@@ -16,6 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- html2canvas requer internet na primeira visita; após cache do Service Worker, funciona offline -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <title>Eleições MS 2010–2024</title>
 <style>
 html {
@@ -704,6 +706,23 @@ canvas {
   transition: all 0.2s;
 }
 .rodape-btn-acessibilidade.ativo {
+  background: var(--neon-cyan);
+  color: var(--bg-0);
+}
+
+.btn-exportar {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  color: var(--neon-cyan);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  float: right;
+  transition: all 0.2s;
+}
+.btn-exportar:active {
   background: var(--neon-cyan);
   color: var(--bg-0);
 }
@@ -1442,7 +1461,8 @@ function renderRanking() {
   if (lista.length===0) { out.innerHTML = telaVazia('Nenhum dado para esse filtro.'); return; }
 
   out.innerHTML = `
-    <div class="card">
+    <div class="card" id="cardExportarRanking">
+      <button onclick="exportarComoImagem('cardExportarRanking', 'ranking-${ano}-${cargo}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">Top ${lista.length} — ${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
       ${lista.map((v,i)=>`
@@ -1506,6 +1526,8 @@ function renderMeuMunicipio() {
   const vencedorGovernador = topEleito(DB.votos, ano, 'governador', municipio, tem2TurnoGovernador ? turno : '1');
 
   out.innerHTML = `
+    <button onclick="exportarComoImagem('resultadoMeuMunicipio', 'municipio-${municipio}-${ano}')" class="btn-exportar" style="float:none; margin:0 14px 8px; display:inline-block;" aria-label="Exportar como imagem">⬇ Exportar</button>
+
     ${tem2Turno ? chipsTurno('mm', turno) : ''}
 
     <div class="stat-grid">
@@ -1645,7 +1667,8 @@ function renderComparar() {
   out.innerHTML = `
     ${algumTem2Turno ? chipsTurno('cmp', turno) : ''}
 
-    <div class="card">
+    <div class="card" id="cardExportarComparar">
+      <button onclick="exportarComoImagem('cardExportarComparar', 'comparar-${munA}-${munB}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <div class="compare-cols">
         <div>
@@ -1787,7 +1810,8 @@ function renderPartidos() {
   out.innerHTML = `
     ${tem2Turno ? chipsTurno('pt', turno) : ''}
 
-    <div class="card">
+    <div class="card" id="cardExportarPartidos">
+      <button onclick="exportarComoImagem('cardExportarPartidos', 'partidos-${ano}-${cargo}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
       <canvas id="canvasPartidos" style="width:100%;height:${Math.max(180, lista.length*34)}px;"></canvas>
@@ -1850,7 +1874,8 @@ function renderPrefVer() {
   out.innerHTML = `
     ${tem2Turno ? chipsTurno('pv', turno) : ''}
 
-    <div class="card">
+    <div class="card" id="cardExportarPrefVer">
+      <button onclick="exportarComoImagem('cardExportarPrefVer', 'prefver-${pv_cargoAtivo}-${municipio}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[pv_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
       ${lista.map((v,i)=>`
@@ -1918,7 +1943,8 @@ function renderPresGov() {
   out.innerHTML = `
     ${tem2Turno ? chipsTurno('pg', turno) : ''}
 
-    <div class="card">
+    <div class="card" id="cardExportarPresGov">
+      <button onclick="exportarComoImagem('cardExportarPresGov', 'presgov-${pg_cargoAtivo}-${municipio}-${ano}')" class="btn-exportar" aria-label="Exportar como imagem">⬇ Exportar</button>
       <p class="card-titulo">${CARGO_LABEL[pg_cargoAtivo]} · ${municipio}</p>
       <p class="card-sub">${ano}</p>
       ${lista.map((v,i)=>`
@@ -1974,6 +2000,77 @@ function aplicarTamanhoFonte(tamanho) {
 function carregarPreferenciaFonte() {
   const salvo = localStorage.getItem('pe26_tamanho_fonte');
   if (salvo === 'grande') aplicarTamanhoFonte('grande');
+}
+
+// ---------- EXPORTAR RESULTADO COMO IMAGEM ----------
+async function exportarComoImagem(elementoId, nomeArquivo) {
+  const elementoOriginal = document.getElementById(elementoId);
+  if (!elementoOriginal) return;
+  if (typeof html2canvas === 'undefined') {
+    alert('Exportação de imagem indisponível offline (sem conexão na primeira visita).');
+    return;
+  }
+
+  // Cria um container temporário fora da tela, com o card + carimbo de marca
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed; left:-9999px; top:0; width:375px; background:var(--bg-0); padding:16px;';
+
+  const cardClone = elementoOriginal.cloneNode(true);
+  cardClone.style.margin = '0 0 16px 0';
+  const btnClone = cardClone.querySelector('.btn-exportar');
+  if (btnClone) btnClone.remove();
+
+  // cloneNode() não copia o conteúdo desenhado de <canvas> (limitação do
+  // DOM) — redesenha manualmente cada canvas clonado a partir do original
+  // antes da captura, senão gráficos (ex: Ranking de Partidos) saem em branco
+  const canvasOriginais = elementoOriginal.querySelectorAll('canvas');
+  const canvasClonados = cardClone.querySelectorAll('canvas');
+  canvasOriginais.forEach((original, i) => {
+    const clone = canvasClonados[i];
+    if (!clone) return;
+    clone.width = original.width;
+    clone.height = original.height;
+    clone.getContext('2d').drawImage(original, 0, 0);
+  });
+
+  container.appendChild(cardClone);
+
+  // Carimbo de rodapé (Girassol + PE.IA juntos)
+  const carimbo = document.createElement('div');
+  carimbo.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-top:1px solid var(--border);';
+  carimbo.innerHTML = `
+    <img src="/icons/icon-32.png" alt="PE.IA" style="width:24px; height:24px;">
+    <div style="text-align:left;">
+      <div style="font-size:11px; font-weight:700; color:var(--text-light); font-family:'Playfair Display', serif;">Girassol Inteligência · PE.IA</div>
+      <div style="font-size:9px; color:var(--text-muted);">Fonte: TSE · plataformaeleitoral.ia.br</div>
+    </div>
+  `;
+  container.appendChild(carimbo);
+
+  document.body.appendChild(container);
+
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-0').trim(),
+      scale: 2
+    });
+
+    canvas.toBlob(async (blob) => {
+      const arquivo = new File([blob], `${nomeArquivo}.png`, { type: 'image/png' });
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+        await navigator.share({ files: [arquivo], title: nomeArquivo });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${nomeArquivo}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    }, 'image/png');
+  } finally {
+    document.body.removeChild(container);
+  }
 }
 
 // ============================================================

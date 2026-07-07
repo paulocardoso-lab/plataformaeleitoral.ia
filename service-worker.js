@@ -12,11 +12,24 @@ const ASSETS = [
   '/icons/icon-180.png'
 ];
 
+// html2canvas (CDN externo, usado só na exportação de imagem) é cacheado
+// à parte, sem bloquear a instalação: cache.addAll() é atômico e uma falha
+// de CORS/rede nesse recurso cross-origin não pode derrubar o offline-first
+// do resto do app.
+const ASSET_HTML2CANVAS = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+
 // Instala e pré-cacheia todos os assets essenciais
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_VERSION).then((cache) => {
+      return cache.addAll(ASSETS).then(() =>
+        cache.add(ASSET_HTML2CANVAS).catch(() => {
+          // sem internet na primeira instalação ou CDN indisponível:
+          // exportação de imagem fica indisponível offline, resto do app segue normal
+        })
+      );
+    })
   );
 });
 
