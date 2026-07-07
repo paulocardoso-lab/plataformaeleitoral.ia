@@ -1,0 +1,11 @@
+# Node
+node_modules/
+npm-debug.log
+
+# VS Code
+.vscode/settings.json
+.DS_Store
+
+# Build
+dist/
+build/

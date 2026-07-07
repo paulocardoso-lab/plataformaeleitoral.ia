@@ -1,0 +1,60 @@
+// Service Worker — Eleições MS 2010-2024
+// Estratégia: cache-first (offline-first real). Incremente CACHE_VERSION
+// sempre que publicar uma nova versão dos dados/app para forçar atualização.
+
+const CACHE_VERSION = 'eleicoes-ms-v1';
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  '/icons/icon-180.png'
+];
+
+// Instala e pré-cacheia todos os assets essenciais
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_VERSION).then((cache) => cache.addAll(ASSETS))
+  );
+});
+
+// Ativa e limpa caches de versões antigas
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+// Cache-first: serve do cache imediatamente; só vai à rede se não tiver nada salvo
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(event.request)
+        .then((response) => {
+          // salva no cache uma cópia da resposta para uso offline futuro
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => {
+          // sem rede e sem cache: fallback para a página principal
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+        });
+    })
+  );
+});
