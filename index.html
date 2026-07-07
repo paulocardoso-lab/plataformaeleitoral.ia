@@ -93,6 +93,15 @@ html[data-estilo="aeroporto"] .linha-item:nth-child(even) {
   background: var(--bg-1);
 }
 
+html[data-estilo="aeroporto"] .rodape-fixo {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+html[data-estilo="aeroporto"] .rodape-texto {
+  letter-spacing: 0.4px;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -124,7 +133,7 @@ html, body {
   grid-template-columns: 40px 1fr 60px;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -165,7 +174,7 @@ html, body {
 }
 
 .marca-logo-completa {
-  height: 60px;
+  height: 76px;
   width: auto;
 }
 
@@ -825,15 +834,6 @@ canvas {
   font-weight: 300;
 }
 
-.footer-note {
-  text-align: center;
-  padding: 12px 14px 16px;
-  color: var(--text-muted);
-  font-size: 0.625rem;
-  line-height: 1.5;
-  font-weight: 300;
-}
-
 .rodape-fixo {
   display: flex;
   align-items: center;
@@ -1034,10 +1034,7 @@ canvas {
         <div class="bu-resultados hidden" id="buscaUniversalResultados"></div>
       </div>
       <div class="grid9" id="grid9"></div>
-      <div class="footer-note">
-        Fonte: Tribunal Superior Eleitoral (TSE)<br>
-        Dados públicos · 100% offline · Girassol Inteligência
-      </div>
+      <div style="height: 12px;"></div>
     </div>
   </div>
 
