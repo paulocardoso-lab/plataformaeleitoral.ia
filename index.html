@@ -1195,6 +1195,48 @@ function existeSegundoTurno(ano, cargo, municipio) {
   return DB.votos.some(v => v.ano===ano && v.cargo===cargo && v.municipio===municipio && v.turno==='2');
 }
 
+// candidatos_ms.parquet não contém candidatos a presidente (registro
+// nacional, não estadual) — o campo v.candidato para cargo='presidente'
+// traz o número do candidato (ex: "13"), não um nome. Esta tabela mapeia
+// ano+sigla_partido → nome do candidato, validada contra os dados reais.
+const CANDIDATOS_PRESIDENTE = {
+  "2010": {
+    "PT": "Dilma Rousseff", "PSDB": "José Serra", "PV": "Marina Silva",
+    "PSOL": "Plínio de Arruda Sampaio", "PSTU": "Zé Maria", "PSDC": "José Maria Eymael",
+    "PCO": "Rui Costa Pimenta", "PCB": "Ivan Pinheiro", "PRTB": "Levy Fidelix"
+  },
+  "2014": {
+    "PT": "Dilma Rousseff", "PSDB": "Aécio Neves", "PSB": "Marina Silva",
+    "PSC": "Pastor Everaldo", "PSOL": "Luciana Genro", "PV": "Eduardo Jorge",
+    "PSTU": "Zé Maria", "PSDC": "José Maria Eymael", "PCO": "Rui Costa Pimenta",
+    "PCB": "Mauro Iasi", "PRTB": "Levy Fidelix"
+  },
+  "2018": {
+    "PSL": "Jair Bolsonaro", "PT": "Fernando Haddad", "PDT": "Ciro Gomes",
+    "PSDB": "Geraldo Alckmin", "NOVO": "João Amoêdo", "PATRIOTA": "Cabo Daciolo",
+    "MDB": "Henrique Meirelles", "REDE": "Marina Silva", "PODE": "Álvaro Dias",
+    "PSOL": "Guilherme Boulos", "PSTU": "Vera Lúcia", "DC": "Constituinte Eymael",
+    "PPL": "João Goulart Filho"
+  },
+  "2022": {
+    "PL": "Jair Bolsonaro", "PT": "Lula", "PDT": "Ciro Gomes",
+    "MDB": "Simone Tebet", "UNIÃO": "Soraya Thronicke", "NOVO": "Felipe D'Ávila",
+    "PTB": "Padre Kelmon", "PCB": "Sofia Manzano", "PSTU": "Vera Lúcia",
+    "UP": "Léo Péricles", "DC": "Constituinte Eymael"
+  }
+};
+
+function nomeCandidatoPresidente(ano, sigla_partido) {
+  return CANDIDATOS_PRESIDENTE[ano]?.[sigla_partido] || sigla_partido;
+}
+
+// Retorna o nome de exibição correto de um registro de voto, corrigindo
+// o caso de presidente (v.candidato é o número do candidato, não um nome).
+function nomeExibicaoCandidato(v) {
+  if (v.cargo === 'presidente') return nomeCandidatoPresidente(v.ano, v.partido);
+  return v.candidato;
+}
+
 function chipsTurno(idPrefix, turnoAtivo) {
   return `
     <p class="card-sub">Esta eleição teve 2 turnos</p>
@@ -1346,15 +1388,17 @@ function renderBuscaUniversal() {
 
   // Agrupa por nome normalizado (blinda contra grafias diferentes do mesmo
   // candidato entre eleições, ex: "Fabio Trad" / "Fábio Trad") e exibe a
-  // grafia da ocorrência mais recente (maior ano).
+  // grafia da ocorrência mais recente (maior ano). Presidente: v.candidato
+  // é o número do candidato — usa nomeExibicaoCandidato() para nome real.
   const candidatosPorChave = {};
   for (const v of DB.votos) {
     if (!v.candidato) continue;
-    const chave = normalizarTexto(v.candidato);
-    if (!normalizarTexto(v.candidato).includes(termo)) continue;
+    const nome = nomeExibicaoCandidato(v);
+    const chave = normalizarTexto(nome);
+    if (!chave.includes(termo)) continue;
     const atual = candidatosPorChave[chave];
     if (!atual || Number(v.ano) > Number(atual.ano)) {
-      candidatosPorChave[chave] = { candidato: v.candidato, ano: v.ano };
+      candidatosPorChave[chave] = { candidato: nome, ano: v.ano };
     }
   }
   Object.values(candidatosPorChave).forEach(c => {
@@ -1425,14 +1469,17 @@ function renderBuscaCandidato() {
   const out = document.getElementById('resultadoBuscaCandidato');
   if (termo.length < 3) { out.innerHTML = telaVazia('Digite ao menos 3 letras do nome do candidato para buscar.'); return; }
 
-  const achados = DB.votos.filter(v => v.candidato && normalizarTexto(v.candidato).includes(termo));
+  // presidente: v.candidato é o número do candidato, não um nome (dataset
+  // estadual não cobre candidaturas nacionais) — busca pelo nome de exibição
+  const achados = DB.votos.filter(v => v.candidato && v.turno==='1' && normalizarTexto(nomeExibicaoCandidato(v)).includes(termo));
   if (achados.length === 0) { out.innerHTML = telaVazia('Nenhum candidato encontrado com esse nome.'); return; }
 
   // agrupa por nome normalizado+partido+cargo+ano (blinda contra grafias
-  // diferentes do mesmo candidato entre municípios do mesmo ano)
+  // diferentes do mesmo candidato entre municípios do mesmo ano); turno='1'
+  // acima evita somar 1º+2º turno indevidamente para presidente/governador
   const porCandidato = {};
   achados.forEach(v => {
-    const key = normalizarTexto(v.candidato) + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
+    const key = normalizarTexto(nomeExibicaoCandidato(v)) + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
     if (!porCandidato[key]) porCandidato[key] = { ...v, votosTotal:0, municipios:0 };
     porCandidato[key].votosTotal += v.votos;
     porCandidato[key].municipios += 1;
@@ -1445,7 +1492,7 @@ function renderBuscaCandidato() {
       ${lista.map(v => `
         <div class="linha-item">
           <div class="item-info">
-            <div class="item-nome">${v.candidato}</div>
+            <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
             <div class="item-detalhe">${v.partido} · ${CARGO_LABEL[v.cargo]||v.cargo} · ${v.ano} · ${v.municipios} município(s)</div>
             ${badgeResultado(v.resultado)}
           </div>
@@ -1644,7 +1691,7 @@ function cardVencedor(titulo, v) {
       <p class="card-titulo">${titulo}</p>
       <div class="linha-item">
         <div class="item-info">
-          <div class="item-nome">${v.candidato}</div>
+          <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
           <div class="item-detalhe">${v.partido}</div>
           ${badgeResultado(v.resultado)}
         </div>
@@ -1717,7 +1764,7 @@ function renderComparar() {
           ${algumTem2Turno && !aTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resA?resA.pct_comparecimento.toFixed(1)+'%':'—')}
           ${miniStat('Aptos', resA?formatarNumCurto(resA.aptos):'—')}
-          ${vencA ? miniStat('Mais votado', vencA.candidato) : ''}
+          ${vencA ? miniStat('Mais votado', nomeExibicaoCandidato(vencA)) : ''}
           ${vencA ? miniStat('Votos', formatarNum(vencA.votos)) : ''}
         </div>
         <div>
@@ -1725,7 +1772,7 @@ function renderComparar() {
           ${algumTem2Turno && !bTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resB?resB.pct_comparecimento.toFixed(1)+'%':'—')}
           ${miniStat('Aptos', resB?formatarNumCurto(resB.aptos):'—')}
-          ${vencB ? miniStat('Mais votado', vencB.candidato) : ''}
+          ${vencB ? miniStat('Mais votado', nomeExibicaoCandidato(vencB)) : ''}
           ${vencB ? miniStat('Votos', formatarNum(vencB.votos)) : ''}
         </div>
       </div>
@@ -1739,7 +1786,7 @@ function renderComparar() {
             <div class="linha-item">
               <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
               <div class="item-info">
-                <div class="item-nome">${v.candidato}</div>
+                <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
                 <div class="item-detalhe">${v.partido}</div>
                 ${badgeResultado(v.resultado)}
               </div>
@@ -1752,7 +1799,7 @@ function renderComparar() {
             <div class="linha-item">
               <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
               <div class="item-info">
-                <div class="item-nome">${v.candidato}</div>
+                <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
                 <div class="item-detalhe">${v.partido}</div>
                 ${badgeResultado(v.resultado)}
               </div>
@@ -1797,7 +1844,10 @@ function renderEvolucao() {
   const out = document.getElementById('resultadoEvolucao');
   if (termo.length < 3) { out.innerHTML = telaVazia('Digite o nome de um candidato para ver sua evolução de votos ao longo dos anos.'); return; }
 
-  let achados = DB.votos.filter(v => v.candidato && normalizarTexto(v.candidato).includes(termo));
+  // presidente: v.candidato é o número do candidato, não um nome — busca
+  // pelo nome de exibição; turno='1' evita somar 1º+2º turno indevidamente
+  // (presidente/governador têm registros duplicados quando há 2º turno)
+  let achados = DB.votos.filter(v => v.candidato && v.turno==='1' && normalizarTexto(nomeExibicaoCandidato(v)).includes(termo));
   if (municipio) achados = achados.filter(v=>v.municipio===municipio);
   if (achados.length===0) { out.innerHTML = telaVazia('Nenhum resultado encontrado.'); return; }
 
@@ -1813,7 +1863,7 @@ function renderEvolucao() {
   // encontrada — blinda contra grafias diferentes do mesmo candidato
   // entre eleições (ex: "Fabio Trad" / "Fábio Trad")
   const maisRecente = achados.reduce((a,b)=> Number(b.ano) > Number(a.ano) ? b : a);
-  const nomeExemplo = maisRecente.candidato;
+  const nomeExemplo = nomeExibicaoCandidato(maisRecente);
   const cargoExemplo = maisRecente.cargo;
 
   out.innerHTML = `
@@ -2024,7 +2074,7 @@ function renderPresGov() {
         <div class="linha-item">
           <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
           <div class="item-info">
-            <div class="item-nome">${v.candidato}</div>
+            <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
             <div class="item-detalhe">${v.partido}</div>
             ${badgeResultado(v.resultado)}
           </div>
