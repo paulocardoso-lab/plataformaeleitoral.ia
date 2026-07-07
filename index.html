@@ -1725,6 +1725,7 @@ function renderEvolucao() {
 
 // ---------- TELA 6: RANKING DE PARTIDOS ----------
 let partidosInit = false;
+let pt_turnoAtivo = '2';
 function initPartidos() {
   if (!partidosInit) {
     preencherSelect(document.getElementById('pt_ano'), DB.meta.anos.slice().reverse());
@@ -1743,8 +1744,16 @@ function renderPartidos() {
   const municipio = document.getElementById('pt_municipio').value;
   const out = document.getElementById('resultadoPartidos');
 
-  let filtrado = DB.partidos.filter(p => p.ano===ano && p.cargo===cargo && p.turno==='1');
-  if (municipio) filtrado = filtrado.filter(p=>p.municipio===municipio);
+  // Município específico: existeSegundoTurno decide se filtra 1º, 2º ou mostra chip.
+  // Município "Todos": visão agregada estadual, soma todos os turnos sem distinguir
+  // (cada município pode ter tido ou não 2º turno, então turno não se aplica aqui).
+  const tem2Turno = municipio ? existeSegundoTurno(ano, cargo, municipio) : false;
+  const turno = tem2Turno ? pt_turnoAtivo : '1';
+
+  let filtrado = DB.partidos.filter(p => p.ano===ano && p.cargo===cargo);
+  if (municipio) {
+    filtrado = filtrado.filter(p=>p.municipio===municipio && p.turno===turno);
+  }
 
   const agr = {};
   filtrado.forEach(p => {
@@ -1756,6 +1765,8 @@ function renderPartidos() {
   if (lista.length===0) { out.innerHTML = telaVazia('Sem dados para esse filtro.'); return; }
 
   out.innerHTML = `
+    ${tem2Turno ? chipsTurno('pt', turno) : ''}
+
     <div class="card">
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
@@ -1767,6 +1778,13 @@ function renderPartidos() {
     const c = document.getElementById('canvasPartidos');
     ChartMini.barrasH(c, lista.map(p=>({label:p.partido, valor:p.votos})));
   });
+
+  if (tem2Turno) {
+    ativarChipsTurno('pt', (novoTurno) => {
+      pt_turnoAtivo = novoTurno;
+      renderPartidos();
+    });
+  }
 }
 
 // ---------- TELA 7: PREFEITO & VEREADOR ----------
