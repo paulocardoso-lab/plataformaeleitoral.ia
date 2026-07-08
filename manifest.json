@@ -1,6 +1,6 @@
 {
-  "name": "Eleições MS 2010–2024",
-  "short_name": "Eleições MS",
+  "name": "PEI-MS",
+  "short_name": "PEI-MS",
   "description": "Resultados eleitorais dos 79 municípios de Mato Grosso do Sul, 2010 a 2024. Dados oficiais do TSE.",
   "start_url": "/",
   "scope": "/",
