@@ -1842,7 +1842,13 @@ function montarHome() {
   `).join('');
 }
 
+function fecharBuscaUniversal() {
+  const box = document.getElementById('buscaUniversalResultados');
+  if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+}
+
 function abrirTela(id) {
+  fecharBuscaUniversal();
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById('tela-'+id).classList.add('ativa');
   document.getElementById('tituloTela').textContent = BOTOES.find(b=>b.id===id).titulo;
@@ -1853,6 +1859,7 @@ function abrirTela(id) {
 }
 
 function voltarHome() {
+  fecharBuscaUniversal();
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById('tela-home').classList.add('ativa');
   document.getElementById('tituloTela').textContent = 'PE.IA';
@@ -1917,6 +1924,45 @@ function normalizarTexto(str) {
     .replace(/\s+/g, ' ');
 }
 
+// Distância de edição (Levenshtein) — usada como fallback quando a busca
+// exata não acha nada, para tolerar erros de transcrição da busca por voz
+// (ex: "trad" reconhecido como "trade").
+function distanciaLevenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({length: n+1}, (_, i) => i);
+  for (let i = 1; i <= m; i++) {
+    const curr = [i];
+    for (let j = 1; j <= n; j++) {
+      curr[j] = a[i-1] === b[j-1]
+        ? prev[j-1]
+        : 1 + Math.min(prev[j-1], prev[j], curr[j-1]);
+    }
+    prev = curr;
+  }
+  return prev[n];
+}
+
+// Compara o termo buscado contra cada palavra do texto: aceita se alguma
+// palavra tiver distância de edição pequena (tolerância cresce com o tamanho
+// da palavra, já que erros fonéticos afetam palavras longas mais facilmente).
+function correspondeAproximado(termoNorm, textoNorm) {
+  const palavrasTermo = termoNorm.split(' ').filter(p => p.length >= 3);
+  const palavrasTexto = textoNorm.split(' ');
+  if (palavrasTermo.length === 0) return false;
+  // todas as palavras do termo (buscado) precisam achar uma palavra
+  // correspondente (exata ou próxima) em algum lugar do texto candidato
+  return palavrasTermo.every(pt =>
+    palavrasTexto.some(px => {
+      if (px.length < 3) return false;
+      if (px.includes(pt) || pt.includes(px)) return true;
+      const tolerancia = Math.max(pt.length, px.length) <= 5 ? 1 : 2;
+      return distanciaLevenshtein(pt, px) <= tolerancia;
+    })
+  );
+}
+
 function initBuscaUniversal() {
   const input = document.getElementById('buscaUniversalInput');
   const box = document.getElementById('buscaUniversalResultados');
@@ -1969,6 +2015,32 @@ function renderBuscaUniversal() {
       resultados.push({ tipo:'Cargo', label:label, valor:c });
     }
   });
+
+  // Fallback aproximado: só entra em ação se a busca exata não achou nada.
+  // Ajuda quando o termo veio de reconhecimento de voz com pequeno erro de
+  // transcrição (ex: "marquinhos trade" faltando bater exato com "trad").
+  if (resultados.length === 0 && termo.length >= 3) {
+    const candidatosAprox = {};
+    for (const v of DB.votos) {
+      if (!v.candidato) continue;
+      const nome = nomeExibicaoCandidato(v);
+      const chave = normalizarTexto(nome);
+      if (!correspondeAproximado(termo, chave)) continue;
+      const atual = candidatosAprox[chave];
+      if (!atual || Number(v.ano) > Number(atual.ano)) {
+        candidatosAprox[chave] = { candidato: nome, ano: v.ano };
+      }
+    }
+    Object.values(candidatosAprox).forEach(c => {
+      resultados.push({ tipo:'Candidato', label:c.candidato, valor:c.candidato });
+    });
+
+    DB.meta.municipios.forEach(m => {
+      if (correspondeAproximado(termo, normalizarTexto(m))) {
+        resultados.push({ tipo:'Cidade', label:m, valor:m });
+      }
+    });
+  }
 
   if (resultados.length === 0) {
     box.innerHTML = `<div class="bu-item">Nenhum resultado encontrado.</div>`;
@@ -2098,6 +2170,7 @@ function iniciarBuscaPorVoz(inputAlvoId) {
     ? document.getElementById('btnMicrofoneUniversal')
     : document.getElementById('btnMicrofoneCandidato');
   btn.classList.add('ouvindo');
+  if (inputAlvoId === 'buscaUniversalInput') fecharBuscaUniversal();
 
   recognition.onresult = (event) => {
     const texto = event.results[0][0].transcript;
@@ -2926,6 +2999,7 @@ function renderMeuEstado() {
 
 // ---------- TELA SOBRE ----------
 function abrirTelaSobre() {
+  fecharBuscaUniversal();
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById('tela-sobre').classList.add('ativa');
   document.getElementById('tituloTela').textContent = 'Sobre';
