@@ -597,9 +597,10 @@ select:focus, input:focus {
   display: none;
 }
 
-#telaAtivacao .marca-logo-completa {
-  height: 96px;
+#telaAtivacao .marca-logo-ativacao {
+  height: 168px;
   width: auto;
+  max-width: 80vw;
   margin-bottom: 8px;
 }
 
@@ -1161,7 +1162,7 @@ canvas {
 
 <!-- TELA DE ATIVAÇÃO (bloqueia o app até validar um código de acesso) -->
 <div id="telaAtivacao" class="hidden">
-  <img src="/icons/logopeia-topbar.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-completa">
+  <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
   <h2>Ative seu acesso</h2>
   <p>Digite o código de acesso recebido na confirmação da sua compra para liberar a plataforma neste dispositivo.</p>
   <input type="text" id="ativacaoInput" placeholder="CÓDIGO DE ACESSO" autocapitalize="characters" autocomplete="off">

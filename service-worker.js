@@ -2,7 +2,7 @@
 // Estratégia: cache-first (offline-first real). Incremente CACHE_VERSION
 // sempre que publicar uma nova versão dos dados/app para forçar atualização.
 
-const CACHE_VERSION = 'eleicoes-ms-v16';
+const CACHE_VERSION = 'eleicoes-ms-v17';
 const ASSETS = [
   '/',
   '/index.html',
