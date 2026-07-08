@@ -263,12 +263,12 @@ html, body {
 .bu-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 14px;
+  padding: 16px 18px;
   background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   color: var(--text-light);
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
 }
 
 .bu-input:focus {
@@ -487,7 +487,7 @@ select:focus, input:focus {
 
 .busca-box input,
 .bu-input {
-  padding-right: 36px;
+  padding-right: 40px;
 }
 
 .btn-microfone {
@@ -555,6 +555,18 @@ select:focus, input:focus {
 
 .card:first-child {
   margin-top: 0;
+}
+
+.aviso-home {
+  border-left: 3px solid var(--neon-yellow);
+}
+
+.aviso-home p {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-light);
+  margin: 0;
+  font-weight: 400;
 }
 
 .card-titulo {
@@ -1072,6 +1084,7 @@ canvas {
         </button>
         <div class="bu-resultados hidden" id="buscaUniversalResultados"></div>
       </div>
+      <div id="avisoHome"></div>
       <div class="grid9" id="grid9"></div>
       <div style="height: 12px;"></div>
     </div>
@@ -1800,8 +1813,17 @@ function zipObj(cols, row) {
   return o;
 }
 
+// Mensagem opcional exibida em card na Home, entre a busca e os botões.
+// Deixe como '' para não mostrar nada. Edite este texto para publicar um aviso.
+const AVISO_HOME = '';
+
 // ---------- NAVEGAÇÃO ----------
 function montarHome() {
+  const aviso = document.getElementById('avisoHome');
+  aviso.innerHTML = AVISO_HOME
+    ? `<div class="card aviso-home"><p>${AVISO_HOME}</p></div>`
+    : '';
+
   const grid = document.getElementById('grid9');
   grid.innerHTML = BOTOES.map(b => `
     <div class="tile" onclick="abrirTela(${b.id})">
