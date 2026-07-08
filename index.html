@@ -496,19 +496,19 @@ select:focus, input:focus {
 
 .busca-box input,
 .bu-input {
-  padding-right: 40px;
+  padding-right: 48px;
 }
 
 .btn-microfone {
   position: absolute;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: var(--neon-cyan);
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -516,8 +516,8 @@ select:focus, input:focus {
   justify-content: center;
 }
 .btn-microfone svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 .btn-microfone.ouvindo {
   color: var(--neon-magenta);
@@ -969,7 +969,7 @@ canvas {
 .rodape-btn-sobre {
   background: var(--bg-2);
   border: 1px solid var(--border);
-  color: var(--text-muted);
+  color: var(--neon-cyan);
   padding: 4px 8px;
   border-radius: 6px;
   cursor: pointer;
@@ -981,11 +981,16 @@ canvas {
   transition: all 0.2s;
 }
 
-.rodape-btn-acessibilidade,
 .rodape-btn-estilo,
 .rodape-btn-sobre {
   font-size: 10px;
   padding: 3px 6px;
+  flex-shrink: 0;
+}
+
+.rodape-btn-acessibilidade {
+  font-size: 13px;
+  padding: 5px 10px;
   flex-shrink: 0;
 }
 
