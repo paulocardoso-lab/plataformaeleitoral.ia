@@ -2,13 +2,15 @@
 // Estratégia: cache-first (offline-first real). Incremente CACHE_VERSION
 // sempre que publicar uma nova versão dos dados/app para forçar atualização.
 
-const CACHE_VERSION = 'eleicoes-ms-v4';
+const CACHE_VERSION = 'eleicoes-ms-v5';
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/icons/icon-192.png',
+  '/icons/icon-192-maskable.png',
   '/icons/icon-512.png',
+  '/icons/icon-512-maskable.png',
   '/icons/icon-180.png'
 ];
 

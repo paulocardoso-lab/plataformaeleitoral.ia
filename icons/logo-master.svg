@@ -1,0 +1,37 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff7f"/>
+      <stop offset="35%" stop-color="#00d4ff"/>
+      <stop offset="70%" stop-color="#4d5eff"/>
+      <stop offset="100%" stop-color="#e63cff"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#00ff7f"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0099ff"/>
+      <stop offset="100%" stop-color="#00e676"/>
+    </linearGradient>
+    <linearGradient id="bar3" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ff3d7a"/>
+      <stop offset="100%" stop-color="#ffa500"/>
+    </linearGradient>
+    <linearGradient id="bar4" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#5b4dff"/>
+      <stop offset="100%" stop-color="#3399ff"/>
+    </linearGradient>
+  </defs>
+
+  <polygon points="256,90 380,163 380,309 256,382 132,309 132,163"
+    fill="none" stroke="url(#hexGrad)" stroke-width="14" stroke-linejoin="round"/>
+
+  <rect x="178" y="285" width="36" height="80" rx="6" fill="url(#bar1)"/>
+  <rect x="228" y="240" width="36" height="125" rx="6" fill="url(#bar2)"/>
+  <rect x="278" y="170" width="36" height="195" rx="6" fill="url(#bar3)"/>
+  <rect x="328" y="255" width="36" height="110" rx="6" fill="url(#bar4)"/>
+
+  <path d="M296 150 L302 165 L318 165 L305 175 L310 191 L296 181 L282 191 L287 175 L274 165 L290 165 Z"
+    fill="#ffc107"/>
+</svg>
