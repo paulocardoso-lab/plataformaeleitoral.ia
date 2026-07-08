@@ -3404,21 +3404,16 @@ window.addEventListener('DOMContentLoaded', () => {
   inputAtivacao.addEventListener('input', formatarCodigoAcesso);
 });
 
-// Aplica a máscara PEIA-XXXX-XXXX enquanto o usuário digita, sem exigir
+// Aplica a máscara XXXX-XXXX-XXXX enquanto o usuário digita, sem exigir
 // que ele digite os hífens manualmente.
 function formatarCodigoAcesso(e) {
   const input = e.target;
   const cursorNoFim = input.selectionStart === input.value.length;
 
-  let limpo = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (limpo.startsWith('PEIA')) limpo = limpo.slice(4);
+  const limpo = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
 
-  const bloco1 = limpo.slice(0, 4);
-  const bloco2 = limpo.slice(4, 8);
-
-  let formatado = 'PEIA';
-  if (bloco1) formatado += '-' + bloco1;
-  if (bloco2) formatado += '-' + bloco2;
+  const blocos = [limpo.slice(0, 4), limpo.slice(4, 8), limpo.slice(8, 12)];
+  const formatado = blocos.filter(Boolean).join('-');
 
   input.value = formatado;
   if (cursorNoFim) input.setSelectionRange(formatado.length, formatado.length);
