@@ -22,3 +22,6 @@ dist/
 build/
 
 .vercel
+
+# Supabase CLI local state
+supabase/.temp/

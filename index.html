@@ -578,6 +578,95 @@ select:focus, input:focus {
   font-weight: 400;
 }
 
+/* ===== TELA DE ATIVAÇÃO (acesso pago) ===== */
+#telaAtivacao {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-0);
+  text-align: center;
+}
+
+#telaAtivacao.hidden {
+  display: none;
+}
+
+#telaAtivacao .marca-logo-completa {
+  height: 96px;
+  width: auto;
+  margin-bottom: 8px;
+}
+
+#telaAtivacao h2 {
+  font-family: var(--font-titulo);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin: 0;
+}
+
+#telaAtivacao p {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+#ativacaoInput {
+  width: 100%;
+  max-width: 280px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-light);
+  font-size: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#ativacaoInput:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+}
+
+#btnAtivar {
+  width: 100%;
+  max-width: 280px;
+  padding: 14px 16px;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+  border: none;
+  border-radius: 10px;
+  color: var(--bg-0);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#btnAtivar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+#ativacaoErro {
+  font-size: 0.8125rem;
+  color: var(--neon-magenta);
+  min-height: 1.2em;
+}
+
+#ativacaoErro:empty {
+  display: none;
+}
+
 .card-titulo {
   font-family: var(--font-titulo);
   font-size: 1rem;
@@ -1069,6 +1158,17 @@ canvas {
 </style>
 </head>
 <body>
+
+<!-- TELA DE ATIVAÇÃO (bloqueia o app até validar um código de acesso) -->
+<div id="telaAtivacao" class="hidden">
+  <img src="/icons/logopeia-topbar.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-completa">
+  <h2>Ative seu acesso</h2>
+  <p>Digite o código de acesso recebido na confirmação da sua compra para liberar a plataforma neste dispositivo.</p>
+  <input type="text" id="ativacaoInput" placeholder="CÓDIGO DE ACESSO" autocapitalize="characters" autocomplete="off">
+  <div id="ativacaoErro"></div>
+  <button id="btnAtivar" onclick="ativarAcesso()">Ativar</button>
+</div>
+
 <div id="app">
 
   <!-- TOPBAR -->
@@ -3201,15 +3301,102 @@ function aplicarAtualizacao() {
   });
 }
 
+// ---------- CONTROLE DE ACESSO (Supabase) ----------
+const SUPABASE_URL = 'https://rclbjiqfabuuhiwxmjwp.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjbGJqaXFmYWJ1dWhpd3htandwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTM4MTYsImV4cCI6MjA5OTA4OTgxNn0.2_bJssx4sJaRyUx0VzTq85myHjcwyLnzluf_Ap2bydU';
+
+function obterDeviceId() {
+  let id = localStorage.getItem('pe26_device_id');
+  if (!id) {
+    id = (crypto.randomUUID ? crypto.randomUUID() : 'dev-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+    localStorage.setItem('pe26_device_id', id);
+  }
+  return id;
+}
+
+function acessoLiberado() {
+  return localStorage.getItem('pe26_acesso_liberado') === 'true';
+}
+
+function mostrarTelaAtivacao() {
+  document.getElementById('telaAtivacao').classList.remove('hidden');
+  document.getElementById('app').style.display = 'none';
+}
+
+function esconderTelaAtivacao() {
+  document.getElementById('telaAtivacao').classList.add('hidden');
+  document.getElementById('app').style.display = '';
+}
+
+async function ativarAcesso() {
+  const input = document.getElementById('ativacaoInput');
+  const erro = document.getElementById('ativacaoErro');
+  const btn = document.getElementById('btnAtivar');
+  const codigo = input.value.trim().toUpperCase();
+
+  erro.textContent = '';
+  if (!codigo) {
+    erro.textContent = 'Digite o código de acesso.';
+    return;
+  }
+  if (!navigator.onLine) {
+    erro.textContent = 'Conecte-se à internet para ativar o acesso pela primeira vez.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
+
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/ativar_codigo`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ p_codigo: codigo, p_device_id: obterDeviceId() })
+    });
+    const resultado = await resp.json();
+
+    if (resultado.sucesso) {
+      localStorage.setItem('pe26_acesso_liberado', 'true');
+      esconderTelaAtivacao();
+      iniciarApp();
+    } else if (resultado.motivo === 'codigo_ja_utilizado') {
+      erro.textContent = 'Este código já foi ativado em outro dispositivo.';
+    } else {
+      erro.textContent = 'Código inválido. Verifique e tente novamente.';
+    }
+  } catch (e) {
+    erro.textContent = 'Não foi possível verificar o código agora. Tente novamente.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ativar';
+  }
+}
+
 // ============================================================
 // BOOT
 // ============================================================
-window.addEventListener('DOMContentLoaded', () => {
+function iniciarApp() {
   carregarPreferenciaEstilo();
   carregarDados();
   montarHome();
   initBuscaUniversal();
   carregarPreferenciaFonte();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (acessoLiberado()) {
+    iniciarApp();
+  } else {
+    mostrarTelaAtivacao();
+  }
+
+  document.getElementById('ativacaoInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') ativarAcesso();
+  });
 });
 </script>
 
