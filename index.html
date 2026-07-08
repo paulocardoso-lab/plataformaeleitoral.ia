@@ -3187,7 +3187,7 @@ function aplicarEstilo(estilo) {
 
 function carregarPreferenciaEstilo() {
   const salvo = localStorage.getItem('pe26_estilo');
-  const estilo = salvo || 'aeroporto';
+  const estilo = salvo || 'neon';
   aplicarEstilo(estilo);
 }
 
@@ -3380,7 +3380,6 @@ async function ativarAcesso() {
 // BOOT
 // ============================================================
 function iniciarApp() {
-  carregarPreferenciaEstilo();
   carregarDados();
   montarHome();
   initBuscaUniversal();
@@ -3388,16 +3387,42 @@ function iniciarApp() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  // Aplica tema/estilo antes de decidir qual tela mostrar, para que a
+  // própria tela de ativação já nasça com o tema correto (evita flash)
+  carregarPreferenciaEstilo();
+
   if (acessoLiberado()) {
     iniciarApp();
   } else {
     mostrarTelaAtivacao();
   }
 
-  document.getElementById('ativacaoInput').addEventListener('keydown', (e) => {
+  const inputAtivacao = document.getElementById('ativacaoInput');
+  inputAtivacao.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') ativarAcesso();
   });
+  inputAtivacao.addEventListener('input', formatarCodigoAcesso);
 });
+
+// Aplica a máscara PEIA-XXXX-XXXX enquanto o usuário digita, sem exigir
+// que ele digite os hífens manualmente.
+function formatarCodigoAcesso(e) {
+  const input = e.target;
+  const cursorNoFim = input.selectionStart === input.value.length;
+
+  let limpo = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (limpo.startsWith('PEIA')) limpo = limpo.slice(4);
+
+  const bloco1 = limpo.slice(0, 4);
+  const bloco2 = limpo.slice(4, 8);
+
+  let formatado = 'PEIA';
+  if (bloco1) formatado += '-' + bloco1;
+  if (bloco2) formatado += '-' + bloco2;
+
+  input.value = formatado;
+  if (cursorNoFim) input.setSelectionRange(formatado.length, formatado.length);
+}
 </script>
 
 </body>
