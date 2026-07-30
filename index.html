@@ -1020,6 +1020,35 @@ canvas {
   font-size: 0.75rem;
 }
 
+.evo-candidato-opcao {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 11px 0;
+  text-align: left;
+}
+
+.evo-candidato-opcao:first-of-type {
+  border-top: 0;
+}
+
+.evo-candidato-opcao:hover,
+.evo-candidato-opcao:focus-visible {
+  color: var(--neon-cyan);
+  outline: none;
+}
+
+.evo-candidato-opcao .item-detalhe {
+  display: block;
+}
+
+.evo-candidato-opcao .item-nome {
+  display: block;
+}
+
 @media (min-width: 600px) {
   .compare-cols {
     grid-template-columns: 1fr 1fr;
@@ -1259,6 +1288,153 @@ canvas {
   height: 18px;
 }
 
+.btn-ver-detalhes {
+  min-height: 34px;
+  margin-top: 8px;
+  padding: 7px 11px;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--neon-cyan);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.btn-ver-detalhes:hover,
+.btn-ver-detalhes:focus-visible {
+  background: rgba(0,217,255,0.1);
+  outline: none;
+}
+
+#candidatoDetalhesModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(2,6,23,0.82);
+  backdrop-filter: blur(4px);
+}
+
+#candidatoDetalhesModal.hidden {
+  display: none;
+}
+
+.candidato-detalhes-painel {
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg-0);
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -12px 40px rgba(0,0,0,0.45);
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.candidato-detalhes-cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.candidato-detalhes-cabecalho h2 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: 1rem;
+}
+
+.candidato-detalhes-fechar {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-2);
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.candidato-detalhes-acoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
+.candidato-detalhes-acoes button {
+  min-height: 44px;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--neon-cyan);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.candidato-detalhes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.candidato-detalhes-stat {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-1);
+}
+
+.candidato-detalhes-stat span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.625rem;
+}
+
+.candidato-detalhes-stat strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.8125rem;
+}
+
+.candidato-detalhes-lista {
+  margin-top: 10px;
+}
+
+.candidato-detalhes-lista summary {
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--neon-cyan);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+@media (min-width: 700px) {
+  #candidatoDetalhesModal {
+    align-items: center;
+    padding: 24px;
+  }
+  .candidato-detalhes-painel {
+    max-width: 720px;
+    border-radius: 18px;
+  }
+  .candidato-detalhes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -1394,6 +1570,20 @@ canvas {
     <section class="admin-card"><h3>Licenças</h3><div id="adminTabelaLicencas"></div></section>
     <section class="admin-card"><h3>Sessões tester</h3><div id="adminTabelaSessoes"></div></section>
     <section class="admin-card"><h3>Auditoria</h3><div id="adminTabelaAuditoria"></div></section>
+  </div>
+</div>
+
+<div id="candidatoDetalhesModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="candidatoDetalhesTitulo">
+  <div class="candidato-detalhes-painel" role="document">
+    <div class="candidato-detalhes-cabecalho">
+      <h2 id="candidatoDetalhesTitulo">Detalhes do candidato</h2>
+      <button type="button" class="candidato-detalhes-fechar" id="btnFecharCandidatoDetalhes" aria-label="Fechar detalhes">×</button>
+    </div>
+    <div id="candidatoDetalhesConteudo"></div>
+    <div class="candidato-detalhes-acoes">
+      <button type="button" id="btnEvolucaoCandidatoDetalhes">Ver evolução</button>
+      <button type="button" id="btnExportarCandidatoDetalhes">Exportar imagem</button>
+    </div>
   </div>
 </div>
 
@@ -2587,6 +2777,10 @@ function iniciarBuscaPorVoz(inputAlvoId) {
 
 // ---------- TELA 1: BUSCAR CANDIDATO ----------
 let buscaCandidatoInit = false;
+let candidatosBuscaDetalhes = [];
+let candidatoDetalhesAtivo = null;
+let focoAntesCandidatoDetalhes = null;
+
 function initBuscarCandidato() {
   if (!buscaCandidatoInit) {
     const input = document.getElementById('buscaCandidatoInput');
@@ -2617,28 +2811,35 @@ function renderBuscaCandidato() {
   // acima evita somar 1º+2º turno indevidamente para presidente/governador
   const porCandidato = {};
   achados.forEach(v => {
-    const key = normalizarTexto(nomeExibicaoCandidato(v)) + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
+    const municipal = v.cargo === 'prefeito' || v.cargo === 'vereador';
+    const key = normalizarTexto(nomeExibicaoCandidato(v)) + '|' + v.partido + '|' + v.cargo + '|' + v.ano +
+      (municipal ? '|' + v.municipio : '');
     if (!porCandidato[key]) porCandidato[key] = { ...v, votosTotal:0, municipiosNomes:new Set() };
     porCandidato[key].votosTotal += v.votos;
     if (v.municipio) porCandidato[key].municipiosNomes.add(v.municipio);
   });
   const lista = Object.values(porCandidato).sort((a,b)=> b.ano - a.ano || b.votosTotal - a.votosTotal).slice(0,60);
+  candidatosBuscaDetalhes = lista;
 
   out.innerHTML = `
     <div class="card">
       <p class="card-sub">${lista.length} resultado(s) encontrado(s)</p>
-      ${lista.map(v => `
+      ${lista.map((v,i) => `
         <div class="linha-item">
           <div class="item-info">
             <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
             <div class="item-detalhe">${v.partido} · ${CARGO_LABEL[v.cargo]||v.cargo} · ${v.ano} · ${formatarAbrangenciaCandidatura(v.municipiosNomes)}</div>
             ${badgeResultado(v.resultado)}
+            <div><button type="button" class="btn-ver-detalhes" data-candidato-detalhes="${i}">Ver detalhes</button></div>
           </div>
           <div class="item-valor">${formatarNum(v.votosTotal)}</div>
         </div>
       `).join('')}
     </div>
   `;
+  out.querySelectorAll('[data-candidato-detalhes]').forEach(botao => {
+    botao.addEventListener('click', () => abrirDetalhesCandidato(Number(botao.dataset.candidatoDetalhes), botao));
+  });
 }
 
 function formatarAbrangenciaCandidatura(municipios) {
@@ -2648,6 +2849,226 @@ function formatarAbrangenciaCandidatura(municipios) {
   if (nomes.length === DB.meta.municipios.length) return `Mato Grosso do Sul · ${nomes.length} municípios`;
   return `${nomes.length} municípios`;
 }
+
+function agruparHistoricoCandidato(nomeNormalizado, municipioMunicipal='') {
+  const agrupado = {};
+  DB.votos
+    .filter(v => {
+      if (!v.candidato || normalizarTexto(nomeExibicaoCandidato(v)) !== nomeNormalizado) return false;
+      const municipal = v.cargo === 'prefeito' || v.cargo === 'vereador';
+      return !municipioMunicipal || !municipal || v.municipio === municipioMunicipal;
+    })
+    .forEach(v => {
+      const municipal = v.cargo === 'prefeito' || v.cargo === 'vereador';
+      const key = v.ano + '|' + v.turno + '|' + v.cargo + '|' + v.partido + (municipal ? '|' + v.municipio : '');
+      if (!agrupado[key]) {
+        agrupado[key] = {
+          ano:v.ano, turno:v.turno, cargo:v.cargo, partido:v.partido, resultado:v.resultado,
+          votos:0, municipiosNomes:new Set()
+        };
+      }
+      agrupado[key].votos += v.votos;
+      if (v.municipio) agrupado[key].municipiosNomes.add(v.municipio);
+    });
+  return Object.values(agrupado).sort((a,b) =>
+    Number(b.ano) - Number(a.ano) ||
+    b.votos - a.votos
+  );
+}
+
+function calcularPosicaoCandidatura(registro, municipios) {
+  const municipal = registro.cargo === 'prefeito' || registro.cargo === 'vereador';
+  const nomesMunicipios = Array.from(municipios || []);
+  if (municipal && nomesMunicipios.length !== 1) return null;
+  const municipio = municipal ? nomesMunicipios[0] : '';
+  const agregados = {};
+
+  DB.votos
+    .filter(v =>
+      v.ano === registro.ano && v.cargo === registro.cargo && v.turno === '1' &&
+      v.candidato && (!municipio || v.municipio === municipio)
+    )
+    .forEach(v => {
+      const candidato = nomeExibicaoCandidato(v);
+      const key = normalizarTexto(candidato) + '|' + v.partido;
+      if (!agregados[key]) agregados[key] = { key, votos:0 };
+      agregados[key].votos += v.votos;
+    });
+
+  const ranking = Object.values(agregados).sort((a,b) => b.votos - a.votos);
+  const alvo = normalizarTexto(nomeExibicaoCandidato(registro)) + '|' + registro.partido;
+  const indice = ranking.findIndex(item => item.key === alvo);
+  if (indice < 0) return null;
+  return { posicao:indice + 1, universo:ranking.length, escopo:municipio || 'Mato Grosso do Sul' };
+}
+
+function abrirDetalhesCandidato(indice, botaoOrigem) {
+  const registro = candidatosBuscaDetalhes[indice];
+  if (!registro) return;
+
+  const nome = nomeExibicaoCandidato(registro);
+  const nomeNormalizado = normalizarTexto(nome);
+  const cargoMunicipal = registro.cargo === 'prefeito' || registro.cargo === 'vereador';
+  const votosMunicipais = DB.votos
+    .filter(v =>
+      v.ano === registro.ano && v.cargo === registro.cargo && v.partido === registro.partido &&
+      v.turno === '1' && v.candidato && normalizarTexto(nomeExibicaoCandidato(v)) === nomeNormalizado &&
+      (!cargoMunicipal || v.municipio === registro.municipio)
+    )
+    .map(v => {
+      const resumo = DB.resumo.find(r =>
+        r.ano === v.ano && r.cargo === v.cargo && r.municipio === v.municipio && r.turno === '1'
+      );
+      return {
+        municipio:v.municipio, votos:v.votos,
+        percentual:resumo?.votos_validos ? (v.votos / resumo.votos_validos) * 100 : null
+      };
+    })
+    .sort((a,b) => b.votos - a.votos || a.municipio.localeCompare(b.municipio, 'pt-BR'));
+  const votosSegundoTurno = DB.votos
+    .filter(v =>
+      v.ano === registro.ano && v.cargo === registro.cargo && v.partido === registro.partido &&
+      v.turno === '2' && v.candidato && normalizarTexto(nomeExibicaoCandidato(v)) === nomeNormalizado &&
+      (!cargoMunicipal || v.municipio === registro.municipio)
+    )
+    .map(v => ({
+      municipio:v.municipio,
+      votos:v.votos,
+      percentual:(() => {
+        const resumo = DB.resumo.find(r =>
+          r.ano === v.ano && r.cargo === v.cargo && r.municipio === v.municipio && r.turno === '2'
+        );
+        return resumo?.votos_validos ? (v.votos / resumo.votos_validos) * 100 : null;
+      })()
+    }))
+    .sort((a,b) => b.votos - a.votos || a.municipio.localeCompare(b.municipio, 'pt-BR'));
+
+  const municipios = new Set(votosMunicipais.map(v => v.municipio).filter(Boolean));
+  const posicao = calcularPosicaoCandidatura(registro, municipios);
+  const historico = agruparHistoricoCandidato(nomeNormalizado, cargoMunicipal ? registro.municipio : '');
+  const melhor = votosMunicipais[0] || null;
+  const pior = votosMunicipais[votosMunicipais.length - 1] || null;
+  const numeroPresidente = registro.cargo === 'presidente' ? registro.candidato : null;
+  const votosTotalSegundoTurno = votosSegundoTurno.reduce((soma, item) => soma + item.votos, 0);
+
+  candidatoDetalhesAtivo = { nome, registro };
+  focoAntesCandidatoDetalhes = botaoOrigem || document.activeElement;
+  document.getElementById('candidatoDetalhesTitulo').textContent = nome;
+  document.getElementById('candidatoDetalhesConteudo').innerHTML = `
+    <div class="card" id="cardExportarCandidato">
+      <p class="card-titulo">${nome}</p>
+      <p class="card-sub">${registro.partido} · ${CARGO_LABEL[registro.cargo]||registro.cargo} · ${registro.ano} · 1º turno</p>
+      ${badgeResultado(registro.resultado)}
+      <div class="candidato-detalhes-grid">
+        ${numeroPresidente ? `<div class="candidato-detalhes-stat"><span>Número</span><strong>${numeroPresidente}</strong></div>` : ''}
+        <div class="candidato-detalhes-stat"><span>Votos — 1º turno</span><strong>${formatarNum(registro.votosTotal)}</strong></div>
+        ${votosSegundoTurno.length ? `<div class="candidato-detalhes-stat"><span>Votos — 2º turno</span><strong>${formatarNum(votosTotalSegundoTurno)}</strong></div>` : ''}
+        <div class="candidato-detalhes-stat"><span>Abrangência</span><strong>${formatarAbrangenciaCandidatura(municipios)}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Posição</span><strong>${posicao ? posicao.posicao + 'º de ' + posicao.universo : 'Não calculada'}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Escopo do ranking</span><strong>${posicao?.escopo || '—'}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Maior votação</span><strong>${melhor ? melhor.municipio + ' · ' + formatarNum(melhor.votos) : '—'}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Menor votação registrada</span><strong>${pior ? pior.municipio + ' · ' + formatarNum(pior.votos) : '—'}</strong></div>
+      </div>
+
+      <details class="candidato-detalhes-lista" open>
+        <summary>Votação por município — 1º turno (${votosMunicipais.length})</summary>
+        ${votosMunicipais.map(v => `
+          <div class="linha-item">
+            <div class="item-info">
+              <div class="item-nome">${v.municipio}</div>
+              <div class="item-detalhe">${v.percentual === null ? 'Percentual indisponível' : v.percentual.toFixed(2).replace('.', ',') + '% dos votos válidos'}</div>
+            </div>
+            <div class="item-valor">${formatarNum(v.votos)}</div>
+          </div>
+        `).join('')}
+      </details>
+
+      ${votosSegundoTurno.length ? `
+        <details class="candidato-detalhes-lista">
+          <summary>Votação por município — 2º turno (${votosSegundoTurno.length})</summary>
+          ${votosSegundoTurno.map(v => `
+            <div class="linha-item">
+              <div class="item-info">
+                <div class="item-nome">${v.municipio}</div>
+                <div class="item-detalhe">${v.percentual === null ? 'Percentual indisponível' : v.percentual.toFixed(2).replace('.', ',') + '% dos votos válidos'}</div>
+              </div>
+              <div class="item-valor">${formatarNum(v.votos)}</div>
+            </div>
+          `).join('')}
+        </details>
+      ` : ''}
+
+      <details class="candidato-detalhes-lista">
+        <summary>Histórico disponível (${historico.length})</summary>
+        ${historico.map(h => `
+          <div class="linha-item">
+            <div class="item-info">
+              <div class="item-nome">${h.ano} · ${CARGO_LABEL[h.cargo]||h.cargo} · ${h.turno}º turno</div>
+              <div class="item-detalhe">${h.partido} · ${formatarAbrangenciaCandidatura(h.municipiosNomes)}</div>
+              ${badgeResultado(h.resultado)}
+            </div>
+            <div class="item-valor">${formatarNum(h.votos)}</div>
+          </div>
+        `).join('')}
+      </details>
+      <p class="card-sub" style="margin-top:12px;">O dataset contém resultados eleitorais; não inclui fotografia, biografia, profissão, bens ou data de nascimento.</p>
+      <p class="card-sub">O histórico relaciona registros pelo nome normalizado. Em caso de homônimos, confirme cargo, partido e município.</p>
+    </div>
+  `;
+
+  const modal = document.getElementById('candidatoDetalhesModal');
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('btnFecharCandidatoDetalhes').focus();
+}
+
+function fecharDetalhesCandidato() {
+  const modal = document.getElementById('candidatoDetalhesModal');
+  if (modal.classList.contains('hidden')) return;
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  if (focoAntesCandidatoDetalhes?.isConnected) focoAntesCandidatoDetalhes.focus();
+}
+
+function abrirEvolucaoCandidatoDetalhes() {
+  if (!candidatoDetalhesAtivo) return;
+  const nome = candidatoDetalhesAtivo.nome;
+  fecharDetalhesCandidato();
+  abrirTela(5);
+  document.getElementById('evo_busca').value = nome;
+  renderEvolucao();
+}
+
+document.getElementById('btnFecharCandidatoDetalhes').addEventListener('click', fecharDetalhesCandidato);
+document.getElementById('btnEvolucaoCandidatoDetalhes').addEventListener('click', abrirEvolucaoCandidatoDetalhes);
+document.getElementById('btnExportarCandidatoDetalhes').addEventListener('click', () => {
+  if (!candidatoDetalhesAtivo) return;
+  exportarComoImagem('cardExportarCandidato', `candidato-${candidatoDetalhesAtivo.nome}`);
+});
+document.getElementById('candidatoDetalhesModal').addEventListener('click', evento => {
+  if (evento.target.id === 'candidatoDetalhesModal') fecharDetalhesCandidato();
+});
+document.addEventListener('keydown', evento => {
+  const modal = document.getElementById('candidatoDetalhesModal');
+  if (modal.classList.contains('hidden')) return;
+  if (evento.key === 'Escape') {
+    fecharDetalhesCandidato();
+    return;
+  }
+  if (evento.key !== 'Tab') return;
+  const focaveis = Array.from(modal.querySelectorAll('button, summary, [href], input, select, [tabindex]:not([tabindex="-1"])'))
+    .filter(el => !el.disabled && el.offsetParent !== null);
+  if (focaveis.length === 0) return;
+  const primeiro = focaveis[0];
+  const ultimo = focaveis[focaveis.length - 1];
+  if (evento.shiftKey && document.activeElement === primeiro) {
+    evento.preventDefault();
+    ultimo.focus();
+  } else if (!evento.shiftKey && document.activeElement === ultimo) {
+    evento.preventDefault();
+    primeiro.focus();
+  }
+});
 
 // ---------- TELA 2: RANKING GERAL ----------
 let rankingInit = false;
@@ -2999,33 +3420,98 @@ function renderEvolucao() {
   if (municipio) achados = achados.filter(v=>v.municipio===municipio);
   if (achados.length===0) { out.innerHTML = telaVazia('Nenhum resultado encontrado.'); return; }
 
-  const porAno = {};
+  // Uma busca parcial pode encontrar pessoas diferentes. Só desenha a série
+  // quando existe uma identidade única ou quando o nome digitado é exato.
+  const candidatos = {};
   achados.forEach(v => {
-    if (!porAno[v.ano]) porAno[v.ano] = 0;
-    porAno[v.ano] += v.votos;
+    const nome = nomeExibicaoCandidato(v);
+    const key = normalizarTexto(nome);
+    if (!candidatos[key] || Number(v.ano) > Number(candidatos[key].ano)) {
+      candidatos[key] = { nome, ano:v.ano };
+    }
   });
-  const anos = DB.meta.anos.filter(a => porAno[a] !== undefined);
-  const pontos = anos.map(a => ({ x:a, y:porAno[a] }));
+  const identidadeSelecionada = candidatos[termo] ? termo : Object.keys(candidatos).length === 1 ? Object.keys(candidatos)[0] : '';
 
-  // exibe a grafia da ocorrência mais recente (maior ano), não a primeira
-  // encontrada — blinda contra grafias diferentes do mesmo candidato
-  // entre eleições (ex: "Fabio Trad" / "Fábio Trad")
+  if (!identidadeSelecionada) {
+    const opcoes = Object.entries(candidatos)
+      .sort(([,a],[,b]) => Number(b.ano) - Number(a.ano) || a.nome.localeCompare(b.nome, 'pt-BR'))
+      .slice(0, 30);
+    out.innerHTML = `
+      <div class="card">
+        <p class="card-titulo">Selecione o candidato</p>
+        <p class="card-sub">${opcoes.length} nome(s) compatível(is) com a busca</p>
+        ${opcoes.map(([key, candidato], i) => `
+          <button type="button" class="evo-candidato-opcao" data-evo-opcao="${i}">
+            <span class="item-nome">${candidato.nome}</span>
+            <span class="item-detalhe">Registro mais recente: ${candidato.ano}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    out.querySelectorAll('[data-evo-opcao]').forEach(botao => {
+      botao.addEventListener('click', () => {
+        const opcao = opcoes[Number(botao.dataset.evoOpcao)];
+        document.getElementById('evo_busca').value = opcao[1].nome;
+        renderEvolucao();
+      });
+    });
+    return;
+  }
+
+  achados = achados.filter(v => normalizarTexto(nomeExibicaoCandidato(v)) === identidadeSelecionada);
+
+  // Mantém candidaturas distintas no mesmo ano separadas por cargo e partido,
+  // somando apenas os registros municipais pertencentes à mesma candidatura.
+  const porCandidatura = {};
+  achados.forEach(v => {
+    const cargoMunicipal = v.cargo === 'prefeito' || v.cargo === 'vereador';
+    const key = v.ano + '|' + v.cargo + '|' + v.partido + (cargoMunicipal ? '|' + v.municipio : '');
+    if (!porCandidatura[key]) {
+      porCandidatura[key] = {
+        ano:v.ano, cargo:v.cargo, partido:v.partido, resultado:v.resultado,
+        votos:0, municipiosNomes:new Set()
+      };
+    }
+    porCandidatura[key].votos += v.votos;
+    if (v.municipio) porCandidatura[key].municipiosNomes.add(v.municipio);
+  });
+  const candidaturas = Object.values(porCandidatura).sort((a,b) =>
+    Number(a.ano) - Number(b.ano) ||
+    (CARGO_LABEL[a.cargo]||a.cargo).localeCompare(CARGO_LABEL[b.cargo]||b.cargo, 'pt-BR') ||
+    a.partido.localeCompare(b.partido, 'pt-BR')
+  );
+  const pontos = candidaturas.map(c => ({ x:c.ano, y:c.votos }));
+
+  // Exibe a grafia da ocorrência mais recente.
   const maisRecente = achados.reduce((a,b)=> Number(b.ano) > Number(a.ano) ? b : a);
   const nomeExemplo = nomeExibicaoCandidato(maisRecente);
-  const cargoExemplo = maisRecente.cargo;
+  const municipiosMunicipais = new Set(
+    achados
+      .filter(v => v.cargo === 'prefeito' || v.cargo === 'vereador')
+      .map(v => v.municipio)
+      .filter(Boolean)
+  );
+  const avisoHomonimos = !municipio && municipiosMunicipais.size > 1
+    ? `<div class="card"><p class="card-sub" style="margin:0;"><b>Atenção:</b> o dataset não possui identificador permanente. Este nome aparece em ${municipiosMunicipais.size} municípios e pode representar pessoas diferentes. Use o filtro de município para uma análise individual.</p></div>`
+    : '';
 
   out.innerHTML = `
+    ${avisoHomonimos}
     <div class="card">
       <p class="card-titulo">${nomeExemplo}</p>
-      <p class="card-sub">${CARGO_LABEL[cargoExemplo]||cargoExemplo} ${municipio?'· '+municipio:'· todos os municípios'}</p>
-      <canvas id="canvasEvolucao" style="width:100%;height:180px;"></canvas>
+      <p class="card-sub">${municipio || 'Todos os municípios'} · resultados do 1º turno</p>
+      <canvas id="canvasEvolucao" role="img" aria-label="Evolução de votos de ${nomeExemplo}" style="width:100%;height:180px;"></canvas>
     </div>
     <div class="card">
-      <p class="card-titulo">Votos por ano</p>
-      ${anos.map(a => `
+      <p class="card-titulo">Candidaturas por eleição</p>
+      ${candidaturas.map(c => `
         <div class="linha-item">
-          <div class="item-info"><div class="item-nome">${a}</div></div>
-          <div class="item-valor">${formatarNum(porAno[a])}</div>
+          <div class="item-info">
+            <div class="item-nome">${c.ano} · ${CARGO_LABEL[c.cargo]||c.cargo}</div>
+            <div class="item-detalhe">${c.partido} · ${formatarAbrangenciaCandidatura(c.municipiosNomes)}</div>
+            ${badgeResultado(c.resultado)}
+          </div>
+          <div class="item-valor">${formatarNum(c.votos)}</div>
         </div>
       `).join('')}
     </div>
