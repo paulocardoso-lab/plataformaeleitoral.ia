@@ -987,7 +987,7 @@ canvas {
 
 .compare-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   padding: 14px;
 }
@@ -997,6 +997,33 @@ canvas {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px;
+}
+
+.compare-ranking-titulo {
+  margin: 16px 0 4px;
+  color: var(--neon-cyan);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.compare-ranking .linha-item {
+  align-items: center;
+}
+
+.compare-ranking .item-nome {
+  white-space: normal;
+}
+
+.compare-ranking .item-valor {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 600px) {
+  .compare-cols {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .sec-titulo {
@@ -2591,9 +2618,9 @@ function renderBuscaCandidato() {
   const porCandidato = {};
   achados.forEach(v => {
     const key = normalizarTexto(nomeExibicaoCandidato(v)) + '|' + v.partido + '|' + v.cargo + '|' + v.ano;
-    if (!porCandidato[key]) porCandidato[key] = { ...v, votosTotal:0, municipios:0 };
+    if (!porCandidato[key]) porCandidato[key] = { ...v, votosTotal:0, municipiosNomes:new Set() };
     porCandidato[key].votosTotal += v.votos;
-    porCandidato[key].municipios += 1;
+    if (v.municipio) porCandidato[key].municipiosNomes.add(v.municipio);
   });
   const lista = Object.values(porCandidato).sort((a,b)=> b.ano - a.ano || b.votosTotal - a.votosTotal).slice(0,60);
 
@@ -2604,7 +2631,7 @@ function renderBuscaCandidato() {
         <div class="linha-item">
           <div class="item-info">
             <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-            <div class="item-detalhe">${v.partido} · ${CARGO_LABEL[v.cargo]||v.cargo} · ${v.ano} · ${v.municipios} município(s)</div>
+            <div class="item-detalhe">${v.partido} · ${CARGO_LABEL[v.cargo]||v.cargo} · ${v.ano} · ${formatarAbrangenciaCandidatura(v.municipiosNomes)}</div>
             ${badgeResultado(v.resultado)}
           </div>
           <div class="item-valor">${formatarNum(v.votosTotal)}</div>
@@ -2612,6 +2639,14 @@ function renderBuscaCandidato() {
       `).join('')}
     </div>
   `;
+}
+
+function formatarAbrangenciaCandidatura(municipios) {
+  const nomes = Array.from(municipios || []).sort((a,b) => a.localeCompare(b, 'pt-BR'));
+  if (nomes.length === 0) return 'Município não informado';
+  if (nomes.length === 1) return nomes[0];
+  if (nomes.length === DB.meta.municipios.length) return `Mato Grosso do Sul · ${nomes.length} municípios`;
+  return `${nomes.length} municípios`;
 }
 
 // ---------- TELA 2: RANKING GERAL ----------
@@ -2642,11 +2677,13 @@ function renderRanking() {
   // entre municípios (ex: "Fabio Trad" / "Fábio Trad")
   const agr = {};
   filtrado.forEach(v => {
-    const key = normalizarTexto(v.candidato)+'|'+v.partido;
-    if (!agr[key]) agr[key] = { candidato:v.candidato, partido:v.partido, votos:0, resultado:v.resultado };
+    const candidato = nomeExibicaoCandidato(v);
+    const key = normalizarTexto(candidato)+'|'+v.partido;
+    if (!agr[key]) agr[key] = { candidato, partido:v.partido, votos:0, resultado:v.resultado };
     agr[key].votos += v.votos;
   });
-  const lista = Object.values(agr).sort((a,b)=>b.votos-a.votos).slice(0,30);
+  const limiteRanking = municipio ? 30 : 50;
+  const lista = Object.values(agr).sort((a,b)=>b.votos-a.votos).slice(0, limiteRanking);
 
   if (lista.length===0) { out.innerHTML = telaVazia('Nenhum dado para esse filtro.'); return; }
 
@@ -2834,11 +2871,45 @@ function initComparar() {
   renderComparar();
 }
 
-function top10PorMunicipio(votos, ano, cargo, municipio, turno='1') {
-  return votos
+function obterRankingMunicipio(votos, ano, cargo, municipio, turno='1', limite=5) {
+  const agregados = {};
+  votos
     .filter(v => v.ano === ano && v.cargo === cargo && v.municipio === municipio && v.candidato && v.turno === turno)
-    .sort((a, b) => b.votos - a.votos)
-    .slice(0, 10);
+    .forEach(v => {
+      const candidato = nomeExibicaoCandidato(v);
+      const key = normalizarTexto(candidato) + '|' + v.partido;
+      if (!agregados[key]) {
+        agregados[key] = { candidato, partido:v.partido, votos:0, resultado:v.resultado };
+      }
+      agregados[key].votos += v.votos;
+    });
+
+  return Object.values(agregados)
+    .sort((a, b) => b.votos - a.votos || a.candidato.localeCompare(b.candidato, 'pt-BR'))
+    .slice(0, limite);
+}
+
+function renderRankingComparacao(lista) {
+  if (lista.length === 0) {
+    return '<p class="card-sub">Sem candidatos para este turno.</p>';
+  }
+
+  return `
+    <p class="compare-ranking-titulo">Top ${lista.length} mais votados</p>
+    <div class="compare-ranking">
+      ${lista.map((v, i) => `
+        <div class="linha-item">
+          <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
+          <div class="item-info">
+            <div class="item-nome">${v.candidato}</div>
+            <div class="item-detalhe">${v.partido}</div>
+            ${badgeResultado(v.resultado)}
+          </div>
+          <div class="item-valor">${formatarNum(v.votos)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 function renderComparar() {
@@ -2857,8 +2928,8 @@ function renderComparar() {
 
   const resA = DB.resumo.find(r=>r.municipio===munA && r.ano===ano && r.cargo===cargo && r.turno===turnoA);
   const resB = DB.resumo.find(r=>r.municipio===munB && r.ano===ano && r.cargo===cargo && r.turno===turnoB);
-  const vencA = topEleito(DB.votos, ano, cargo, munA, turnoA);
-  const vencB = topEleito(DB.votos, ano, cargo, munB, turnoB);
+  const rankingA = obterRankingMunicipio(DB.votos, ano, cargo, munA, turnoA, 5);
+  const rankingB = obterRankingMunicipio(DB.votos, ano, cargo, munB, turnoB, 5);
 
   if (!resA && !resB) { out.innerHTML = telaVazia('Sem dados para essa combinação.'); return; }
 
@@ -2872,17 +2943,15 @@ function renderComparar() {
           <p class="card-sub" style="text-align:center;font-weight:800;color:#F0C863;">${munA}</p>
           ${algumTem2Turno && !aTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resA?resA.pct_comparecimento.toFixed(1)+'%':'—')}
-          ${miniStat('Aptos', resA?formatarNumCurto(resA.aptos):'—')}
-          ${vencA ? miniStat('Mais votado', nomeExibicaoCandidato(vencA)) : ''}
-          ${vencA ? miniStat('Votos', formatarNum(vencA.votos)) : ''}
+          ${miniStat('Aptos', resA?formatarNum(resA.aptos):'—')}
+          ${renderRankingComparacao(rankingA)}
         </div>
         <div>
           <p class="card-sub" style="text-align:center;font-weight:800;color:#F0C863;">${munB}</p>
           ${algumTem2Turno && !bTem2Turno ? '<p class="card-sub" style="text-align:center;">Sem 2º turno</p>' : ''}
           ${miniStat('Comparecimento', resB?resB.pct_comparecimento.toFixed(1)+'%':'—')}
-          ${miniStat('Aptos', resB?formatarNumCurto(resB.aptos):'—')}
-          ${vencB ? miniStat('Mais votado', nomeExibicaoCandidato(vencB)) : ''}
-          ${vencB ? miniStat('Votos', formatarNum(vencB.votos)) : ''}
+          ${miniStat('Aptos', resB?formatarNum(resB.aptos):'—')}
+          ${renderRankingComparacao(rankingB)}
         </div>
       </div>
     </div>
