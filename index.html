@@ -3471,10 +3471,6 @@ async function validarSessaoAtual() {
   const authSession = await obterAuthSession();
   if (authSession && !navigator.onLine) return validacaoOfflineRecente();
   if (authSession && navigator.onLine) {
-    if (token) {
-      const { data: migracao } = await AUTH_CLIENT.rpc('migrar_sessao_usuario', { p_token: token });
-      if (migracao?.sucesso) limparSessaoLocal();
-    }
     const { data: possuiLicenca } = await AUTH_CLIENT.rpc('possui_licenca');
     if (possuiLicenca === true) {
       localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));

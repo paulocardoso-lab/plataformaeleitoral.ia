@@ -39,6 +39,7 @@ assert(index.includes('CONFIG.datasetFunctionUrl'), 'frontend deve obter o datas
 assert(index.includes('PRIVATE_DATASET_CACHE'), 'frontend deve manter cache offline separado do shell público');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
+assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
 assert(index.includes('@supabase/supabase-js@2.111.0'), 'Supabase JS deve estar fixado em versão auditada');
 
 const runtimeFiles = ['index.html', 'runtime-config.js', 'service-worker.js', 'README.md', 'DEVELOPMENT.md'];
@@ -58,6 +59,7 @@ assert(datasetFunction.includes("DATASET_BUCKET = 'private-datasets'"), 'Edge Fu
 assert(datasetFunction.includes("supabase.rpc('validar_sessao'"), 'Edge Function deve validar sessão antes do download');
 assert(datasetFunction.includes("'Cache-Control': 'private, no-store'"), 'resposta privada não pode ser cacheada por CDN');
 assert(datasetFunction.includes("from('licencas')"), 'Edge Function deve validar licença Auth');
+assert(datasetFunction.includes("validation?.tipo !== 'tester'"), 'token opaco deve ser restrito a tester');
 const testerFunction = read('supabase/functions/tester-access/index.ts');
 assert(testerFunction.includes('TESTER_MASTER_PASSWORD_HASH'), 'senha tester deve vir de secret');
 assert(testerFunction.includes('too_many_attempts'), 'acesso tester deve aplicar rate limit');

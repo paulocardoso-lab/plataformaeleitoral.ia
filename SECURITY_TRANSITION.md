@@ -26,10 +26,10 @@ mágico. O device ID permanece somente no caminho tester e no legado temporário
 ## Modelo híbrido 2.9
 
 - `auth.users` + `licencas`: acesso principal, recuperável em mobile e desktop.
-- `migrar_sessao_usuario`: converte sessão 2.8 válida em licença Auth.
 - `tester-access`: valida a master por hash constante, aplica rate limit e emite
   sessão com validade máxima de 90 dias.
-- O dataset aceita JWT de usuário licenciado ou token tester/legado válido.
+- O dataset aceita somente JWT de usuário licenciado ou token tester válido.
+- Sessões legadas 2.8 foram revogadas e a RPC anônima antiga foi removida.
 
 ## Ordem obrigatória de implantação
 

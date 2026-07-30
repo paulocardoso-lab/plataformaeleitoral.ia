@@ -69,7 +69,9 @@ Deno.serve(async (request) => {
       p_device_id: deviceId
     });
     if (validationError) return jsonResponse(503, { error: 'session_validation_unavailable' }, origin);
-    if (!validation?.valida) return jsonResponse(401, { error: validation?.motivo || 'invalid_session' }, origin);
+    if (!validation?.valida || validation?.tipo !== 'tester') {
+      return jsonResponse(401, { error: validation?.motivo || 'tester_session_required' }, origin);
+    }
   } else {
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData.user) return jsonResponse(401, { error: 'invalid_user_session' }, origin);

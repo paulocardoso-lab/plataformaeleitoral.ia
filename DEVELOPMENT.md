@@ -104,7 +104,7 @@ HTML ou a uma função versionada.
 ## Auth e acesso tester — versão 2.9+
 
 - Clientes entram por link mágico e vinculam o código à sua conta.
-- Sessões opacas 2.8 podem ser migradas para a conta autenticada.
+- Sessões opacas 2.8 foram revogadas e não possuem caminho de migração.
 - A senha master existe somente como hash no secret
   `TESTER_MASTER_PASSWORD_HASH`.
 - Cinco falhas em 15 minutos bloqueiam temporariamente o fingerprint.

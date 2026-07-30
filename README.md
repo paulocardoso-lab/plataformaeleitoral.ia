@@ -70,7 +70,7 @@ Na versão 2.8, o dataset não está mais no HTML público. A Edge Function
 `dataset` valida a sessão antes do download e o cliente mantém uma cópia
 offline privada, removida no logout.
 
-Na versão 2.9 há dois acessos: link mágico por e-mail para clientes e senha
+Na versão 2.9 há somente dois acessos: link mágico por e-mail para clientes e senha
 master para testers. A senha master emite sessão revogável de 90 dias e nunca
 é armazenada no Git ou no banco.
 
