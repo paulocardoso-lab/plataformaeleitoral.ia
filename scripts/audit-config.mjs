@@ -47,6 +47,7 @@ assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover cr
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
+assert(index.includes('CONFIG.adminFunctionUrl'), 'painel administrativo não foi encontrado');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
 assert(index.includes('@supabase/supabase-js@2.111.0'), 'Supabase JS deve estar fixado em versão auditada');
 assert(index.includes('function formatarEmail'), 'máscara de e-mail não encontrada');
@@ -78,6 +79,10 @@ assert(testerFunction.includes('TESTER_MASTER_PASSWORD_HASH'), 'senha tester dev
 assert(testerFunction.includes('too_many_attempts'), 'acesso tester deve aplicar rate limit');
 assert(testerFunction.includes(".eq('ip_hash',ipHash)"), 'rate limit deve ser aplicado independentemente do device id');
 assert(testerFunction.includes('MASTER_PATTERN.test(password)'), 'senha master deve ser validada no servidor');
+const adminFunction = read('supabase/functions/admin-access/index.ts');
+assert(adminFunction.includes("from('administradores')"), 'API administrativa deve validar allowlist');
+assert(adminFunction.includes("from('auditoria_administrativa')"), 'API administrativa deve registrar auditoria');
+assert(adminFunction.includes("action==='rotate_master'"), 'API administrativa deve permitir rotação segura');
 
 if (failures.length) {
   console.error('Auditoria de configuração falhou:\n');

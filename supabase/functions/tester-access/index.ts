@@ -2,7 +2,6 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 
 const url = Deno.env.get('SUPABASE_URL')!;
 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const expectedHash = Deno.env.get('TESTER_MASTER_PASSWORD_HASH') || '';
 const client = createClient(url, serviceKey, { auth: { persistSession: false } });
 const origins = new Set(['https://plataformaeleitoral.ia.br','http://127.0.0.1:4173','http://localhost:4173']);
 const cors = (origin: string | null) => ({
@@ -43,6 +42,10 @@ Deno.serve(async req => {
     return json(429,{error:'too_many_attempts'},origin);
   const body=await req.json().catch(()=>({}));
   const password=String(body.password||'');
+  const {data:masterConfig,error:masterError}=await client.from('configuracao_seguranca')
+    .select('valor_hash').eq('chave','tester_master_password_hash').maybeSingle();
+  const expectedHash=masterConfig?.valor_hash||Deno.env.get('TESTER_MASTER_PASSWORD_HASH')||'';
+  if(masterError||!expectedHash) return json(503,{error:'master_unavailable'},origin);
   const valid=deviceId.length>=16 && MASTER_PATTERN.test(password)
     && equal(await sha256(password),expectedHash);
   const audit=await client.from('tentativas_tester').insert({

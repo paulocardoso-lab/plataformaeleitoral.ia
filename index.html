@@ -1149,6 +1149,21 @@ canvas {
     max-width: 600px;
   }
 }
+
+#adminModal {
+  position: fixed; inset: 0; z-index: 10000; overflow: auto;
+  background: rgba(2, 6, 23, .96); color: #e2e8f0; padding: 24px;
+}
+#adminModal.hidden, .admin-only.hidden { display: none !important; }
+.admin-shell { max-width: 1100px; margin: 0 auto; }
+.admin-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.admin-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:18px 0; }
+.admin-card { background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px; overflow:auto; }
+.admin-card input { width:100%; box-sizing:border-box; margin:6px 0; }
+.admin-table { width:100%; border-collapse:collapse; font-size:12px; }
+.admin-table th,.admin-table td { padding:7px; border-bottom:1px solid #334155; text-align:left; white-space:nowrap; }
+.admin-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.admin-status { min-height:22px; color:#fbbf24; margin:8px 0; }
 </style>
 </head>
 <body>
@@ -1171,7 +1186,39 @@ canvas {
          pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
          autocomplete="current-password" autocapitalize="characters" spellcheck="false">
   <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
+  <button id="btnAdminAtivacao" class="admin-only hidden" onclick="abrirPainelAdmin()">Administração</button>
   <div id="ativacaoErro"></div>
+</div>
+
+<div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitulo">
+  <div class="admin-shell">
+    <div class="admin-head">
+      <div><h2 id="adminTitulo">Administração de acessos</h2><small id="adminIdentidade"></small></div>
+      <button onclick="fecharPainelAdmin()">Fechar</button>
+    </div>
+    <div id="adminStatus" class="admin-status"></div>
+    <div class="admin-grid">
+      <section class="admin-card">
+        <h3>Emitir códigos</h3>
+        <label>Quantidade <input id="adminQuantidade" type="number" min="1" max="50" value="1"></label>
+        <button onclick="adminCriarCodigos()">Gerar códigos</button>
+        <pre id="adminCodigosGerados"></pre>
+      </section>
+      <section class="admin-card">
+        <h3>Rotacionar senha master</h3>
+        <input id="adminNovaMaster" type="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}" placeholder="XXXX-XXXX-XXXX">
+        <label><input id="adminRevogarTesters" type="checkbox"> Revogar sessões tester existentes</label>
+        <div class="admin-actions">
+          <button onclick="adminGerarMaster()">Gerar</button>
+          <button onclick="adminRotacionarMaster()">Confirmar rotação</button>
+        </div>
+      </section>
+    </div>
+    <section class="admin-card"><h3>Códigos</h3><div id="adminTabelaCodigos"></div></section>
+    <section class="admin-card"><h3>Licenças</h3><div id="adminTabelaLicencas"></div></section>
+    <section class="admin-card"><h3>Sessões tester</h3><div id="adminTabelaSessoes"></div></section>
+    <section class="admin-card"><h3>Auditoria</h3><div id="adminTabelaAuditoria"></div></section>
+  </div>
 </div>
 
 <div id="app">
@@ -1442,13 +1489,14 @@ canvas {
     <span class="rodape-texto">Girassol Inteligência</span>
     </div>
     <div class="rodape-acoes">
+    <button id="btnAdminRodape" class="admin-only hidden" onclick="abrirPainelAdmin()" aria-label="Administração" title="Administração">⚙</button>
     <button class="rodape-btn-acessibilidade" id="btnFonteMenor" onclick="diminuirTamanhoFonte()" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A-</button>
     <button class="rodape-btn-acessibilidade" id="btnFonteGrande" onclick="aumentarTamanhoFonte()" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
     <button class="rodape-btn-estilo" id="btnEstilo" onclick="alternarEstilo()" aria-label="Alternar estilo visual" title="Alternar estilo: Neon / Aeroporto">◧</button>
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.10.0</span>
+    <span class="rodape-versao" id="appVersion">v 2.11.0</span>
     </div>
   </div>
 
@@ -3665,6 +3713,130 @@ async function ativarAcesso() {
   }
 }
 
+let adminResumoAtual = null;
+
+function escaparAdmin(valor) {
+  return String(valor ?? '').replace(/[&<>"']/g, caractere => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[caractere]);
+}
+
+async function chamarAdmin(action, payload = {}) {
+  const session = await obterAuthSession();
+  if (!session?.access_token) throw new Error('Entre pelo link mágico com a conta administradora.');
+  const response = await fetch(CONFIG.adminFunctionUrl, {
+    method: 'POST',
+    cache: 'no-store',
+    credentials: 'omit',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${session.access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ action, ...payload })
+  });
+  if (response.status === 403) throw new Error('Esta conta não possui permissão administrativa.');
+  if (!response.ok) throw new Error(`Operação administrativa indisponível (${response.status}).`);
+  return response.json();
+}
+
+function tabelaAdmin(cabecalhos, linhas) {
+  return `<table class="admin-table"><thead><tr>${cabecalhos.map(item=>`<th>${escaparAdmin(item)}</th>`).join('')}</tr></thead>
+    <tbody>${linhas.join('') || `<tr><td colspan="${cabecalhos.length}">Nenhum registro.</td></tr>`}</tbody></table>`;
+}
+
+function renderizarAdmin(resumo) {
+  adminResumoAtual = resumo;
+  document.getElementById('adminIdentidade').textContent = resumo.admin;
+  document.getElementById('adminTabelaCodigos').innerHTML = tabelaAdmin(
+    ['Código','Status','Origem','Criado','Usado'],
+    resumo.codes.map(item=>`<tr><td>${escaparAdmin(item.codigo)}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.origem)}</td><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.usado_em||'—')}</td></tr>`)
+  );
+  document.getElementById('adminTabelaLicencas').innerHTML = tabelaAdmin(
+    ['E-mail','Código','Status','Último acesso','Ação'],
+    resumo.licenses.map(item=>`<tr><td>${escaparAdmin(item.email||item.user_id)}</td><td>${escaparAdmin(item.codigos_acesso?.codigo||'—')}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${item.status==='ativa'?`<button onclick="adminRevogarLicenca('${escaparAdmin(item.id)}')">Revogar</button>`:'—'}</td></tr>`)
+  );
+  document.getElementById('adminTabelaSessoes').innerHTML = tabelaAdmin(
+    ['Dispositivo','Último acesso','Expira','Estado','Ação'],
+    resumo.sessions.map(item=>`<tr><td>${escaparAdmin(item.device_id)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${escaparAdmin(item.expira_em)}</td><td>${item.revogado_em?'Revogada':'Ativa'}</td><td>${item.revogado_em?'—':`<button onclick="adminRevogarTester('${escaparAdmin(item.id)}')">Revogar</button>`}</td></tr>`)
+  );
+  document.getElementById('adminTabelaAuditoria').innerHTML = tabelaAdmin(
+    ['Data','Administrador','Ação','Alvo'],
+    resumo.logs.map(item=>`<tr><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.administrador_email)}</td><td>${escaparAdmin(item.acao)}</td><td>${escaparAdmin(item.alvo_tipo)} ${escaparAdmin(item.alvo_id||'')}</td></tr>`)
+  );
+}
+
+async function carregarPainelAdmin() {
+  const status = document.getElementById('adminStatus');
+  status.textContent = 'Carregando...';
+  try {
+    renderizarAdmin(await chamarAdmin('summary'));
+    status.textContent = '';
+    document.querySelectorAll('.admin-only').forEach(item=>item.classList.remove('hidden'));
+    return true;
+  } catch (erro) {
+    status.textContent = erro.message;
+    return false;
+  }
+}
+
+async function verificarAcessoAdmin() {
+  const session = await obterAuthSession();
+  if (!session) return false;
+  try {
+    adminResumoAtual = await chamarAdmin('summary');
+    document.querySelectorAll('.admin-only').forEach(item=>item.classList.remove('hidden'));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function abrirPainelAdmin() {
+  document.getElementById('adminModal').classList.remove('hidden');
+  await carregarPainelAdmin();
+}
+function fecharPainelAdmin() { document.getElementById('adminModal').classList.add('hidden'); }
+
+async function adminCriarCodigos() {
+  const quantidade = Number(document.getElementById('adminQuantidade').value);
+  const resultado = await chamarAdmin('create_codes', { quantity: quantidade });
+  document.getElementById('adminCodigosGerados').textContent = resultado.codes.map(item=>item.codigo).join('\n');
+  await carregarPainelAdmin();
+}
+
+function adminGerarMaster() {
+  const alfabeto='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const bytes=crypto.getRandomValues(new Uint8Array(12));
+  const raw=[...bytes].map(valor=>alfabeto[valor%alfabeto.length]).join('');
+  document.getElementById('adminNovaMaster').value=raw.match(/.{4}/g).join('-');
+}
+
+async function adminRotacionarMaster() {
+  const input=document.getElementById('adminNovaMaster');
+  const password=input.value.trim().toUpperCase();
+  if(!input.checkValidity()) return document.getElementById('adminStatus').textContent='Use o formato XXXX-XXXX-XXXX.';
+  const revokeExisting=document.getElementById('adminRevogarTesters').checked;
+  if(!confirm(`Confirmar rotação da senha master${revokeExisting?' e revogação das sessões existentes':''}?`)) return;
+  await chamarAdmin('rotate_master',{password,revoke_existing:revokeExisting});
+  input.value='';
+  await carregarPainelAdmin();
+  document.getElementById('adminStatus').textContent=`Senha alterada. Guarde agora: ${password}`;
+}
+
+async function adminRevogarLicenca(id) {
+  if(!confirm('Revogar esta licença?')) return;
+  await chamarAdmin('revoke_license',{id});
+  await carregarPainelAdmin();
+}
+async function adminRevogarTester(id) {
+  if(!confirm('Revogar esta sessão tester?')) return;
+  await chamarAdmin('revoke_tester_session',{id});
+  await carregarPainelAdmin();
+}
+
+Object.assign(window,{abrirPainelAdmin,fecharPainelAdmin,adminCriarCodigos,adminGerarMaster,adminRotacionarMaster,adminRevogarLicenca,adminRevogarTester});
+
 // ============================================================
 // BOOT
 // ============================================================
@@ -3683,6 +3855,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Aplica tema/estilo antes de decidir qual tela mostrar, para que a
   // própria tela de ativação já nasça com o tema correto (evita flash)
   carregarPreferenciaEstilo();
+  await verificarAcessoAdmin();
 
   if (await validarSessaoAtual()) {
     try {
