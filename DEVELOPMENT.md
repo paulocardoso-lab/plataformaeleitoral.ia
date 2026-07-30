@@ -55,7 +55,13 @@ Antes de publicar alterações em rankings, turnos ou agregações:
 ```bash
 node scripts/test-election-features.mjs
 node scripts/audit-config.mjs
+node scripts/audit-accessibility.mjs
 ```
+
+A auditoria de acessibilidade verifica regras estruturais mobile-first,
+ampliação, nomes de campos, controles nativos, foco, contraste, canvases e
+anúncios dinâmicos. A validação em aparelhos reais continua obrigatória e está
+descrita em `ACCESSIBILITY_TEST_MATRIX.md`.
 
 Quando tiver novos dados TSE:
 
@@ -139,7 +145,9 @@ o hash no repositório.
 
 ### Contraste/Acessibilidade
 - DevTools > Lighthouse → Accessibility
-- WCAG 2.1 AA: text light contra bg dark = alto contraste ✓
+- Executar `node scripts/audit-accessibility.mjs`
+- Seguir `ACCESSIBILITY_TEST_MATRIX.md`
+- Meta: WCAG 2.2 AA e zero ocorrência crítica ou séria
 
 ### Rede
 - Sem conexão, o shell abre e informa que os dados protegidos exigem internet.

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Eleições MS">
@@ -26,10 +26,10 @@ html {
   font-size: 16px;
 }
 html[data-fonte="g1"] {
-  font-size: 12px;
+  font-size: 14px;
 }
 html[data-fonte="g2"] {
-  font-size: 14px;
+  font-size: 15px;
 }
 html[data-fonte="g4"] {
   font-size: 18px;
@@ -54,7 +54,7 @@ html[data-fonte="g7"] {
   --neon-yellow: #ffd60a;
   --text-light: #f0f0f0;
   --text-muted: #a0a0a0;
-  --border: #1a2454;
+  --border: #6070b0;
   --font-titulo: 'Playfair Display', serif;
   --font-corpo: 'Inter', sans-serif;
   --radius-card: 10px;
@@ -70,7 +70,7 @@ html[data-estilo="aeroporto"] {
   --neon-yellow: #ffb000;
   --text-light: #f0f0f0;
   --text-muted: #8a8a8a;
-  --border: #2a2a2a;
+  --border: #707070;
   --font-titulo: 'Archivo', sans-serif;
   --font-corpo: 'IBM Plex Mono', monospace;
   --radius-card: 0px;
@@ -130,7 +130,6 @@ html, body {
   color: var(--text-light);
   font-family: var(--font-corpo);
   font-size: 1rem;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   height: 100%;
 }
@@ -146,10 +145,10 @@ html, body {
 /* ===== TOPBAR ===== */
 .topbar {
   display: grid;
-  grid-template-columns: 40px 1fr 60px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
+  padding: 10px 12px;
   background: var(--bg-1);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -158,8 +157,8 @@ html, body {
 }
 
 .topbar .voltar {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 8px;
   background: var(--bg-2);
   border: 1px solid var(--border);
@@ -171,6 +170,7 @@ html, body {
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.2s;
+  padding: 0;
 }
 
 .topbar .voltar:active {
@@ -190,7 +190,8 @@ html, body {
 }
 
 .marca-logo-completa {
-  height: 96px;
+  height: 76px;
+  max-width: 100%;
   width: auto;
 }
 
@@ -216,6 +217,7 @@ html, body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin: 0;
 }
 
 .topbar .badge {
@@ -308,7 +310,15 @@ html, body {
 }
 
 .bu-item:last-child { border-bottom: none; }
-.bu-item:hover, .bu-item:active { background: rgba(0,217,255,0.08); }
+.bu-item:hover, .bu-item:active, .bu-item:focus-visible { background: rgba(0,217,255,0.08); }
+.bu-item {
+  width: 100%;
+  border: 0;
+  background: var(--bg-2);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
 
 .bu-item-tipo {
   font-size: 0.6875rem;
@@ -322,10 +332,10 @@ html, body {
   color: var(--text-light);
 }
 
-/* ===== GRID 3x3 MOBILE-FIRST ===== */
+/* ===== GRID MOBILE-FIRST ===== */
 .grid9 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   padding: 20px 12px 28px;
   flex: 1;
@@ -347,6 +357,8 @@ html, body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  color: inherit;
+  font: inherit;
 }
 
 .tile::before {
@@ -390,7 +402,7 @@ html, body {
 }
 
 .tile .rotulo {
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   line-height: 1.1;
   color: var(--text-light);
@@ -429,6 +441,7 @@ html, body {
 
 .filtro-linha {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
@@ -448,7 +461,7 @@ html, body {
   margin-bottom: 3px;
 }
 
-select, input[type="text"] {
+select, input[type="text"], input[type="search"] {
   width: 100%;
   background: var(--bg-2);
   border: 1px solid var(--border);
@@ -461,12 +474,22 @@ select, input[type="text"] {
   appearance: none;
   -webkit-appearance: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 44px;
 }
 
 select:focus, input:focus {
   outline: none;
   border-color: var(--neon-cyan);
   box-shadow: 0 0 8px rgba(0,217,255,0.2);
+}
+
+button:focus-visible,
+[tabindex]:focus-visible,
+select:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--neon-yellow);
+  outline-offset: 3px;
 }
 
 .select-box::after {
@@ -542,15 +565,21 @@ select:focus, input:focus {
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .sugestao-item {
+  width: 100%;
   padding: 10px 14px;
+  border: 0;
   border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-light);
+  font: inherit;
+  text-align: left;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .sugestao-item:last-child { border-bottom: none; }
-.sugestao-item:hover, .sugestao-item:active { background: rgba(0,217,255,0.08); }
+.sugestao-item:hover, .sugestao-item:active, .sugestao-item:focus-visible { background: rgba(0,217,255,0.08); }
 .sugestao-texto { font-size: 0.8125rem; font-weight: 600; }
 .sugestao-contexto { font-size: 0.6875rem; color: var(--text-muted); }
 
@@ -560,7 +589,7 @@ select:focus, input:focus {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 14px;
-  margin: 0 14px 12px;
+  margin: 0 10px 12px;
   margin-top: 14px;
 }
 
@@ -762,7 +791,30 @@ select:focus, input:focus {
   display: none;
 }
 
-.login-admin { width:100%; min-height:44px; margin-top:12px; border:0; background:transparent; color:var(--text-muted); text-decoration:underline; cursor:pointer; }
+.admin-icon-button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s, transform .2s;
+}
+.admin-icon-button svg { width:20px; height:20px; }
+.admin-icon-button:hover,
+.admin-icon-button:focus-visible {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0,217,255,.1);
+  outline: none;
+}
+.admin-icon-button:active { transform:scale(.94); }
+.login-admin { width:44px; height:44px; margin:12px 0 0 auto; flex-basis:44px; }
 .login-rodape { margin-top:18px; text-align:center; color:var(--text-muted); font-size:.7rem; }
 
 @media (min-width: 600px) {
@@ -831,9 +883,7 @@ select:focus, input:focus {
   font-size: 0.8125rem;
   font-weight: 600;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
   line-height: 1.3;
 }
 
@@ -851,13 +901,15 @@ select:focus, input:focus {
   white-space: nowrap;
   text-align: right;
   font-family: 'Courier New', monospace;
+  max-width: 45%;
+  overflow-wrap: anywhere;
 }
 
 .item-percentual {
   margin-top: 2px;
   color: var(--text-muted);
   font-family: var(--font-corpo);
-  font-size: 0.5625rem;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 
@@ -901,7 +953,7 @@ select:focus, input:focus {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   padding: 14px;
-  margin: 0 14px 12px;
+  margin: 0 10px 12px;
 }
 
 .stat-card {
@@ -975,6 +1027,7 @@ select:focus, input:focus {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s;
+  min-height: 44px;
 }
 
 .chip.ativo {
@@ -1131,8 +1184,10 @@ canvas {
   background: var(--bg-1);
   border-top: 1px solid var(--border);
   flex-shrink: 0;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow-x: visible;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
 
 .rodape-marca {
@@ -1141,6 +1196,7 @@ canvas {
   gap: 8px;
   min-width: 0;
   flex-shrink: 1;
+  justify-content: center;
 }
 
 .rodape-acoes {
@@ -1148,6 +1204,9 @@ canvas {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 
 .rodape-logo {
@@ -1221,6 +1280,8 @@ canvas {
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.2s;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .rodape-btn-sobre {
@@ -1275,8 +1336,8 @@ canvas {
   background: var(--bg-2);
   border: 1px solid var(--border);
   color: var(--neon-cyan);
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border-radius: 8px;
   cursor: pointer;
@@ -1297,7 +1358,7 @@ canvas {
 }
 
 .btn-ver-detalhes {
-  min-height: 34px;
+  min-height: 44px;
   margin-top: 8px;
   padding: 7px 11px;
   border: 1px solid var(--neon-cyan);
@@ -1363,9 +1424,9 @@ canvas {
 }
 
 .candidato-detalhes-fechar {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--bg-2);
@@ -1478,8 +1539,33 @@ canvas {
 }
 
 ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 8px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+@media (min-width: 380px) {
+  .grid9 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 480px) {
+  .filtro-linha {
+    flex-direction: row;
+  }
+  .rodape-fixo {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .rodape-acoes {
+    width: auto;
+    flex-wrap: nowrap;
+  }
 }
 
 /* Media queries — ainda mobile-first, ajustes só pra tablets+ se necessário */
@@ -1497,18 +1583,63 @@ canvas {
 
 #adminModal {
   position: fixed; inset: 0; z-index: 10000; overflow: auto;
-  background: rgba(2, 6, 23, .96); color: #e2e8f0; padding: 24px;
+  background: rgba(2, 6, 23, .96); color: #e2e8f0;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
 }
 #adminModal.hidden, .admin-only.hidden { display: none !important; }
-.admin-shell { max-width: 1100px; margin: 0 auto; }
-.admin-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
-.admin-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin:18px 0; }
-.admin-card { background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px; overflow:auto; }
+.admin-shell { width:100%; max-width:1100px; min-width:0; margin:0 auto; }
+.admin-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.admin-head > div { min-width:0; overflow-wrap:anywhere; }
+.admin-head h2 { margin-top:0; }
+.admin-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; margin:14px 0; }
+.admin-card { min-width:0; background:#0f172a; border:1px solid #334155; border-radius:12px; padding:12px; overflow:hidden; }
 .admin-card input { width:100%; box-sizing:border-box; margin:6px 0; }
+.admin-card button, .admin-head button { min-height:44px; }
 .admin-table { width:100%; border-collapse:collapse; font-size:12px; }
-.admin-table th,.admin-table td { padding:7px; border-bottom:1px solid #334155; text-align:left; white-space:nowrap; }
+.admin-table th,.admin-table td { padding:7px; border-bottom:1px solid #334155; text-align:left; overflow-wrap:anywhere; }
 .admin-actions { display:flex; flex-wrap:wrap; gap:8px; }
 .admin-status { min-height:22px; color:#fbbf24; margin:8px 0; }
+
+@media (max-width: 599px) {
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+  .admin-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .admin-table tr {
+    padding: 10px 0;
+    border-bottom: 1px solid #475569;
+  }
+  .admin-table td {
+    display: grid;
+    grid-template-columns: minmax(82px, 36%) minmax(0, 1fr);
+    gap: 8px;
+    border: 0;
+    padding: 5px 0;
+    white-space: normal;
+  }
+  .admin-table td::before {
+    content: attr(data-label);
+    color: #94a3b8;
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 600px) {
+  #adminModal { padding:24px; }
+  .admin-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:18px 0; }
+  .admin-card { padding:16px; overflow:auto; }
+  .admin-table th,.admin-table td { white-space:nowrap; }
+}
 .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
 #appLoading { position:fixed; inset:0; z-index:12000; display:grid; place-items:center; background:rgba(2,6,23,.92); color:#fff; text-align:center; padding:24px; }
 #appLoading.hidden { display:none; }
@@ -1516,6 +1647,41 @@ canvas {
 @keyframes girar { to { transform:rotate(360deg); } }
 #conectividadeStatus { position:fixed; top:0; left:0; right:0; z-index:11000; padding:7px; text-align:center; background:#991b1b; color:#fff; font-size:13px; }
 #conectividadeStatus.hidden { display:none; }
+
+/* Legibilidade funcional — base da Fase 3 */
+.sugestao-contexto,
+.bu-item-tipo,
+.card-sub,
+.item-detalhe,
+.stat-label,
+.chip,
+.compare-ranking-titulo,
+.sec-titulo,
+.candidato-identidade-aviso,
+.btn-ver-detalhes,
+.btn-exportar,
+.versao-data,
+.candidato-detalhes-stat span,
+.login-rodape,
+.rank-num {
+  font-size: 0.8125rem;
+}
+.badge,
+.topbar .badge,
+.home-hero .tag {
+  font-size: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1577,18 +1743,25 @@ canvas {
         </div>
       </details>
 
-      <button id="btnAdminAtivacao" class="login-admin admin-only hidden" onclick="abrirPainelAdmin()">Abrir administração</button>
+      <button id="btnAdminAtivacao" class="login-admin admin-icon-button admin-only hidden"
+              onclick="abrirPainelAdmin()" aria-label="Abrir administração" title="Administração">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6l7-3z"/>
+          <circle cx="12" cy="10" r="2"/>
+          <path d="M12 12v5m0-2h2"/>
+        </svg>
+      </button>
       <div id="ativacaoErro" role="status" aria-live="polite"></div>
     </main>
     <footer class="login-rodape">Girassol Inteligência · <span data-app-version>v 2.13.0</span></footer>
   </div>
 </div>
 
-<div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitulo">
-  <div class="admin-shell">
+<div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitulo" aria-hidden="true">
+  <div class="admin-shell" role="document">
     <div class="admin-head">
       <div><h2 id="adminTitulo">Administração de acessos</h2><small id="adminIdentidade"></small></div>
-      <button onclick="fecharPainelAdmin()">Fechar</button>
+      <button type="button" id="btnFecharAdmin" onclick="fecharPainelAdmin()">Fechar</button>
     </div>
     <div id="adminStatus" class="admin-status" role="status" aria-live="polite"></div>
     <div class="admin-grid">
@@ -1600,6 +1773,7 @@ canvas {
       </section>
       <section class="admin-card">
         <h3>Rotacionar senha master</h3>
+        <label for="adminNovaMaster">Nova senha master</label>
         <input id="adminNovaMaster" type="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}" placeholder="XXXX-XXXX-XXXX">
         <label><input id="adminRevogarTesters" type="checkbox"> Revogar sessões tester existentes</label>
         <div class="admin-actions">
@@ -1615,7 +1789,7 @@ canvas {
   </div>
 </div>
 
-<div id="candidatoDetalhesModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="candidatoDetalhesTitulo">
+<div id="candidatoDetalhesModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="candidatoDetalhesTitulo" aria-hidden="true">
   <div class="candidato-detalhes-painel" role="document">
     <div class="candidato-detalhes-cabecalho">
       <h2 id="candidatoDetalhesTitulo">Detalhes do candidato</h2>
@@ -1633,18 +1807,20 @@ canvas {
 <div id="app">
 
   <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="voltar hidden" id="btnVoltar" onclick="voltarHome()">‹</div>
+  <header class="topbar">
+    <button type="button" class="voltar hidden" id="btnVoltar" onclick="voltarHome()" aria-label="Voltar à tela inicial">‹</button>
     <div class="marca-topbar" id="marcaTopbar">
       <img src="/icons/logopeia-topbar.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-completa">
       <div class="marca-texto">
-        <div class="marca-nome" id="tituloTela">PE.IA</div>
+        <h1 class="marca-nome" id="tituloTela">PE.IA</h1>
       </div>
     </div>
-  </div>
+  </header>
+  <div id="anuncioNavegacao" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="anuncioResultados" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- TELA HOME -->
-  <div class="tela ativa" id="tela-home">
+  <div class="tela ativa" id="tela-home" role="main">
     <div class="conteudo" style="overflow-y:auto;">
       <div class="home-hero">
         <div class="tag">Dados oficiais TSE</div>
@@ -1652,12 +1828,15 @@ canvas {
         <p>Consulte resultados dos 79 municípios, de 2010 a 2024. Funciona sem internet.</p>
       </div>
       <div class="busca-universal" id="buscaUniversalBox">
-        <input type="text" class="bu-input" id="buscaUniversalInput"
-               placeholder="Buscar candidato, cidade ou cargo...">
+        <label class="sr-only" for="buscaUniversalInput">Buscar candidato, cidade ou cargo</label>
+        <input type="search" class="bu-input" id="buscaUniversalInput"
+               placeholder="Buscar candidato, cidade ou cargo..."
+               role="combobox" aria-autocomplete="list" aria-expanded="false"
+               aria-controls="buscaUniversalResultados" autocomplete="off">
         <button class="btn-microfone" id="btnMicrofoneUniversal" onclick="iniciarBuscaPorVoz('buscaUniversalInput')" aria-label="Buscar por voz" title="Falar para buscar">
           <svg><use href="#icon-microfone"></use></svg>
         </button>
-        <div class="bu-resultados hidden" id="buscaUniversalResultados"></div>
+        <div class="bu-resultados hidden" id="buscaUniversalResultados" role="listbox" aria-label="Resultados da busca"></div>
       </div>
       <div id="avisoHome"></div>
       <div class="grid9" id="grid9"></div>
@@ -1670,11 +1849,15 @@ canvas {
     <div class="filtros">
       <div class="busca-box">
         <span class="lupa">⌕</span>
-        <input type="text" id="buscaCandidatoInput" placeholder="Nome do candidato...">
+        <label class="sr-only" for="buscaCandidatoInput">Nome do candidato</label>
+        <input type="search" id="buscaCandidatoInput" placeholder="Nome do candidato..."
+               role="combobox" aria-autocomplete="list" aria-expanded="false"
+               aria-controls="sugestoesBuscaCandidato" autocomplete="off">
         <button class="btn-microfone" id="btnMicrofoneCandidato" onclick="iniciarBuscaPorVoz('buscaCandidatoInput')" aria-label="Buscar por voz" title="Falar para buscar">
           <svg><use href="#icon-microfone"></use></svg>
         </button>
-        <div class="sugestoes-dropdown" id="sugestoesBuscaCandidato" style="display:none;"></div>
+        <div class="sugestoes-dropdown" id="sugestoesBuscaCandidato" role="listbox"
+             aria-label="Sugestões de candidatos" style="display:none;"></div>
       </div>
     </div>
     <div class="conteudo" id="resultadoBuscaCandidato"></div>
@@ -1684,10 +1867,10 @@ canvas {
   <div class="tela" id="tela-2">
     <div class="filtros">
       <div class="filtro-linha">
-        <div class="select-box"><label>Ano</label><select id="rk_ano"></select></div>
-        <div class="select-box"><label>Cargo</label><select id="rk_cargo"></select></div>
+        <div class="select-box"><label for="rk_ano">Ano</label><select id="rk_ano"></select></div>
+        <div class="select-box"><label for="rk_cargo">Cargo</label><select id="rk_cargo"></select></div>
       </div>
-      <div class="select-box"><label>Município</label><select id="rk_municipio"></select></div>
+      <div class="select-box"><label for="rk_municipio">Município</label><select id="rk_municipio"></select></div>
     </div>
     <div class="barra-exportar">
       <button onclick="exportarComoImagem('cardExportarRanking', 'ranking')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
@@ -1701,8 +1884,8 @@ canvas {
   <div class="tela" id="tela-3">
     <div class="filtros">
       <div class="filtro-linha">
-        <div class="select-box"><label>Município</label><select id="mm_municipio"></select></div>
-        <div class="select-box"><label>Ano</label><select id="mm_ano"></select></div>
+        <div class="select-box"><label for="mm_municipio">Município</label><select id="mm_municipio"></select></div>
+        <div class="select-box"><label for="mm_ano">Ano</label><select id="mm_ano"></select></div>
       </div>
     </div>
     <div class="barra-exportar">
@@ -1717,12 +1900,12 @@ canvas {
   <div class="tela" id="tela-4">
     <div class="filtros">
       <div class="filtro-linha">
-        <div class="select-box"><label>Município A</label><select id="cmp_mun_a"></select></div>
-        <div class="select-box"><label>Município B</label><select id="cmp_mun_b"></select></div>
+        <div class="select-box"><label for="cmp_mun_a">Município A</label><select id="cmp_mun_a"></select></div>
+        <div class="select-box"><label for="cmp_mun_b">Município B</label><select id="cmp_mun_b"></select></div>
       </div>
       <div class="filtro-linha">
-        <div class="select-box"><label>Ano</label><select id="cmp_ano"></select></div>
-        <div class="select-box"><label>Cargo</label><select id="cmp_cargo"></select></div>
+        <div class="select-box"><label for="cmp_ano">Ano</label><select id="cmp_ano"></select></div>
+        <div class="select-box"><label for="cmp_cargo">Cargo</label><select id="cmp_cargo"></select></div>
       </div>
     </div>
     <div class="barra-exportar">
@@ -1738,9 +1921,10 @@ canvas {
     <div class="filtros">
       <div class="busca-box">
         <span class="lupa">⌕</span>
-        <input type="text" id="evo_busca" placeholder="Nome do candidato...">
+        <label class="sr-only" for="evo_busca">Nome do candidato</label>
+        <input type="search" id="evo_busca" placeholder="Nome do candidato..." autocomplete="off">
       </div>
-      <div class="select-box"><label>Município (opcional)</label><select id="evo_municipio"></select></div>
+      <div class="select-box"><label for="evo_municipio">Município (opcional)</label><select id="evo_municipio"></select></div>
     </div>
     <div class="conteudo" id="resultadoEvolucao"></div>
   </div>
@@ -1749,10 +1933,10 @@ canvas {
   <div class="tela" id="tela-6">
     <div class="filtros">
       <div class="filtro-linha">
-        <div class="select-box"><label>Ano</label><select id="pt_ano"></select></div>
-        <div class="select-box"><label>Cargo</label><select id="pt_cargo"></select></div>
+        <div class="select-box"><label for="pt_ano">Ano</label><select id="pt_ano"></select></div>
+        <div class="select-box"><label for="pt_cargo">Cargo</label><select id="pt_cargo"></select></div>
       </div>
-      <div class="select-box"><label>Município</label><select id="pt_municipio"></select></div>
+      <div class="select-box"><label for="pt_municipio">Município</label><select id="pt_municipio"></select></div>
     </div>
     <div class="barra-exportar">
       <button onclick="exportarComoImagem('cardExportarPartidos', 'partidos')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
@@ -1765,13 +1949,13 @@ canvas {
   <!-- TELA 7: PREFEITO & VEREADORES -->
   <div class="tela" id="tela-7">
     <div class="filtros">
-      <div class="chip-toggle" id="pv_chip_cargo">
-        <div class="chip ativo" data-cargo="prefeito">Prefeito</div>
-        <div class="chip" data-cargo="vereador">Vereador</div>
+      <div class="chip-toggle" id="pv_chip_cargo" role="group" aria-label="Cargo">
+        <button type="button" class="chip ativo" data-cargo="prefeito" aria-pressed="true">Prefeito</button>
+        <button type="button" class="chip" data-cargo="vereador" aria-pressed="false">Vereador</button>
       </div>
       <div class="filtro-linha">
-        <div class="select-box"><label>Município</label><select id="pv_municipio"></select></div>
-        <div class="select-box"><label>Ano</label><select id="pv_ano"></select></div>
+        <div class="select-box"><label for="pv_municipio">Município</label><select id="pv_municipio"></select></div>
+        <div class="select-box"><label for="pv_ano">Ano</label><select id="pv_ano"></select></div>
       </div>
     </div>
     <div class="barra-exportar">
@@ -1785,16 +1969,16 @@ canvas {
   <!-- TELA 8: PRESIDENTE & GOVERNADOR -->
   <div class="tela" id="tela-8">
     <div class="filtros">
-      <div class="chip-toggle" id="pg_chip_cargo">
-        <div class="chip ativo" data-cargo="presidente">Presidente</div>
-        <div class="chip" data-cargo="governador">Governador</div>
-        <div class="chip" data-cargo="senador">Senador</div>
-        <div class="chip" data-cargo="deputado federal">Dep. Federal</div>
-        <div class="chip" data-cargo="deputado estadual">Dep. Estadual</div>
+      <div class="chip-toggle" id="pg_chip_cargo" role="group" aria-label="Cargo">
+        <button type="button" class="chip ativo" data-cargo="presidente" aria-pressed="true">Presidente</button>
+        <button type="button" class="chip" data-cargo="governador" aria-pressed="false">Governador</button>
+        <button type="button" class="chip" data-cargo="senador" aria-pressed="false">Senador</button>
+        <button type="button" class="chip" data-cargo="deputado federal" aria-pressed="false">Dep. Federal</button>
+        <button type="button" class="chip" data-cargo="deputado estadual" aria-pressed="false">Dep. Estadual</button>
       </div>
       <div class="filtro-linha">
-        <div class="select-box"><label>Município</label><select id="pg_municipio"></select></div>
-        <div class="select-box"><label>Ano</label><select id="pg_ano"></select></div>
+        <div class="select-box"><label for="pg_municipio">Município</label><select id="pg_municipio"></select></div>
+        <div class="select-box"><label for="pg_ano">Ano</label><select id="pg_ano"></select></div>
       </div>
     </div>
     <div class="barra-exportar">
@@ -1808,16 +1992,16 @@ canvas {
   <!-- TELA 9: MEU ESTADO -->
   <div class="tela" id="tela-9">
     <div class="filtros">
-      <div class="chip-toggle" id="me_chip_secao">
-        <div class="chip ativo" data-secao="territorio">Território</div>
-        <div class="chip" data-secao="demografia">Demografia</div>
-        <div class="chip" data-secao="eleitores">Eleitores</div>
-        <div class="chip" data-secao="emprego_renda">Emprego</div>
-        <div class="chip" data-secao="educacao">Educação</div>
-        <div class="chip" data-secao="saude">Saúde</div>
-        <div class="chip" data-secao="seguranca">Segurança</div>
-        <div class="chip" data-secao="infraestrutura">Infraestrutura</div>
-        <div class="chip" data-secao="economia">Economia</div>
+      <div class="chip-toggle" id="me_chip_secao" role="group" aria-label="Seção de dados estaduais">
+        <button type="button" class="chip ativo" data-secao="territorio" aria-pressed="true">Território</button>
+        <button type="button" class="chip" data-secao="demografia" aria-pressed="false">Demografia</button>
+        <button type="button" class="chip" data-secao="eleitores" aria-pressed="false">Eleitores</button>
+        <button type="button" class="chip" data-secao="emprego_renda" aria-pressed="false">Emprego</button>
+        <button type="button" class="chip" data-secao="educacao" aria-pressed="false">Educação</button>
+        <button type="button" class="chip" data-secao="saude" aria-pressed="false">Saúde</button>
+        <button type="button" class="chip" data-secao="seguranca" aria-pressed="false">Segurança</button>
+        <button type="button" class="chip" data-secao="infraestrutura" aria-pressed="false">Infraestrutura</button>
+        <button type="button" class="chip" data-secao="economia" aria-pressed="false">Economia</button>
       </div>
     </div>
     <div class="conteudo" id="resultadoMeuEstado"></div>
@@ -1887,13 +2071,20 @@ canvas {
     </div>
   </div>
 
-  <div class="rodape-fixo">
+  <footer class="rodape-fixo">
     <div class="rodape-marca">
     <img src="data:image/png;base64,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" alt="Girassol Inteligência" class="rodape-logo">
     <span class="rodape-texto">Girassol Inteligência</span>
     </div>
     <div class="rodape-acoes">
-    <button id="btnAdminRodape" class="admin-only hidden" onclick="abrirPainelAdmin()" aria-label="Administração" title="Administração">⚙</button>
+    <button id="btnAdminRodape" class="admin-icon-button admin-only hidden"
+            onclick="abrirPainelAdmin()" aria-label="Abrir administração" title="Administração">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6l7-3z"/>
+        <circle cx="12" cy="10" r="2"/>
+        <path d="M12 12v5m0-2h2"/>
+      </svg>
+    </button>
     <button class="rodape-btn-acessibilidade" id="btnFonteMenor" onclick="diminuirTamanhoFonte()" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A-</button>
     <button class="rodape-btn-acessibilidade" id="btnFonteGrande" onclick="aumentarTamanhoFonte()" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
     <button class="rodape-btn-estilo" id="btnEstilo" onclick="alternarEstilo()" aria-label="Alternar estilo visual" title="Alternar estilo: Neon / Aeroporto">◧</button>
@@ -1902,7 +2093,7 @@ canvas {
     </button>
     <span class="rodape-versao" id="appVersion">v 2.12.1</span>
     </div>
-  </div>
+  </footer>
 
 </div>
 
@@ -2356,9 +2547,9 @@ function nomeExibicaoCandidato(v) {
 function chipsTurno(idPrefix, turnoAtivo) {
   return `
     <p class="card-sub">Esta eleição teve 2 turnos</p>
-    <div class="chip-toggle" id="${idPrefix}_chip_turno">
-      <div class="chip ${turnoAtivo==='1'?'ativo':''}" data-turno="1">1º Turno</div>
-      <div class="chip ${turnoAtivo==='2'?'ativo':''}" data-turno="2">2º Turno</div>
+    <div class="chip-toggle" id="${idPrefix}_chip_turno" role="group" aria-label="Turno">
+      <button type="button" class="chip ${turnoAtivo==='1'?'ativo':''}" data-turno="1" aria-pressed="${turnoAtivo==='1'}">1º Turno</button>
+      <button type="button" class="chip ${turnoAtivo==='2'?'ativo':''}" data-turno="2" aria-pressed="${turnoAtivo==='2'}">2º Turno</button>
     </div>
   `;
 }
@@ -2367,8 +2558,6 @@ function ativarChipsTurno(idPrefix, onChange) {
   const el = document.getElementById(idPrefix+'_chip_turno');
   if (!el) return;
   el.querySelectorAll('.chip').forEach(chip => {
-    chip.setAttribute('role', 'button');
-    chip.setAttribute('tabindex', '0');
     chip.setAttribute('aria-pressed', chip.classList.contains('ativo') ? 'true' : 'false');
     const selecionar = () => {
       el.querySelectorAll('.chip').forEach(c => {
@@ -2381,12 +2570,6 @@ function ativarChipsTurno(idPrefix, onChange) {
     };
     chip.addEventListener('click', () => {
       selecionar();
-    });
-    chip.addEventListener('keydown', evento => {
-      if (evento.key === 'Enter' || evento.key === ' ') {
-        evento.preventDefault();
-        selecionar();
-      }
     });
   });
 }
@@ -2464,38 +2647,56 @@ function montarHome() {
 
   const grid = document.getElementById('grid9');
   grid.innerHTML = BOTOES.map(b => `
-    <div class="tile" role="button" tabindex="0" onclick="abrirTela(${b.id})"
-         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirTela(${b.id})}">
+    <button type="button" class="tile" onclick="abrirTela(${b.id})">
       <div class="icone">${ICONES[b.icone]}</div>
       <div class="rotulo">${b.rotulo.replace('\n','<br>')}</div>
-    </div>
+    </button>
   `).join('');
 }
 
 function fecharBuscaUniversal() {
   const box = document.getElementById('buscaUniversalResultados');
   if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+  const input = document.getElementById('buscaUniversalInput');
+  if (input) input.setAttribute('aria-expanded', 'false');
 }
 
 function abrirTela(id) {
   fecharBuscaUniversal();
-  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
-  document.getElementById('tela-'+id).classList.add('ativa');
-  document.getElementById('tituloTela').textContent = BOTOES.find(b=>b.id===id).titulo;
+  document.querySelectorAll('.tela').forEach(t => {
+    t.classList.remove('ativa');
+    t.removeAttribute('role');
+  });
+  const telaDestino = document.getElementById('tela-'+id);
+  telaDestino.classList.add('ativa');
+  telaDestino.setAttribute('role', 'main');
+  const titulo = BOTOES.find(b=>b.id===id).titulo;
+  document.getElementById('tituloTela').textContent = titulo;
   document.getElementById('marcaTopbar').classList.add('tela-interna');
   document.getElementById('btnVoltar').classList.remove('hidden');
   telaAtual = id;
   inicializarTela(id);
+  document.title = `${titulo} · PE.IA`;
+  const anuncio = document.getElementById('anuncioNavegacao');
+  anuncio.textContent = `Tela ${titulo}`;
+  requestAnimationFrame(() => document.getElementById('btnVoltar').focus());
 }
 
 function voltarHome() {
   fecharBuscaUniversal();
-  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.querySelectorAll('.tela').forEach(t => {
+    t.classList.remove('ativa');
+    t.removeAttribute('role');
+  });
   document.getElementById('tela-home').classList.add('ativa');
+  document.getElementById('tela-home').setAttribute('role', 'main');
   document.getElementById('tituloTela').textContent = 'PE.IA';
   document.getElementById('marcaTopbar').classList.remove('tela-interna');
   document.getElementById('btnVoltar').classList.add('hidden');
   telaAtual = 'home';
+  document.title = 'PE.IA — Plataforma Eleitoral Inteligente';
+  document.getElementById('anuncioNavegacao').textContent = 'Tela inicial';
+  requestAnimationFrame(() => document.getElementById('buscaUniversalInput').focus());
 }
 
 // ---------- HELPERS DE SELECT ----------
@@ -2597,9 +2798,38 @@ function initBuscaUniversal() {
   const input = document.getElementById('buscaUniversalInput');
   const box = document.getElementById('buscaUniversalResultados');
   input.addEventListener('input', debounce(renderBuscaUniversal, 250));
+  configurarNavegacaoSugestoes(input, box, () => fecharBuscaUniversal());
   document.addEventListener('click', (e) => {
     if (!document.getElementById('buscaUniversalBox').contains(e.target)) {
-      box.classList.add('hidden');
+      fecharBuscaUniversal();
+    }
+  });
+}
+
+function configurarNavegacaoSugestoes(input, box, fechar) {
+  input.addEventListener('keydown', evento => {
+    if (evento.key === 'Escape') {
+      fechar();
+      return;
+    }
+    if (evento.key !== 'ArrowDown' && evento.key !== 'ArrowUp') return;
+    const opcoes = [...box.querySelectorAll('[role="option"]:not([disabled])')];
+    if (!opcoes.length) return;
+    evento.preventDefault();
+    (evento.key === 'ArrowDown' ? opcoes[0] : opcoes[opcoes.length - 1]).focus();
+  });
+  box.addEventListener('keydown', evento => {
+    const opcoes = [...box.querySelectorAll('[role="option"]:not([disabled])')];
+    const atual = opcoes.indexOf(document.activeElement);
+    if (evento.key === 'Escape') {
+      evento.preventDefault();
+      fechar();
+      input.focus();
+    } else if (evento.key === 'ArrowDown' || evento.key === 'ArrowUp') {
+      evento.preventDefault();
+      const passo = evento.key === 'ArrowDown' ? 1 : -1;
+      const proximo = Math.max(0, Math.min(opcoes.length - 1, atual + passo));
+      opcoes[proximo]?.focus();
     }
   });
 }
@@ -2608,7 +2838,10 @@ function renderBuscaUniversal() {
   const input = document.getElementById('buscaUniversalInput');
   const box = document.getElementById('buscaUniversalResultados');
   const termoBruto = input.value.trim();
-  if (termoBruto.length < 3) { box.classList.add('hidden'); box.innerHTML=''; return; }
+  if (termoBruto.length < 3) {
+    fecharBuscaUniversal();
+    return;
+  }
   const termo = normalizarTexto(termoBruto);
 
   const resultados = [];
@@ -2673,19 +2906,21 @@ function renderBuscaUniversal() {
   }
 
   if (resultados.length === 0) {
-    box.innerHTML = `<div class="bu-item">Nenhum resultado encontrado.</div>`;
+    box.innerHTML = `<div class="bu-item" role="status">Nenhum resultado encontrado.</div>`;
     box.classList.remove('hidden');
+    input.setAttribute('aria-expanded', 'true');
     return;
   }
 
   const finais = resultados.slice(0, 8);
   box.innerHTML = finais.map(r => `
-    <div class="bu-item" onclick='selecionarBuscaUniversal(${JSON.stringify(r.tipo)}, ${JSON.stringify(r.valor)})'>
+    <button type="button" class="bu-item" role="option" onclick='selecionarBuscaUniversal(${JSON.stringify(r.tipo)}, ${JSON.stringify(r.valor)})'>
       <div class="bu-item-tipo">${r.tipo}</div>
       <div class="bu-item-nome">${r.label}</div>
-    </div>
+    </button>
   `).join('');
   box.classList.remove('hidden');
+  input.setAttribute('aria-expanded', 'true');
 }
 
 function selecionarBuscaUniversal(tipo, valor) {
@@ -2748,21 +2983,28 @@ function gerarSugestoes(termo, limite = 6) {
 
 function renderizarSugestoes(inputId, dropdownId) {
   const dropdown = document.getElementById(dropdownId);
-  const termo = document.getElementById(inputId).value.trim();
+  const input = document.getElementById(inputId);
+  const termo = input.value.trim();
   const sugestoes = gerarSugestoes(termo);
-  if (sugestoes.length === 0) { dropdown.style.display = 'none'; return; }
+  if (sugestoes.length === 0) {
+    dropdown.style.display = 'none';
+    input.setAttribute('aria-expanded', 'false');
+    return;
+  }
 
   dropdown.innerHTML = sugestoes.map(s => `
-    <div class="sugestao-item" onclick='selecionarSugestao(${JSON.stringify(s.tipo)}, ${JSON.stringify(s.texto)}, ${JSON.stringify(inputId)}, ${JSON.stringify(dropdownId)})'>
+    <button type="button" class="sugestao-item" role="option" onclick='selecionarSugestao(${JSON.stringify(s.tipo)}, ${JSON.stringify(s.texto)}, ${JSON.stringify(inputId)}, ${JSON.stringify(dropdownId)})'>
       <span class="sugestao-texto">${s.texto}</span>
       <span class="sugestao-contexto">${s.contexto}</span>
-    </div>
+    </button>
   `).join('');
   dropdown.style.display = 'block';
+  input.setAttribute('aria-expanded', 'true');
 }
 
 function selecionarSugestao(tipo, texto, inputId, dropdownId) {
   document.getElementById(dropdownId).style.display = 'none';
+  document.getElementById(inputId).setAttribute('aria-expanded', 'false');
 
   if (tipo === 'candidato') {
     document.getElementById(inputId).value = texto;
@@ -2833,9 +3075,15 @@ function initBuscarCandidato() {
     const input = document.getElementById('buscaCandidatoInput');
     input.addEventListener('input', debounce(renderBuscaCandidato, 250));
     input.addEventListener('input', debounce(() => renderizarSugestoes('buscaCandidatoInput', 'sugestoesBuscaCandidato'), 150));
+    const dropdown = document.getElementById('sugestoesBuscaCandidato');
+    configurarNavegacaoSugestoes(input, dropdown, () => {
+      dropdown.style.display = 'none';
+      input.setAttribute('aria-expanded', 'false');
+    });
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#tela-1 .busca-box')) {
-        document.getElementById('sugestoesBuscaCandidato').style.display = 'none';
+        dropdown.style.display = 'none';
+        input.setAttribute('aria-expanded', 'false');
       }
     });
     buscaCandidatoInit = true;
@@ -3085,6 +3333,8 @@ function abrirDetalhesCandidato(indice, botaoOrigem) {
 
   const modal = document.getElementById('candidatoDetalhesModal');
   modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.getElementById('app').inert = true;
   document.body.style.overflow = 'hidden';
   document.getElementById('btnFecharCandidatoDetalhes').focus();
 }
@@ -3119,6 +3369,8 @@ function fecharDetalhesCandidato() {
   const modal = document.getElementById('candidatoDetalhesModal');
   if (modal.classList.contains('hidden')) return;
   modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+  document.getElementById('app').inert = false;
   document.body.style.overflow = '';
   if (focoAntesCandidatoDetalhes?.isConnected) focoAntesCandidatoDetalhes.focus();
 }
@@ -3531,7 +3783,7 @@ function renderComparar() {
 
 function miniStat(label, valor) {
   return `<div style="text-align:center;margin-bottom:10px;">
-    <div style="font-size:0.625rem;color:#B7C0D1;font-weight:700;">${label}</div>
+    <div style="font-size:0.8125rem;color:#B7C0D1;font-weight:700;">${label}</div>
     <div style="font-size:0.875rem;font-weight:800;">${valor}</div>
   </div>`;
 }
@@ -3660,7 +3912,10 @@ function renderEvolucao() {
 
   requestAnimationFrame(() => {
     const c = document.getElementById('canvasEvolucao');
-    if (c) ChartMini.linha(c, [{ pontos, cor:'#D9A62E' }]);
+    if (c) {
+      c._redesenharResponsivo = () => ChartMini.linha(c, [{ pontos, cor:'#D9A62E' }]);
+      c._redesenharResponsivo();
+    }
   });
 }
 
@@ -3711,7 +3966,18 @@ function renderPartidos() {
     <div class="card" id="cardExportarPartidos">
       <p class="card-titulo">${CARGO_LABEL[cargo]} · ${ano}</p>
       <p class="card-sub">${municipio || 'Todos os municípios de MS'}</p>
-      <canvas id="canvasPartidos" style="width:100%;height:${Math.max(180, lista.length*34)}px;"></canvas>
+      <canvas id="canvasPartidos" role="img" aria-label="Ranking de votos por partido"
+              aria-describedby="dadosGraficoPartidos" style="width:100%;height:${Math.max(180, lista.length*34)}px;"></canvas>
+      <details class="candidato-detalhes-lista" id="dadosGraficoPartidos">
+        <summary>Ver dados do gráfico em formato textual</summary>
+        ${lista.map((partido, indice) => `
+          <div class="linha-item">
+            <div class="rank-num ${indice===0?'top1':''}">${indice+1}</div>
+            <div class="item-info"><div class="item-nome">${partido.partido}</div></div>
+            <div class="item-valor">${formatarNum(partido.votos)}</div>
+          </div>
+        `).join('')}
+      </details>
     </div>
   `;
   document.querySelector('#tela-6 .btn-exportar-fixo').setAttribute('onclick',
@@ -3719,7 +3985,11 @@ function renderPartidos() {
 
   requestAnimationFrame(() => {
     const c = document.getElementById('canvasPartidos');
-    ChartMini.barrasH(c, lista.map(p=>({label:p.partido, valor:p.votos})));
+    if (c) {
+      const dadosGrafico = lista.map(p=>({label:p.partido, valor:p.votos}));
+      c._redesenharResponsivo = () => ChartMini.barrasH(c, dadosGrafico);
+      c._redesenharResponsivo();
+    }
   });
 
   if (tem2Turno) {
@@ -3746,8 +4016,12 @@ function initPrefVer() {
     document.getElementById('pv_ano').addEventListener('change', renderPrefVer);
     document.querySelectorAll('#pv_chip_cargo .chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('#pv_chip_cargo .chip').forEach(c=>c.classList.remove('ativo'));
+        document.querySelectorAll('#pv_chip_cargo .chip').forEach(c => {
+          c.classList.remove('ativo');
+          c.setAttribute('aria-pressed', 'false');
+        });
         chip.classList.add('ativo');
+        chip.setAttribute('aria-pressed', 'true');
         pv_cargoAtivo = chip.dataset.cargo;
         renderPrefVer();
       });
@@ -3817,8 +4091,12 @@ function initPresGov() {
     document.getElementById('pg_ano').addEventListener('change', renderPresGov);
     document.querySelectorAll('#pg_chip_cargo .chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('#pg_chip_cargo .chip').forEach(c=>c.classList.remove('ativo'));
+        document.querySelectorAll('#pg_chip_cargo .chip').forEach(c => {
+          c.classList.remove('ativo');
+          c.setAttribute('aria-pressed', 'false');
+        });
         chip.classList.add('ativo');
+        chip.setAttribute('aria-pressed', 'true');
         pg_cargoAtivo = chip.dataset.cargo;
         renderPresGov();
       });
@@ -3880,8 +4158,12 @@ function initMeuEstado() {
   if (!meuEstadoInit) {
     document.querySelectorAll('#me_chip_secao .chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('#me_chip_secao .chip').forEach(c => c.classList.remove('ativo'));
+        document.querySelectorAll('#me_chip_secao .chip').forEach(c => {
+          c.classList.remove('ativo');
+          c.setAttribute('aria-pressed', 'false');
+        });
         chip.classList.add('ativo');
+        chip.setAttribute('aria-pressed', 'true');
         me_secaoAtiva = chip.dataset.secao;
         renderMeuEstado();
       });
@@ -4064,13 +4346,20 @@ function renderMeuEstado() {
 // ---------- TELA SOBRE ----------
 function abrirTelaSobre() {
   fecharBuscaUniversal();
-  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.querySelectorAll('.tela').forEach(t => {
+    t.classList.remove('ativa');
+    t.removeAttribute('role');
+  });
   document.getElementById('tela-sobre').classList.add('ativa');
+  document.getElementById('tela-sobre').setAttribute('role', 'main');
   document.getElementById('tituloTela').textContent = 'Sobre';
   document.getElementById('marcaTopbar').classList.add('tela-interna');
   document.getElementById('btnVoltar').classList.remove('hidden');
   telaAtual = 'sobre';
   initSobre();
+  document.title = 'Sobre · PE.IA';
+  document.getElementById('anuncioNavegacao').textContent = 'Tela Sobre';
+  requestAnimationFrame(() => document.getElementById('btnVoltar').focus());
 }
 
 function initSobre() {
@@ -4225,6 +4514,44 @@ function definirCarregamento(ativo, texto = 'Carregando dados...') {
   painel.classList.toggle('hidden', !ativo);
   document.body.setAttribute('aria-busy', ativo ? 'true' : 'false');
 }
+
+function iniciarAnunciosDeResultados() {
+  const anuncio = document.getElementById('anuncioResultados');
+  let temporizador;
+  const aplicarSemanticaTitulos = raiz => {
+    raiz.querySelectorAll('.card-titulo, .sec-titulo').forEach(titulo => {
+      titulo.setAttribute('role', 'heading');
+      titulo.setAttribute('aria-level', '2');
+    });
+  };
+  aplicarSemanticaTitulos(document);
+  document.querySelectorAll('.conteudo[id^="resultado"], #candidatoDetalhesConteudo').forEach(regiao => {
+    const observador = new MutationObserver(() => {
+      aplicarSemanticaTitulos(regiao);
+      const estaVisivel = regiao.closest('.tela.ativa') ||
+        (regiao.id === 'candidatoDetalhesConteudo' && !document.getElementById('candidatoDetalhesModal').classList.contains('hidden'));
+      if (!estaVisivel) return;
+      clearTimeout(temporizador);
+      temporizador = setTimeout(() => {
+        const titulo = document.getElementById('tituloTela')?.textContent || 'Resultados';
+        const quantidade = regiao.querySelectorAll('.linha-item').length;
+        anuncio.textContent = quantidade
+          ? `${titulo}: resultados atualizados, ${quantidade} itens exibidos.`
+          : `${titulo}: conteúdo atualizado.`;
+      }, 250);
+    });
+    observador.observe(regiao, { childList:true, subtree:true });
+  });
+}
+
+const redesenharGraficosResponsivos = debounce(() => {
+  document.querySelectorAll('canvas').forEach(canvas => {
+    if (canvas.offsetParent !== null && typeof canvas._redesenharResponsivo === 'function') {
+      canvas._redesenharResponsivo();
+    }
+  });
+}, 150);
+window.addEventListener('resize', redesenharGraficosResponsivos, { passive:true });
 
 function atualizarConectividade() {
   const status = document.getElementById('conectividadeStatus');
@@ -4671,6 +4998,17 @@ function tabelaAdmin(cabecalhos, linhas) {
     <tbody>${linhas.join('') || `<tr><td colspan="${cabecalhos.length}">Nenhum registro.</td></tr>`}</tbody></table>`;
 }
 
+function prepararTabelasAdminResponsivas() {
+  document.querySelectorAll('.admin-table').forEach(tabela => {
+    const cabecalhos = [...tabela.querySelectorAll('thead th')].map(item => item.textContent.trim());
+    tabela.querySelectorAll('tbody tr').forEach(linha => {
+      [...linha.children].forEach((celula, indice) => {
+        celula.dataset.label = cabecalhos[indice] || 'Registro';
+      });
+    });
+  });
+}
+
 function renderizarAdmin(resumo) {
   adminResumoAtual = resumo;
   document.getElementById('adminIdentidade').textContent = resumo.admin;
@@ -4690,6 +5028,7 @@ function renderizarAdmin(resumo) {
     ['Data','Administrador','Ação','Alvo'],
     resumo.logs.map(item=>`<tr><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.administrador_email)}</td><td>${escaparAdmin(item.acao)}</td><td>${escaparAdmin(item.alvo_tipo)} ${escaparAdmin(item.alvo_id||'')}</td></tr>`)
   );
+  prepararTabelasAdminResponsivas();
 }
 
 async function carregarPainelAdmin() {
@@ -4718,11 +5057,55 @@ async function verificarAcessoAdmin() {
   }
 }
 
+let focoAntesAdmin = null;
+
+function elementosFocaveisAdmin() {
+  return [...document.querySelectorAll('#adminModal button:not([disabled]), #adminModal input:not([disabled]), #adminModal select:not([disabled]), #adminModal textarea:not([disabled]), #adminModal [tabindex]:not([tabindex="-1"])')]
+    .filter(item => item.offsetParent !== null);
+}
+
+function tratarTecladoAdmin(evento) {
+  if (evento.key === 'Escape') {
+    evento.preventDefault();
+    fecharPainelAdmin();
+    return;
+  }
+  if (evento.key !== 'Tab') return;
+  const focaveis = elementosFocaveisAdmin();
+  if (!focaveis.length) return;
+  const primeiro = focaveis[0];
+  const ultimo = focaveis[focaveis.length - 1];
+  if (evento.shiftKey && document.activeElement === primeiro) {
+    evento.preventDefault();
+    ultimo.focus();
+  } else if (!evento.shiftKey && document.activeElement === ultimo) {
+    evento.preventDefault();
+    primeiro.focus();
+  }
+}
+
 async function abrirPainelAdmin() {
-  document.getElementById('adminModal').classList.remove('hidden');
+  focoAntesAdmin = document.activeElement;
+  const modal = document.getElementById('adminModal');
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.getElementById('app').inert = true;
+  document.getElementById('telaAtivacao').inert = true;
+  modal.addEventListener('keydown', tratarTecladoAdmin);
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => document.getElementById('btnFecharAdmin').focus());
   await carregarPainelAdmin();
 }
-function fecharPainelAdmin() { document.getElementById('adminModal').classList.add('hidden'); }
+function fecharPainelAdmin() {
+  const modal = document.getElementById('adminModal');
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.removeEventListener('keydown', tratarTecladoAdmin);
+  document.getElementById('app').inert = false;
+  document.getElementById('telaAtivacao').inert = false;
+  document.body.style.overflow = '';
+  if (focoAntesAdmin?.isConnected) focoAntesAdmin.focus();
+}
 
 async function adminCriarCodigos() {
   const quantidade = Number(document.getElementById('adminQuantidade').value);
@@ -4780,6 +5163,7 @@ async function iniciarApp() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  iniciarAnunciosDeResultados();
   atualizarConectividade();
   definirCarregamento(true, 'Verificando sua sessão...');
   let armazenamentoDisponivel = true;
