@@ -19,6 +19,7 @@
 <!-- html2canvas requer internet na primeira visita; após cache do Service Worker, funciona offline -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="/runtime-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
 <title>Plataforma Eleitoral Inteligente</title>
 <style>
 html {
@@ -621,7 +622,7 @@ select:focus, input:focus {
   line-height: 1.5;
 }
 
-#ativacaoInput {
+#ativacaoInput, #ativacaoEmail, #testerPassword {
   width: 100%;
   max-width: 280px;
   box-sizing: border-box;
@@ -636,12 +637,12 @@ select:focus, input:focus {
   letter-spacing: 1px;
 }
 
-#ativacaoInput:focus {
+#ativacaoInput:focus, #ativacaoEmail:focus, #testerPassword:focus {
   outline: none;
   border-color: var(--neon-cyan);
 }
 
-#btnAtivar {
+#btnAtivar, #btnEnviarLink, #btnTester {
   width: 100%;
   max-width: 280px;
   padding: 14px 16px;
@@ -654,7 +655,7 @@ select:focus, input:focus {
   cursor: pointer;
 }
 
-#btnAtivar:disabled {
+#btnAtivar:disabled, #btnEnviarLink:disabled, #btnTester:disabled {
   opacity: 0.6;
   cursor: default;
 }
@@ -1156,10 +1157,15 @@ canvas {
 <div id="telaAtivacao" class="hidden">
   <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
   <h2>Ative seu acesso</h2>
-  <p>Digite o código de acesso recebido na confirmação da sua compra para liberar a plataforma neste dispositivo.</p>
+  <p>Entre por e-mail e vincule o código recebido na confirmação da compra.</p>
+  <input type="email" id="ativacaoEmail" placeholder="SEU E-MAIL" autocomplete="email">
+  <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
   <input type="text" id="ativacaoInput" placeholder="CÓDIGO DE ACESSO" autocapitalize="characters" autocomplete="off">
-  <div id="ativacaoErro"></div>
   <button id="btnAtivar" onclick="ativarAcesso()">Ativar</button>
+  <p style="margin-top:18px;">Acesso temporário para testes</p>
+  <input type="password" id="testerPassword" placeholder="SENHA MASTER" autocomplete="current-password">
+  <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
+  <div id="ativacaoErro"></div>
 </div>
 
 <div id="app">
@@ -1436,7 +1442,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.8.0</span>
+    <span class="rodape-versao" id="appVersion">v 2.9.0</span>
     </div>
   </div>
 
@@ -1929,7 +1935,8 @@ async function obterDatasetAutorizado() {
 
   if (navigator.onLine) {
     try {
-      const token = obterSessaoToken();
+      const authSession = await obterAuthSession();
+      const token = authSession?.access_token || obterSessaoToken();
       if (!token) throw new Error('Sessão ausente.');
       const resp = await fetch(`${CONFIG.datasetFunctionUrl}?version=${encodeURIComponent(CONFIG.datasetVersion)}`, {
         method: 'GET',
@@ -1966,7 +1973,8 @@ async function obterDatasetAutorizado() {
   }
 
   const cached = privateCache ? await privateCache.match(cacheKey) : null;
-  if (cached && sessaoOfflineValida()) return (await cached.text()).trim();
+  const authOffline = Boolean((await obterAuthSession()) && validacaoOfflineRecente());
+  if (cached && (sessaoOfflineValida() || authOffline)) return (await cached.text()).trim();
   throw new Error('Dataset protegido indisponível. Conecte-se à internet para validar o acesso.');
 }
 
@@ -3371,6 +3379,15 @@ if (!CONFIG || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(CONFIG.supabaseUrl)) 
 }
 const SUPABASE_URL = CONFIG.supabaseUrl.replace(/\/$/, '');
 const SUPABASE_ANON_KEY = CONFIG.supabaseAnonKey;
+const AUTH_CLIENT = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+
+async function obterAuthSession() {
+  if (!AUTH_CLIENT) return null;
+  const { data } = await AUTH_CLIENT.auth.getSession();
+  return data.session || null;
+}
 
 function obterDeviceId() {
   let id = localStorage.getItem('pe26_device_id');
@@ -3393,9 +3410,13 @@ function limparSessaoLocal() {
 
 function sessaoOfflineValida() {
   const token = obterSessaoToken();
+  return Boolean(token && validacaoOfflineRecente());
+}
+
+function validacaoOfflineRecente() {
   const validadaEm = Number(localStorage.getItem('pe26_sessao_validada_em'));
   const limiteMs = Number(CONFIG.offlineSessionGraceHours || 0) * 60 * 60 * 1000;
-  return Boolean(token && validadaEm && limiteMs > 0 && Date.now() - validadaEm <= limiteMs);
+  return Boolean(validadaEm && limiteMs > 0 && Date.now() - validadaEm <= limiteMs);
 }
 
 async function redefinirAcesso() {
@@ -3409,6 +3430,7 @@ async function redefinirAcesso() {
   }
   limparSessaoLocal();
   if ('caches' in window) tarefas.push(caches.delete(PRIVATE_DATASET_CACHE));
+  if (AUTH_CLIENT) tarefas.push(AUTH_CLIENT.auth.signOut());
   await Promise.allSettled(tarefas);
   location.reload();
 }
@@ -3446,6 +3468,19 @@ async function chamarRpc(nome, body) {
 
 async function validarSessaoAtual() {
   const token = obterSessaoToken();
+  const authSession = await obterAuthSession();
+  if (authSession && !navigator.onLine) return validacaoOfflineRecente();
+  if (authSession && navigator.onLine) {
+    if (token) {
+      const { data: migracao } = await AUTH_CLIENT.rpc('migrar_sessao_usuario', { p_token: token });
+      if (migracao?.sucesso) limparSessaoLocal();
+    }
+    const { data: possuiLicenca } = await AUTH_CLIENT.rpc('possui_licenca');
+    if (possuiLicenca === true) {
+      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
+      return true;
+    }
+  }
   if (!token) return false;
   if (!navigator.onLine) return sessaoOfflineValida();
 
@@ -3467,6 +3502,56 @@ async function validarSessaoAtual() {
   return false;
 }
 
+async function enviarLinkMagico() {
+  const email = document.getElementById('ativacaoEmail').value.trim();
+  const erro = document.getElementById('ativacaoErro');
+  if (!AUTH_CLIENT || !email) {
+    erro.textContent = 'Informe um e-mail válido.';
+    return;
+  }
+  const { error } = await AUTH_CLIENT.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: location.origin }
+  });
+  erro.textContent = error
+    ? 'Não foi possível enviar o link de acesso.'
+    : 'Link enviado. Abra-o neste dispositivo e volte para concluir a ativação.';
+}
+window.enviarLinkMagico = enviarLinkMagico;
+
+async function ativarAcessoTester() {
+  const password = document.getElementById('testerPassword').value;
+  const erro = document.getElementById('ativacaoErro');
+  const btn = document.getElementById('btnTester');
+  if (!password) { erro.textContent = 'Digite a senha master.'; return; }
+  btn.disabled = true;
+  try {
+    const resp = await fetch(CONFIG.testerFunctionUrl, {
+      method: 'POST',
+      cache: 'no-store',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'X-Device-Id': obterDeviceId()
+      },
+      body: JSON.stringify({ password })
+    });
+    if (resp.status === 429) throw new Error('Muitas tentativas. Aguarde 15 minutos.');
+    if (!resp.ok) throw new Error('Senha master inválida.');
+    const resultado = await resp.json();
+    localStorage.setItem('pe26_sessao_token', resultado.sessao_token);
+    localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
+    await iniciarApp();
+    esconderTelaAtivacao();
+  } catch (e) {
+    erro.textContent = e.message;
+  } finally {
+    document.getElementById('testerPassword').value = '';
+    btn.disabled = false;
+  }
+}
+window.ativarAcessoTester = ativarAcessoTester;
+
 async function ativarAcesso() {
   const input = document.getElementById('ativacaoInput');
   const erro = document.getElementById('ativacaoErro');
@@ -3487,26 +3572,27 @@ async function ativarAcesso() {
   btn.textContent = 'Verificando...';
 
   try {
-    const resultado = await chamarRpc('ativar_codigo', {
-      p_codigo: codigo,
-      p_device_id: obterDeviceId()
+    const authSession = await obterAuthSession();
+    if (!authSession) throw new Error('Abra primeiro o link enviado ao seu e-mail.');
+    const { data: resultado, error: rpcError } = await AUTH_CLIENT.rpc('ativar_codigo_usuario', {
+      p_codigo: codigo
     });
+    if (rpcError) throw rpcError;
 
-    if (resultado && resultado.sucesso === true && resultado.sessao_token) {
-      localStorage.setItem('pe26_sessao_token', resultado.sessao_token);
+    if (resultado && resultado.sucesso === true) {
       localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
       localStorage.removeItem('pe26_acesso_liberado');
       await iniciarApp();
       esconderTelaAtivacao();
-    } else if (resultado && resultado.sucesso === true) {
-      erro.textContent = 'Atualização de segurança pendente. Tente novamente em instantes.';
     } else if (resultado.motivo === 'codigo_ja_utilizado') {
-      erro.textContent = 'Este código já foi ativado em outro dispositivo.';
+      erro.textContent = 'Este código já está vinculado a outra conta.';
+    } else if (resultado.motivo === 'codigo_requer_migracao') {
+      erro.textContent = 'Este código já foi usado. Entre no dispositivo original para migrar o acesso.';
     } else {
       erro.textContent = 'Código inválido. Verifique e tente novamente.';
     }
   } catch (e) {
-    erro.textContent = 'Não foi possível verificar o código agora. Tente novamente.';
+    erro.textContent = e.message || 'Não foi possível verificar o código agora.';
   } finally {
     btn.disabled = false;
     btn.textContent = 'Ativar';

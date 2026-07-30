@@ -59,20 +59,24 @@ Deno.serve(async (request) => {
   const deviceId = request.headers.get('x-device-id') || '';
   const version = new URL(request.url).searchParams.get('version') || '';
 
-  if (token.length !== 64 || deviceId.length < 16 || !VERSION_PATTERN.test(version)) {
+  if (!token || !VERSION_PATTERN.test(version)) {
     return jsonResponse(400, { error: 'invalid_request' }, origin);
   }
 
-  const { data: validation, error: validationError } = await supabase.rpc('validar_sessao', {
-    p_token: token,
-    p_device_id: deviceId
-  });
-  if (validationError) {
-    console.error('session_validation_failed', validationError.code);
-    return jsonResponse(503, { error: 'session_validation_unavailable' }, origin);
-  }
-  if (!validation?.valida) {
-    return jsonResponse(401, { error: validation?.motivo || 'invalid_session' }, origin);
+  if (token.length === 64) {
+    const { data: validation, error: validationError } = await supabase.rpc('validar_sessao', {
+      p_token: token,
+      p_device_id: deviceId
+    });
+    if (validationError) return jsonResponse(503, { error: 'session_validation_unavailable' }, origin);
+    if (!validation?.valida) return jsonResponse(401, { error: validation?.motivo || 'invalid_session' }, origin);
+  } else {
+    const { data: userData, error: userError } = await supabase.auth.getUser(token);
+    if (userError || !userData.user) return jsonResponse(401, { error: 'invalid_user_session' }, origin);
+    const { data: license } = await supabase.from('licencas').select('id')
+      .eq('user_id', userData.user.id).eq('status', 'ativa').is('revogada_em', null).maybeSingle();
+    if (!license) return jsonResponse(403, { error: 'license_required' }, origin);
+    await supabase.from('licencas').update({ ultimo_acesso_em: new Date().toISOString() }).eq('id', license.id);
   }
 
   const { data: dataset, error: storageError } = await supabase.storage

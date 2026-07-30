@@ -101,6 +101,18 @@ supabase functions deploy dataset \
 O arquivo `dataset*.b64` é ignorado pelo Git. Nunca volte a incorporá-lo ao
 HTML ou a uma função versionada.
 
+## Auth e acesso tester — versão 2.9+
+
+- Clientes entram por link mágico e vinculam o código à sua conta.
+- Sessões opacas 2.8 podem ser migradas para a conta autenticada.
+- A senha master existe somente como hash no secret
+  `TESTER_MASTER_PASSWORD_HASH`.
+- Cinco falhas em 15 minutos bloqueiam temporariamente o fingerprint.
+- Sessões tester expiram definitivamente após 90 dias.
+
+Para rotacionar a master, calcule SHA-256 da nova senha e atualize o secret;
+nunca grave a senha ou o hash no repositório.
+
 ## Performance
 
 - **Tamanho final**: 1.94 MB (single-file HTML)

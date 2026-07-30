@@ -20,7 +20,16 @@ entregar a versão solicitada. A resposta usa `private, no-store`; o cache
 offline é criado explicitamente no dispositivo autorizado e apagado no logout.
 
 O device ID continua sendo um identificador controlado pelo cliente. A próxima
-evolução de identidade ainda deve migrar para Supabase Auth.
+evolução de identidade foi iniciada na versão 2.9 com Supabase Auth por link
+mágico. O device ID permanece somente no caminho tester e no legado temporário.
+
+## Modelo híbrido 2.9
+
+- `auth.users` + `licencas`: acesso principal, recuperável em mobile e desktop.
+- `migrar_sessao_usuario`: converte sessão 2.8 válida em licença Auth.
+- `tester-access`: valida a master por hash constante, aplica rate limit e emite
+  sessão com validade máxima de 90 dias.
+- O dataset aceita JWT de usuário licenciado ou token tester/legado válido.
 
 ## Ordem obrigatória de implantação
 
