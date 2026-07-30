@@ -1448,7 +1448,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.9.2</span>
+    <span class="rodape-versao" id="appVersion">v 2.10.0</span>
     </div>
   </div>
 
@@ -1936,52 +1936,33 @@ function descompactarDataset(b64) {
 }
 
 async function obterDatasetAutorizado() {
-  const cacheKey = `/__peia_private_dataset__/${encodeURIComponent(CONFIG.datasetVersion)}`;
-  const privateCache = 'caches' in window ? await caches.open(PRIVATE_DATASET_CACHE) : null;
-
-  if (navigator.onLine) {
-    try {
-      const authSession = await obterAuthSession();
-      const token = authSession?.access_token || obterSessaoToken();
-      if (!token) throw new Error('Sessão ausente.');
-      const resp = await fetch(`${CONFIG.datasetFunctionUrl}?version=${encodeURIComponent(CONFIG.datasetVersion)}`, {
-        method: 'GET',
-        cache: 'no-store',
-        credentials: 'omit',
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${token}`,
-          'X-Device-Id': obterDeviceId()
-        }
-      });
-      if (resp.status === 401 || resp.status === 403) {
-        limparSessaoLocal();
-        throw new Error('Sessão sem autorização para o dataset.');
-      }
-      if (!resp.ok) throw new Error(`Falha ao baixar dataset (${resp.status}).`);
-
-      const b64 = (await resp.text()).trim();
-      if (!b64.startsWith('H4sI') || b64.length < 1000) {
-        throw new Error('Dataset recebido em formato inválido.');
-      }
-      if (privateCache) {
-        await privateCache.put(cacheKey, new Response(b64, {
-          headers: {
-            'Content-Type': 'text/plain',
-            'X-Dataset-Version': CONFIG.datasetVersion
-          }
-        }));
-      }
-      return b64;
-    } catch (erro) {
-      console.warn('Falha ao obter dataset online; tentando cópia autorizada offline.', erro);
-    }
+  if (!navigator.onLine) {
+    throw new Error('O acesso aos dados exige conexão com a internet.');
   }
-
-  const cached = privateCache ? await privateCache.match(cacheKey) : null;
-  const authOffline = Boolean((await obterAuthSession()) && validacaoOfflineRecente());
-  if (cached && (sessaoOfflineValida() || authOffline)) return (await cached.text()).trim();
-  throw new Error('Dataset protegido indisponível. Conecte-se à internet para validar o acesso.');
+  const authSession = await obterAuthSession();
+  const token = authSession?.access_token || obterSessaoToken();
+  if (!token) throw new Error('Sessão ausente.');
+  const resp = await fetch(`${CONFIG.datasetFunctionUrl}?version=${encodeURIComponent(CONFIG.datasetVersion)}`, {
+    method: 'GET',
+    cache: 'no-store',
+    credentials: 'omit',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${token}`,
+      'X-Device-Id': obterDeviceId()
+    }
+  });
+  if (resp.status === 401 || resp.status === 403) {
+    limparSessaoLocal();
+    if ('caches' in window) await caches.delete(PRIVATE_DATASET_CACHE);
+    throw new Error('Sessão sem autorização para o dataset.');
+  }
+  if (!resp.ok) throw new Error(`Falha ao baixar dataset (${resp.status}).`);
+  const b64 = (await resp.text()).trim();
+  if (!b64.startsWith('H4sI') || b64.length < 1000) {
+    throw new Error('Dataset recebido em formato inválido.');
+  }
+  return b64;
 }
 
 async function carregarDados() {
@@ -3385,8 +3366,80 @@ if (!CONFIG || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(CONFIG.supabaseUrl)) 
 }
 const SUPABASE_URL = CONFIG.supabaseUrl.replace(/\/$/, '');
 const SUPABASE_ANON_KEY = CONFIG.supabaseAnonKey;
+const TESTER_DB_NAME = 'peia-security-v1';
+const TESTER_STORE_NAME = 'credentials';
+let testerSessionToken = null;
+let testerDeviceId = null;
+
+function abrirBancoSeguro() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(TESTER_DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains(TESTER_STORE_NAME)) {
+        request.result.createObjectStore(TESTER_STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function lerCredencialSegura(chave) {
+  const db = await abrirBancoSeguro();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(TESTER_STORE_NAME, 'readonly');
+    const request = transaction.objectStore(TESTER_STORE_NAME).get(chave);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => db.close();
+  });
+}
+
+async function gravarCredencialSegura(chave, valor) {
+  const db = await abrirBancoSeguro();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(TESTER_STORE_NAME, 'readwrite');
+    transaction.objectStore(TESTER_STORE_NAME).put(valor, chave);
+    transaction.oncomplete = () => { db.close(); resolve(); };
+    transaction.onerror = () => { db.close(); reject(transaction.error); };
+  });
+}
+
+async function removerCredencialSegura(chave) {
+  const db = await abrirBancoSeguro();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(TESTER_STORE_NAME, 'readwrite');
+    transaction.objectStore(TESTER_STORE_NAME).delete(chave);
+    transaction.oncomplete = () => { db.close(); resolve(); };
+    transaction.onerror = () => { db.close(); reject(transaction.error); };
+  });
+}
+
+async function carregarCredenciaisTester() {
+  const tokenLegado = localStorage.getItem('pe26_sessao_token');
+  const deviceLegado = localStorage.getItem('pe26_device_id');
+  testerSessionToken = await lerCredencialSegura('tester_token') || tokenLegado;
+  testerDeviceId = await lerCredencialSegura('device_id') || deviceLegado;
+  if (!testerDeviceId) {
+    testerDeviceId = crypto.randomUUID
+      ? crypto.randomUUID()
+      : 'dev-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+  }
+  await gravarCredencialSegura('device_id', testerDeviceId);
+  if (testerSessionToken) await gravarCredencialSegura('tester_token', testerSessionToken);
+  localStorage.removeItem('pe26_sessao_token');
+  localStorage.removeItem('pe26_device_id');
+  sessionStorage.removeItem('pe26_sessao_token');
+  sessionStorage.removeItem('pe26_device_id');
+}
+
 const AUTH_CLIENT = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storage: window.sessionStorage
+  }
 });
 
 async function obterAuthSession() {
@@ -3396,27 +3449,31 @@ async function obterAuthSession() {
 }
 
 function obterDeviceId() {
-  let id = localStorage.getItem('pe26_device_id');
-  if (!id) {
-    id = (crypto.randomUUID ? crypto.randomUUID() : 'dev-' + Date.now() + '-' + Math.random().toString(36).slice(2));
-    localStorage.setItem('pe26_device_id', id);
-  }
-  return id;
+  return testerDeviceId;
 }
 
 function obterSessaoToken() {
-  return localStorage.getItem('pe26_sessao_token');
+  return testerSessionToken;
 }
 
 function limparSessaoLocal() {
+  testerSessionToken = null;
+  removerCredencialSegura('tester_token').catch(() => undefined);
   localStorage.removeItem('pe26_sessao_token');
+  localStorage.removeItem('pe26_device_id');
   localStorage.removeItem('pe26_sessao_validada_em');
   localStorage.removeItem('pe26_acesso_liberado');
 }
 
+async function limparPersistenciaLegada() {
+  localStorage.removeItem('pe26_sessao_token');
+  localStorage.removeItem('pe26_device_id');
+  localStorage.removeItem(`sb-${new URL(SUPABASE_URL).hostname.split('.')[0]}-auth-token`);
+  if ('caches' in window) await caches.delete(PRIVATE_DATASET_CACHE);
+}
+
 function sessaoOfflineValida() {
-  const token = obterSessaoToken();
-  return Boolean(token && validacaoOfflineRecente());
+  return false;
 }
 
 function validacaoOfflineRecente() {
@@ -3497,7 +3554,7 @@ async function validarSessaoAtual() {
     }
   } catch (erro) {
     console.warn('Não foi possível revalidar a sessão.', erro);
-    return sessaoOfflineValida();
+    return false;
   }
 
   limparSessaoLocal();
@@ -3547,7 +3604,8 @@ async function ativarAcessoTester() {
     if (resp.status === 429) throw new Error('Muitas tentativas. Aguarde 15 minutos.');
     if (!resp.ok) throw new Error('Senha master inválida.');
     const resultado = await resp.json();
-    localStorage.setItem('pe26_sessao_token', resultado.sessao_token);
+    testerSessionToken = resultado.sessao_token;
+    await gravarCredencialSegura('tester_token', testerSessionToken);
     localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
     await iniciarApp();
     esconderTelaAtivacao();
@@ -3618,6 +3676,8 @@ async function iniciarApp() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  await carregarCredenciaisTester();
+  await limparPersistenciaLegada();
   const versao = document.getElementById('appVersion');
   if (versao && CONFIG?.appVersion) versao.textContent = `v ${CONFIG.appVersion}`;
   // Aplica tema/estilo antes de decidir qual tela mostrar, para que a

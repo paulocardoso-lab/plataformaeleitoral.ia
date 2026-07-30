@@ -2,8 +2,7 @@
 // Navegações usam network-first para não prender HTML/dataset antigo.
 // Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v27';
-const PRIVATE_CACHE_PREFIX = 'peia-private-datasets-';
+const CACHE_VERSION = 'eleicoes-ms-v28';
 const ASSETS = [
   '/index.html',
   '/runtime-config.js',
@@ -42,7 +41,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((k) => k !== CACHE_VERSION && !k.startsWith(PRIVATE_CACHE_PREFIX))
+          .filter((k) => k !== CACHE_VERSION)
           .map((k) => caches.delete(k))
       )
     ).then(() => self.clients.claim())

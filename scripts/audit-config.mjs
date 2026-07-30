@@ -36,7 +36,15 @@ assert(index.includes('resultado.sessao_token'), 'ativação deve exigir token d
 assert(!index.includes('id="dataset-b64"'), 'dataset protegido não pode permanecer embutido no HTML');
 assert(Buffer.byteLength(index, 'utf8') < 500_000, 'index.html voltou a carregar um payload incompatível com o shell público');
 assert(index.includes('CONFIG.datasetFunctionUrl'), 'frontend deve obter o dataset pela Edge Function');
-assert(index.includes('PRIVATE_DATASET_CACHE'), 'frontend deve manter cache offline separado do shell público');
+assert(index.includes("caches.delete(PRIVATE_DATASET_CACHE)"), 'frontend deve remover caches privados legados');
+assert(!index.includes('privateCache.put('), 'dataset privado não pode ser persistido para uso offline');
+assert(!index.includes("localStorage.setItem('pe26_sessao_token'"), 'token tester não pode ser persistido em localStorage');
+assert(!index.includes("localStorage.setItem('pe26_device_id'"), 'device id tester não pode ser persistido em localStorage');
+assert(index.includes("gravarCredencialSegura('tester_token'"), 'token tester deve ser persistido fora do localStorage');
+assert(index.includes("lerCredencialSegura('tester_token'"), 'boot deve restaurar a sessão tester segura');
+assert(index.includes('storage: window.sessionStorage'), 'sessão Auth deve ficar restrita à sessão da aba');
+assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover credenciais e caches persistentes legados');
+assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
@@ -68,6 +76,8 @@ assert(datasetFunction.includes("validation?.tipo !== 'tester'"), 'token opaco d
 const testerFunction = read('supabase/functions/tester-access/index.ts');
 assert(testerFunction.includes('TESTER_MASTER_PASSWORD_HASH'), 'senha tester deve vir de secret');
 assert(testerFunction.includes('too_many_attempts'), 'acesso tester deve aplicar rate limit');
+assert(testerFunction.includes(".eq('ip_hash',ipHash)"), 'rate limit deve ser aplicado independentemente do device id');
+assert(testerFunction.includes('MASTER_PATTERN.test(password)'), 'senha master deve ser validada no servidor');
 
 if (failures.length) {
   console.error('Auditoria de configuração falhou:\n');
