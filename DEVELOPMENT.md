@@ -54,11 +54,14 @@ Quando tiver novos dados TSE:
 
 2. **Substitui o `index.html`** (contém dataset embutido)
 
-3. **Incrementa `CACHE_VERSION`** no service-worker.js:
+3. **Incrementa `CACHE_VERSION`** no service-worker.js (ex: `eleicoes-ms-v21`):
    ```javascript
-   const CACHE_VERSION = 'eleicoes-ms-v2'; // era v1
+   const CACHE_VERSION = 'eleicoes-ms-v21'; // obrigatorio para invalidar cache PWA nos clientes
    ```
    Isso força atualização no celular dos usuários.
+
+> Nota de Segurança: Variáveis de ambiente como `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` estão documentadas no arquivo `.env.example`.
+
 
 4. **Commit + Push**:
    ```bash

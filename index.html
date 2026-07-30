@@ -3314,6 +3314,12 @@ function acessoLiberado() {
   return localStorage.getItem('pe26_acesso_liberado') === 'true';
 }
 
+function redefinirAcesso() {
+  localStorage.removeItem('pe26_acesso_liberado');
+  location.reload();
+}
+window.redefinirAcesso = redefinirAcesso;
+
 function mostrarTelaAtivacao() {
   document.getElementById('telaAtivacao').classList.remove('hidden');
   document.getElementById('app').style.display = 'none';
