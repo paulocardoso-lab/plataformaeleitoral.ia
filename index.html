@@ -585,89 +585,189 @@ select:focus, input:focus {
   position: fixed;
   inset: 0;
   z-index: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 24px;
-  background: var(--bg-0);
-  text-align: center;
+  overflow-y: auto;
+  padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% -10%, rgba(0,217,255,.14), transparent 36%),
+    radial-gradient(circle at 90% 90%, rgba(0,255,65,.08), transparent 34%),
+    var(--bg-0);
 }
 
 #telaAtivacao.hidden {
   display: none;
 }
 
+.login-shell {
+  width: 100%;
+  max-width: 420px;
+  min-height: calc(100dvh - 48px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 22px 18px 18px;
+  border: 1px solid rgba(0,217,255,.22);
+  border-radius: 20px;
+  background: rgba(15,21,53,.88);
+  box-shadow: 0 24px 70px rgba(0,0,0,.38);
+  backdrop-filter: blur(12px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
 #telaAtivacao .marca-logo-ativacao {
-  height: 168px;
+  height: 104px;
   width: auto;
-  max-width: 80vw;
-  margin-bottom: 8px;
+  max-width: 72vw;
+  margin-bottom: 12px;
 }
 
 #telaAtivacao h2 {
   font-family: var(--font-titulo);
-  font-size: 1.125rem;
+  font-size: clamp(1.45rem, 7vw, 1.85rem);
   font-weight: 700;
   color: var(--text-light);
-  margin: 0;
+  margin: 0 0 8px;
 }
 
-#telaAtivacao p {
-  font-size: 0.8125rem;
+.login-subtitulo {
+  font-size: .9rem;
   color: var(--text-muted);
   margin: 0;
-  max-width: 320px;
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.login-grupo { margin-bottom: 14px; }
+.login-label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--text-light);
+  font-size: .82rem;
+  font-weight: 700;
+  text-align: left;
+}
+.login-ajuda {
+  display: block;
+  margin: 7px 2px 0;
+  color: var(--text-muted);
+  font-size: .72rem;
+  line-height: 1.4;
+  text-align: left;
 }
 
 #ativacaoInput, #ativacaoEmail, #testerPassword {
   width: 100%;
-  max-width: 280px;
   box-sizing: border-box;
-  padding: 14px 16px;
+  min-height: 52px;
+  padding: 14px 15px;
   background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   color: var(--text-light);
   font-size: 1rem;
+}
+
+#ativacaoInput, #testerPassword {
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+}
+
+#ativacaoEmail {
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 #ativacaoInput:focus, #ativacaoEmail:focus, #testerPassword:focus {
-  outline: none;
+  outline: 3px solid rgba(0,217,255,.18);
+  outline-offset: 2px;
   border-color: var(--neon-cyan);
 }
 
 #btnAtivar, #btnEnviarLink, #btnTester {
   width: 100%;
-  max-width: 280px;
-  padding: 14px 16px;
+  min-height: 50px;
+  padding: 13px 16px;
   background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   color: var(--bg-0);
-  font-size: 0.9375rem;
+  font-size: .94rem;
   font-weight: 700;
   cursor: pointer;
 }
+
+#btnAtivar { background: transparent; color: var(--neon-cyan); border: 1px solid var(--neon-cyan); }
+#btnTester { margin-top: 10px; }
 
 #btnAtivar:disabled, #btnEnviarLink:disabled, #btnTester:disabled {
   opacity: 0.6;
   cursor: default;
 }
 
+.login-divisor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 16px;
+  color: var(--text-muted);
+  font-size: .72rem;
+}
+.login-divisor::before,.login-divisor::after { content:""; height:1px; flex:1; background:var(--border); }
+
+.tester-detalhes { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 4px; }
+.tester-detalhes summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: .8rem;
+  cursor: pointer;
+  list-style: none;
+}
+.tester-detalhes summary::-webkit-details-marker { display:none; }
+.tester-detalhes summary::after { content:"＋"; color:var(--neon-cyan); font-size:1.1rem; }
+.tester-detalhes[open] summary::after { content:"−"; }
+.tester-conteudo { padding: 8px 0 2px; }
+.senha-wrap { position:relative; }
+.senha-wrap #testerPassword { padding-right:72px; }
+.senha-toggle {
+  position:absolute; right:7px; top:7px; width:58px; height:38px;
+  border:0; border-radius:9px; background:transparent; color:var(--neon-cyan);
+  font-size:.72rem; font-weight:700; cursor:pointer;
+}
+
 #ativacaoErro {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,0,110,.09);
   font-size: 0.8125rem;
   color: var(--neon-magenta);
-  min-height: 1.2em;
+  line-height: 1.45;
+  text-align: left;
 }
 
 #ativacaoErro:empty {
   display: none;
+}
+
+.login-admin { width:100%; min-height:44px; margin-top:12px; border:0; background:transparent; color:var(--text-muted); text-decoration:underline; cursor:pointer; }
+.login-rodape { margin-top:18px; text-align:center; color:var(--text-muted); font-size:.7rem; }
+
+@media (min-width: 600px) {
+  .login-card { padding: 28px 30px 22px; }
+  #telaAtivacao .marca-logo-ativacao { height: 118px; }
 }
 
 .card-titulo {
@@ -1185,27 +1285,58 @@ canvas {
 
 <!-- TELA DE ATIVAÇÃO (bloqueia o app até validar um código de acesso) -->
 <div id="telaAtivacao" class="hidden">
-  <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
-  <h2>Ative seu acesso</h2>
-  <p>Entre por e-mail e vincule o código recebido na confirmação da compra.</p>
-  <label class="sr-only" for="ativacaoEmail">E-mail</label>
-  <input type="email" id="ativacaoEmail" placeholder="SEU E-MAIL" autocomplete="email"
-         inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
-  <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
-  <label class="sr-only" for="ativacaoInput">Código de acesso</label>
-  <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
-         inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-         autocapitalize="characters" autocomplete="off" spellcheck="false">
-  <button id="btnAtivar" onclick="ativarAcesso()">Ativar</button>
-  <p style="margin-top:18px;">Acesso temporário para testes</p>
-  <label class="sr-only" for="testerPassword">Senha master</label>
-  <input type="password" id="testerPassword" placeholder="SENHA MASTER"
-         inputmode="text" maxlength="14"
-         pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-         autocomplete="current-password" autocapitalize="characters" spellcheck="false">
-  <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
-  <button id="btnAdminAtivacao" class="admin-only hidden" onclick="abrirPainelAdmin()">Administração</button>
-  <div id="ativacaoErro" role="status" aria-live="polite"></div>
+  <div class="login-shell">
+    <main class="login-card">
+      <header class="login-header">
+        <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
+        <h2>Acesse sua conta</h2>
+        <p class="login-subtitulo">Receba um link seguro no seu e-mail para acessar a plataforma.</p>
+      </header>
+
+      <section aria-labelledby="loginEmailTitulo">
+        <div class="login-grupo">
+          <label class="login-label" id="loginEmailTitulo" for="ativacaoEmail">E-mail</label>
+          <input type="email" id="ativacaoEmail" placeholder="nome@exemplo.com" autocomplete="email"
+                 inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
+          <small class="login-ajuda">Use o mesmo e-mail informado na aquisição do acesso.</small>
+        </div>
+        <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
+      </section>
+
+      <div class="login-divisor"><span>Já recebeu seu código?</span></div>
+
+      <section aria-labelledby="loginCodigoTitulo">
+        <div class="login-grupo">
+          <label class="login-label" id="loginCodigoTitulo" for="ativacaoInput">Código de acesso</label>
+          <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
+                 inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                 autocapitalize="characters" autocomplete="off" spellcheck="false">
+          <small class="login-ajuda">Abra primeiro o link enviado ao seu e-mail e depois informe o código.</small>
+        </div>
+        <button id="btnAtivar" onclick="ativarAcesso()">Ativar acesso</button>
+      </section>
+
+      <details class="tester-detalhes">
+        <summary>Acesso temporário para testers</summary>
+        <div class="tester-conteudo">
+          <label class="login-label" for="testerPassword">Senha master</label>
+          <div class="senha-wrap">
+            <input type="password" id="testerPassword" placeholder="XXXX-XXXX-XXXX"
+                   inputmode="text" maxlength="14"
+                   pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                   autocomplete="current-password" autocapitalize="characters" spellcheck="false">
+            <button type="button" class="senha-toggle" id="btnMostrarMaster"
+                    aria-label="Mostrar senha master" aria-pressed="false">Ver</button>
+          </div>
+          <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
+        </div>
+      </details>
+
+      <button id="btnAdminAtivacao" class="login-admin admin-only hidden" onclick="abrirPainelAdmin()">Abrir administração</button>
+      <div id="ativacaoErro" role="status" aria-live="polite"></div>
+    </main>
+    <footer class="login-rodape">Girassol Inteligência · <span data-app-version>v 2.13.0</span></footer>
+  </div>
 </div>
 
 <div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitulo">
@@ -3695,21 +3826,29 @@ async function enviarLinkMagico() {
   const emailInput = document.getElementById('ativacaoEmail');
   const email = emailInput.value.trim().toLowerCase();
   const erro = document.getElementById('ativacaoErro');
+  const btn = document.getElementById('btnEnviarLink');
   emailInput.value = email;
   if (!AUTH_CLIENT || !emailInput.checkValidity()) {
     erro.textContent = 'Informe um e-mail válido.';
     return;
   }
-  const { error } = await AUTH_CLIENT.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: location.origin }
-  });
-  if (!error) {
-    erro.textContent = 'Link enviado. Abra o e-mail mais recente neste navegador.';
-  } else if (error.status === 429 || /rate limit/i.test(error.message || '')) {
-    erro.textContent = 'Limite de e-mails atingido. Aguarde a liberação da cota antes de tentar novamente.';
-  } else {
-    erro.textContent = 'Não foi possível enviar o link agora. Verifique o e-mail e tente novamente.';
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  try {
+    const { error } = await AUTH_CLIENT.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: location.origin }
+    });
+    if (!error) {
+      erro.textContent = `Link enviado para ${email}. Verifique também a caixa de spam.`;
+    } else if (error.status === 429 || /rate limit/i.test(error.message || '')) {
+      erro.textContent = 'Limite de e-mails atingido. Aguarde a liberação da cota antes de tentar novamente.';
+    } else {
+      erro.textContent = 'Não foi possível enviar o link agora. Verifique o e-mail e tente novamente.';
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enviar link de acesso';
   }
 }
 window.enviarLinkMagico = enviarLinkMagico;
@@ -3724,6 +3863,7 @@ async function ativarAcessoTester() {
     return;
   }
   btn.disabled = true;
+  btn.textContent = 'Verificando...';
   try {
     const resp = await fetch(CONFIG.testerFunctionUrl, {
       method: 'POST',
@@ -3749,6 +3889,7 @@ async function ativarAcessoTester() {
   } finally {
     document.getElementById('testerPassword').value = '';
     btn.disabled = false;
+    btn.textContent = 'Entrar como tester';
   }
 }
 window.ativarAcessoTester = ativarAcessoTester;
@@ -3950,8 +4091,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     armazenamentoDisponivel = false;
     console.error('Armazenamento seguro indisponível.', erro);
   }
-  const versao = document.getElementById('appVersion');
-  if (versao && CONFIG?.appVersion) versao.textContent = `v ${CONFIG.appVersion}`;
+  if (CONFIG?.appVersion) {
+    document.querySelectorAll('#appVersion,[data-app-version]').forEach(
+      versao => versao.textContent = `v ${CONFIG.appVersion}`
+    );
+  }
   // Aplica tema/estilo antes de decidir qual tela mostrar, para que a
   // própria tela de ativação já nasça com o tema correto (evita flash)
   carregarPreferenciaEstilo();
@@ -3985,6 +4129,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   inputAtivacao.addEventListener('input', formatarCodigoAcesso);
   inputEmail.addEventListener('input', formatarEmail);
   inputTester.addEventListener('input', formatarSenhaMaster);
+  const btnMostrarMaster = document.getElementById('btnMostrarMaster');
+  btnMostrarMaster.addEventListener('click', () => {
+    const mostrar = inputTester.type === 'password';
+    inputTester.type = mostrar ? 'text' : 'password';
+    btnMostrarMaster.textContent = mostrar ? 'Ocultar' : 'Ver';
+    btnMostrarMaster.setAttribute('aria-label', mostrar ? 'Ocultar senha master' : 'Mostrar senha master');
+    btnMostrarMaster.setAttribute('aria-pressed', String(mostrar));
+    inputTester.focus();
+  });
 });
 
 window.diagnosticoPEIA = () => Object.freeze({

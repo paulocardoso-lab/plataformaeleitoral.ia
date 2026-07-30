@@ -48,6 +48,9 @@ assert(index.includes('storage: AUTH_STORAGE'), 'sessão Auth deve usar armazena
 assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover credenciais e caches persistentes legados');
 assert(index.includes('id="appLoading"'), 'estado global de carregamento não encontrado');
 assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis não encontradas');
+assert(index.includes('class="login-shell"'), 'estrutura mobile-first do login não encontrada');
+assert(index.includes('class="tester-detalhes"'), 'acesso tester deve permanecer recolhido');
+assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
 assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
