@@ -48,6 +48,15 @@
 
 ## Atualizar dados eleitorais
 
+## Testes locais
+
+Antes de publicar alterações em rankings, turnos ou agregações:
+
+```bash
+node scripts/test-election-features.mjs
+node scripts/audit-config.mjs
+```
+
 Quando tiver novos dados TSE:
 
 1. **Rodas ETL Python** (fora deste repo):
