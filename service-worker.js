@@ -2,7 +2,7 @@
 // Navegações usam network-first para não prender HTML/dataset antigo.
 // Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v26';
+const CACHE_VERSION = 'eleicoes-ms-v27';
 const PRIVATE_CACHE_PREFIX = 'peia-private-datasets-';
 const ASSETS = [
   '/index.html',

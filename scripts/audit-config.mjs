@@ -44,7 +44,8 @@ assert(index.includes('@supabase/supabase-js@2.111.0'), 'Supabase JS deve estar 
 assert(index.includes('function formatarEmail'), 'máscara de e-mail não encontrada');
 assert(index.includes('function formatarCodigoAcesso'), 'máscara de código não encontrada');
 assert(index.includes('function formatarSenhaMaster'), 'máscara da senha master não encontrada');
-assert(index.includes('pattern="PEIA-[A-Za-z0-9]{24}"'), 'formato da senha master diverge do segredo emitido');
+assert((index.match(/pattern="\[A-Z0-9\]\{4\}-\[A-Z0-9\]\{4\}-\[A-Z0-9\]\{4\}"/g) || []).length >= 2,
+  'código e master devem usar o formato XXXX-XXXX-XXXX');
 
 const runtimeFiles = ['index.html', 'runtime-config.js', 'service-worker.js', 'README.md', 'DEVELOPMENT.md'];
 const accessCodePattern = /\bPEIA-[A-Z0-9]{4}-[A-Z0-9]{4}\b/g;

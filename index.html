@@ -1167,8 +1167,9 @@ canvas {
   <button id="btnAtivar" onclick="ativarAcesso()">Ativar</button>
   <p style="margin-top:18px;">Acesso temporário para testes</p>
   <input type="password" id="testerPassword" placeholder="SENHA MASTER"
-         maxlength="29" pattern="PEIA-[A-Za-z0-9]{24}" autocomplete="current-password"
-         autocapitalize="none" spellcheck="false">
+         inputmode="text" maxlength="14"
+         pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+         autocomplete="current-password" autocapitalize="characters" spellcheck="false">
   <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
   <div id="ativacaoErro"></div>
 </div>
@@ -1447,7 +1448,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.9.1</span>
+    <span class="rodape-versao" id="appVersion">v 2.9.2</span>
     </div>
   </div>
 
@@ -3528,7 +3529,7 @@ async function ativarAcessoTester() {
   const erro = document.getElementById('ativacaoErro');
   const btn = document.getElementById('btnTester');
   if (!passwordInput.checkValidity()) {
-    erro.textContent = 'A senha master deve seguir o formato fornecido.';
+    erro.textContent = 'A senha master deve seguir o formato XXXX-XXXX-XXXX.';
     return;
   }
   btn.disabled = true;
@@ -3684,7 +3685,8 @@ function formatarEmail(e) {
 
 function formatarSenhaMaster(e) {
   const input = e.target;
-  input.value = input.value.replace(/[^A-Za-z0-9-]/g, '').slice(0, 29);
+  const limpo = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+  input.value = limpo.match(/.{1,4}/g)?.join('-') || '';
 }
 </script>
 
