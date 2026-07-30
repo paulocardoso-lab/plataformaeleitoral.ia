@@ -13,6 +13,10 @@ const config = readFileSync(new URL('../supabase/config.toml', import.meta.url),
 
 assert(webhook.includes("new URL(request.url).searchParams.get('signature')"),
   'o segredo deve ser recebido pelo parâmetro signature');
+assert(webhook.includes("{ name: 'HMAC', hash: 'SHA-1' }"),
+  'a assinatura da Kiwify deve usar HMAC-SHA1');
+assert(webhook.indexOf('await request.text()') < webhook.indexOf('await hmacSha1(rawBody, WEBHOOK_SECRET)'),
+  'a assinatura deve ser calculada sobre o corpo bruto recebido');
 assert(webhook.includes("eventType === 'order_approved' && orderStatus === 'paid' && approvedAt"),
   'a aprovação deve exigir evento, status pago e data');
 assert(webhook.includes("eventType === 'order_refunded'"),

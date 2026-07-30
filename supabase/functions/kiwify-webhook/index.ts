@@ -25,16 +25,27 @@ const safeEqual = (left: string, right: string) => {
   }
   return different === 0;
 };
+const hmacSha1 = async (body: string, secret: string) => {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-1' },
+    false,
+    ['sign']
+  );
+  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(body));
+  return [...new Uint8Array(signature)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+};
 const clean = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 
 Deno.serve(async (request) => {
   if (request.method !== 'POST') {
     return response(405, { error: 'method_not_allowed' });
   }
-  const signature = new URL(request.url).searchParams.get('signature') || '';
-  if (!safeEqual(signature, WEBHOOK_SECRET)) {
-    return response(401, { error: 'invalid_signature' });
-  }
+  const signature = (new URL(request.url).searchParams.get('signature') || '').toLowerCase();
   const declaredSize = Number(request.headers.get('content-length') || 0);
   if (declaredSize > MAX_BODY_BYTES) {
     return response(413, { error: 'payload_too_large' });
@@ -42,6 +53,10 @@ Deno.serve(async (request) => {
   const rawBody = await request.text();
   if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
     return response(413, { error: 'payload_too_large' });
+  }
+  const expectedSignature = await hmacSha1(rawBody, WEBHOOK_SECRET);
+  if (!/^[a-f0-9]{40}$/.test(signature) || !safeEqual(signature, expectedSignature)) {
+    return response(401, { error: 'invalid_signature' });
   }
   let payload: Record<string, unknown>;
   try {
