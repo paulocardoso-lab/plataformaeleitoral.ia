@@ -52,6 +52,8 @@ assert(index.includes('class="login-shell"'), 'estrutura mobile-first do login n
 assert(index.includes('class="tester-detalhes"'), 'acesso tester deve permanecer recolhido');
 assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
+assert(!index.includes("evento === 'SIGNED_IN' || evento === 'SIGNED_OUT'"),
+  'eventos automáticos de Auth não devem provocar recarga cruzada entre abas');
 assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');

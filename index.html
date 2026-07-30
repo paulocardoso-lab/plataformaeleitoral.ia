@@ -4722,11 +4722,6 @@ const SESSION_CHANNEL = 'BroadcastChannel' in window ? new BroadcastChannel('pei
 SESSION_CHANNEL?.addEventListener('message', evento => {
   if (evento.data?.type === 'session-changed') location.reload();
 });
-AUTH_CLIENT?.auth.onAuthStateChange(evento => {
-  if (evento === 'SIGNED_IN' || evento === 'SIGNED_OUT') {
-    SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
-  }
-});
 
 async function obterAuthSession() {
   if (!AUTH_CLIENT) return null;
