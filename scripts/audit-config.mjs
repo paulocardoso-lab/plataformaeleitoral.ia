@@ -49,7 +49,10 @@ assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover cr
 assert(index.includes('id="appLoading"'), 'estado global de carregamento não encontrado');
 assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis não encontradas');
 assert(index.includes('class="login-shell"'), 'estrutura mobile-first do login não encontrada');
-assert(index.includes('class="tester-detalhes"'), 'acesso tester deve permanecer recolhido');
+assert(
+  /<details class="acesso-secundario tester-detalhes">\s*<summary>Acesso temporário para testers<\/summary>/.test(index),
+  'acesso tester deve permanecer recolhido'
+);
 assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
 assert(!index.includes("evento === 'SIGNED_IN' || evento === 'SIGNED_OUT'"),
@@ -58,6 +61,10 @@ assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
+assert(
+  /<details class="acesso-secundario" id="acessoPorCodigo">\s*<summary>Tenho um código de acesso<\/summary>/.test(index),
+  'código manual deve permanecer recolhido como acesso secundário'
+);
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(index.includes('CONFIG.adminFunctionUrl'), 'painel administrativo não foi encontrado');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');

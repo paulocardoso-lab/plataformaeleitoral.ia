@@ -753,8 +753,8 @@ summary:focus-visible {
 }
 .login-divisor::before,.login-divisor::after { content:""; height:1px; flex:1; background:var(--border); }
 
-.tester-detalhes { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 4px; }
-.tester-detalhes summary {
+.acesso-secundario { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 4px; }
+.acesso-secundario summary {
   min-height: 48px;
   display: flex;
   align-items: center;
@@ -764,10 +764,10 @@ summary:focus-visible {
   cursor: pointer;
   list-style: none;
 }
-.tester-detalhes summary::-webkit-details-marker { display:none; }
-.tester-detalhes summary::after { content:"＋"; color:var(--neon-cyan); font-size:1.1rem; }
-.tester-detalhes[open] summary::after { content:"−"; }
-.tester-conteudo { padding: 8px 0 2px; }
+.acesso-secundario summary::-webkit-details-marker { display:none; }
+.acesso-secundario summary::after { content:"＋"; color:var(--neon-cyan); font-size:1.1rem; }
+.acesso-secundario[open] summary::after { content:"−"; }
+.acesso-secundario-conteudo { padding: 8px 0 2px; }
 .senha-wrap { position:relative; }
 .senha-wrap #testerPassword { padding-right:72px; }
 .senha-toggle {
@@ -1714,22 +1714,23 @@ canvas {
         <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
       </section>
 
-      <div class="login-divisor"><span>Já recebeu seu código?</span></div>
+      <details class="acesso-secundario" id="acessoPorCodigo">
+        <summary>Tenho um código de acesso</summary>
+        <section class="acesso-secundario-conteudo" aria-labelledby="loginCodigoTitulo">
+          <div class="login-grupo">
+            <label class="login-label" id="loginCodigoTitulo" for="ativacaoInput">Código de acesso</label>
+            <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
+                   inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                   autocapitalize="characters" autocomplete="off" spellcheck="false">
+            <small class="login-ajuda">Abra primeiro o link enviado ao seu e-mail e depois informe o código.</small>
+          </div>
+          <button id="btnAtivar" onclick="ativarAcesso()">Ativar acesso</button>
+        </section>
+      </details>
 
-      <section aria-labelledby="loginCodigoTitulo">
-        <div class="login-grupo">
-          <label class="login-label" id="loginCodigoTitulo" for="ativacaoInput">Código de acesso</label>
-          <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
-                 inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-                 autocapitalize="characters" autocomplete="off" spellcheck="false">
-          <small class="login-ajuda">Abra primeiro o link enviado ao seu e-mail e depois informe o código.</small>
-        </div>
-        <button id="btnAtivar" onclick="ativarAcesso()">Ativar acesso</button>
-      </section>
-
-      <details class="tester-detalhes">
+      <details class="acesso-secundario tester-detalhes">
         <summary>Acesso temporário para testers</summary>
-        <div class="tester-conteudo">
+        <div class="acesso-secundario-conteudo">
           <label class="login-label" for="testerPassword">Senha master</label>
           <div class="senha-wrap">
             <input type="password" id="testerPassword" placeholder="XXXX-XXXX-XXXX"
