@@ -82,6 +82,8 @@ const datasetFunction = read('supabase/functions/dataset/index.ts');
 assert(datasetFunction.includes("DATASET_BUCKET = 'private-datasets'"), 'Edge Function aponta para bucket inesperado');
 assert(datasetFunction.includes("supabase.rpc('validar_sessao'"), 'Edge Function deve validar sessão antes do download');
 assert(datasetFunction.includes("'Cache-Control': 'private, no-store'"), 'resposta privada não pode ser cacheada por CDN');
+assert(datasetFunction.includes("'Access-Control-Expose-Headers': 'X-Dataset-Version'"),
+  'browser deve conseguir validar o cabeçalho de versão do dataset');
 assert(datasetFunction.includes("from('licencas')"), 'Edge Function deve validar licença Auth');
 assert(datasetFunction.includes("validation?.tipo !== 'tester'"), 'token opaco deve ser restrito a tester');
 const testerFunction = read('supabase/functions/tester-access/index.ts');

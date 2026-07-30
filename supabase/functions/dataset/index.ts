@@ -26,6 +26,7 @@ function corsHeaders(origin: string | null) {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-device-id',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Expose-Headers': 'X-Dataset-Version',
     'Access-Control-Max-Age': '3600',
     'Vary': 'Origin'
   };
