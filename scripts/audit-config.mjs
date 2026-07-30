@@ -42,7 +42,7 @@ assert(!index.includes("localStorage.setItem('pe26_sessao_token'"), 'token teste
 assert(!index.includes("localStorage.setItem('pe26_device_id'"), 'device id tester não pode ser persistido em localStorage');
 assert(index.includes("gravarCredencialSegura('tester_token'"), 'token tester deve ser persistido fora do localStorage');
 assert(index.includes("lerCredencialSegura('tester_token'"), 'boot deve restaurar a sessão tester segura');
-assert(index.includes('storage: window.sessionStorage'), 'sessão Auth deve ficar restrita à sessão da aba');
+assert(index.includes('storage: AUTH_STORAGE'), 'sessão Auth deve usar armazenamento seguro compartilhado entre abas');
 assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover credenciais e caches persistentes legados');
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');

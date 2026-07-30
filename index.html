@@ -1496,7 +1496,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.11.0</span>
+    <span class="rodape-versao" id="appVersion">v 2.11.1</span>
     </div>
   </div>
 
@@ -3481,12 +3481,36 @@ async function carregarCredenciaisTester() {
   sessionStorage.removeItem('pe26_device_id');
 }
 
+const AUTH_STORAGE = {
+  async getItem(chave) {
+    const persistido = await lerCredencialSegura(`auth:${chave}`);
+    if (persistido) return persistido;
+    const legado = sessionStorage.getItem(chave) || localStorage.getItem(chave);
+    if (legado) {
+      await gravarCredencialSegura(`auth:${chave}`, legado);
+      sessionStorage.removeItem(chave);
+      localStorage.removeItem(chave);
+    }
+    return legado;
+  },
+  async setItem(chave, valor) {
+    await gravarCredencialSegura(`auth:${chave}`, valor);
+    sessionStorage.removeItem(chave);
+    localStorage.removeItem(chave);
+  },
+  async removeItem(chave) {
+    await removerCredencialSegura(`auth:${chave}`);
+    sessionStorage.removeItem(chave);
+    localStorage.removeItem(chave);
+  }
+};
+
 const AUTH_CLIENT = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    storage: window.sessionStorage
+    storage: AUTH_STORAGE
   }
 });
 
@@ -3516,7 +3540,6 @@ function limparSessaoLocal() {
 async function limparPersistenciaLegada() {
   localStorage.removeItem('pe26_sessao_token');
   localStorage.removeItem('pe26_device_id');
-  localStorage.removeItem(`sb-${new URL(SUPABASE_URL).hostname.split('.')[0]}-auth-token`);
   if ('caches' in window) await caches.delete(PRIVATE_DATASET_CACHE);
 }
 
