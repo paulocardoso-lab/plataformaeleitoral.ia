@@ -33,6 +33,10 @@ assert(JSON.stringify(vercel).includes(`https://${[...refs][0]}.supabase.co`), '
 assert(index.includes("chamarRpc('validar_sessao'"), 'boot deve revalidar a sessão no backend');
 assert(!index.includes("getItem('pe26_acesso_liberado')"), 'flag booleana legada não pode autorizar o acesso');
 assert(index.includes('resultado.sessao_token'), 'ativação deve exigir token de sessão');
+assert(!index.includes('id="dataset-b64"'), 'dataset protegido não pode permanecer embutido no HTML');
+assert(Buffer.byteLength(index, 'utf8') < 500_000, 'index.html voltou a carregar um payload incompatível com o shell público');
+assert(index.includes('CONFIG.datasetFunctionUrl'), 'frontend deve obter o dataset pela Edge Function');
+assert(index.includes('PRIVATE_DATASET_CACHE'), 'frontend deve manter cache offline separado do shell público');
 
 const runtimeFiles = ['index.html', 'runtime-config.js', 'service-worker.js', 'README.md', 'DEVELOPMENT.md'];
 const accessCodePattern = /\bPEIA-[A-Z0-9]{4}-[A-Z0-9]{4}\b/g;
@@ -46,6 +50,10 @@ assert(migrationNames.length > 0, 'Nenhuma migration Supabase encontrada');
 const sessionMigration = read('supabase/migrations/20260730120000_criar_sessoes_acesso.sql');
 assert(sessionMigration.includes('token_hash bytea unique not null'), 'migration de sessão deve persistir somente hash do token');
 assert(sessionMigration.includes("delete from public.codigos_acesso where origem = 'admin'"), 'código administrativo comprometido não foi revogado');
+const datasetFunction = read('supabase/functions/dataset/index.ts');
+assert(datasetFunction.includes("DATASET_BUCKET = 'private-datasets'"), 'Edge Function aponta para bucket inesperado');
+assert(datasetFunction.includes("supabase.rpc('validar_sessao'"), 'Edge Function deve validar sessão antes do download');
+assert(datasetFunction.includes("'Cache-Control': 'private, no-store'"), 'resposta privada não pode ser cacheada por CDN');
 
 if (failures.length) {
   console.error('Auditoria de configuração falhou:\n');

@@ -10,7 +10,7 @@ PWA offline-first com resultados eleitorais dos 79 municípios de Mato Grosso do
 
 ```
 PE26ELEITORAL/
-├── index.html           (app completo, 1.94 MB)
+├── index.html           (shell público do app)
 ├── manifest.json        (metadados PWA)
 ├── service-worker.js    (cache offline)
 ├── runtime-config.js    (configuração pública do backend)
@@ -42,12 +42,12 @@ Fluxo:
 
 ## Dados
 
-Pré-agregados em JSON gzip (base64 embutido no HTML):
+Pré-agregados em JSON gzip, armazenados em bucket privado do Supabase:
 - 163.329 registros de votos
 - 79 municípios MS
 - 7 cargos eleitorais
 - 8 eleições (2010-2024)
-- 100% offline após 1ª visita (Service Worker)
+- offline após o primeiro download autorizado
 
 ## Verificação
 
@@ -65,6 +65,10 @@ para `main` e em pull requests.
 A partir da versão 2.7, a ativação retorna um token opaco. O Supabase armazena
 somente o hash do token e revalida a sessão no boot. As migrations devem ser
 aplicadas antes do deploy do frontend; veja `SECURITY_TRANSITION.md`.
+
+Na versão 2.8, o dataset não está mais no HTML público. A Edge Function
+`dataset` valida a sessão antes do download e o cliente mantém uma cópia
+offline privada, removida no logout.
 
 ---
 Desenvolvido em 2026 · Girassol Inteligência

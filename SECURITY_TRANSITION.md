@@ -14,8 +14,13 @@ O frontend 2.7.0 substitui a flag booleana por um token opaco. A migration
 O cliente revalida a sessão no boot quando está online. Para preservar o PWA,
 existe uma tolerância offline de 168 horas após a última validação.
 
-Isso ainda não protege o dataset: ele permanece no HTML público. O device ID
-também continua sendo um identificador controlado pelo cliente.
+Na versão 2.8.0, o dataset deixa o HTML e passa para o bucket privado
+`private-datasets`. A Edge Function `dataset` valida token + device ID antes de
+entregar a versão solicitada. A resposta usa `private, no-store`; o cache
+offline é criado explicitamente no dispositivo autorizado e apagado no logout.
+
+O device ID continua sendo um identificador controlado pelo cliente. A próxima
+evolução de identidade ainda deve migrar para Supabase Auth.
 
 ## Ordem obrigatória de implantação
 
@@ -25,7 +30,10 @@ também continua sendo um identificador controlado pelo cliente.
 4. Aplicar `20260730120000_criar_sessoes_acesso.sql`.
 5. Testar `ativar_codigo` e `validar_sessao` diretamente no Supabase.
 6. Publicar o frontend 2.7.0.
-7. Confirmar `version.json`, headers, CSP e Service Worker v23 em produção.
+7. Criar o bucket privado e enviar o dataset versionado.
+8. Implantar a Edge Function `dataset` com `verify_jwt=false`.
+9. Publicar o frontend 2.8.0.
+10. Confirmar `version.json`, headers, CSP e Service Worker v24 em produção.
 
 Publicar o frontend antes das migrations fará ativações antigas retornarem
 sucesso sem `sessao_token`; o cliente recusará esse resultado por segurança.
@@ -44,17 +52,17 @@ sucesso sem `sessao_token`; o cliente recusará esse resultado por segurança.
 
 ## Proteção do dataset
 
-Enquanto o dataset permanecer em `index.html`, a tela de ativação não é uma barreira de segurança. Para conteúdo realmente restrito:
+Implementado:
 
-1. publicar o shell do aplicativo sem o dataset;
-2. armazenar o dataset versionado em bucket privado;
-3. emitir URL assinada curta somente após autorização;
-4. validar `datasetVersion` antes de reutilizar Cache Storage;
-5. revogar URLs e sessão quando a licença for revogada.
+1. shell público sem dataset;
+2. bucket privado sem policies para `anon` ou `authenticated`;
+3. entrega mediada por função com sessão revogável;
+4. cache offline separado por `datasetVersion`;
+5. exclusão do cache durante logout.
 
 ## Critérios de conclusão
 
-- Alterar `localStorage` não libera conteúdo protegido quando online.
+- Alterar `localStorage` não permite baixar o dataset protegido.
 - Revogação no backend bloqueia nova leitura em todos os dispositivos.
 - Mobile e desktop usam a mesma identidade e a mesma licença.
 - A versão do dataset aparece em `version.json` e nos logs de acesso.

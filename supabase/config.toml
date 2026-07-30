@@ -1,0 +1,4 @@
+project_id = "rclbjiqfabuuhiwxmjwp"
+
+[functions.dataset]
+verify_jwt = false

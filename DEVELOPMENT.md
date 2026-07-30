@@ -18,6 +18,7 @@
 - `vercel.json` — headers corretos (SW nunca cacheado no CDN)
 - `runtime-config.js` — endpoint público único do Supabase
 - `version.json` — versão verificável do app, dataset e schema de cache
+- `supabase/functions/dataset` — entrega autorizada do dataset privado
 
 ## Cores neon (CSS vars)
 
@@ -54,7 +55,8 @@ Quando tiver novos dados TSE:
    python3 build_dataset.py  # parquet → dataset.b64
    ```
 
-2. **Substitui o `index.html`** (contém dataset embutido)
+2. Envie o novo `.b64` para:
+   `ss:///private-datasets/<datasetVersion>.b64`
 
 3. Atualize `appVersion`, `datasetVersion` e `cacheSchema` em `version.json`.
    Mantenha os mesmos valores em `runtime-config.js` e `service-worker.js`.
@@ -83,6 +85,21 @@ Esta versão depende das RPCs de sessão. Aplique primeiro, nesta ordem:
 
 Não publique o frontend 2.7 antes das migrations. Consulte
 `SECURITY_TRANSITION.md` para backup, testes e rollback.
+
+## Dataset privado — versão 2.8+
+
+```bash
+supabase storage cp dataset_v2.b64 \
+  ss:///private-datasets/tse-ms-2010-2024-v1.b64 \
+  --linked --experimental --content-type text/plain --cache-control no-store
+
+supabase functions deploy dataset \
+  --project-ref rclbjiqfabuuhiwxmjwp \
+  --no-verify-jwt --use-api
+```
+
+O arquivo `dataset*.b64` é ignorado pelo Git. Nunca volte a incorporá-lo ao
+HTML ou a uma função versionada.
 
 ## Performance
 
