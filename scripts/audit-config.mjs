@@ -26,6 +26,8 @@ assert(!/https:\/\/[a-z0-9]+\.supabase\.co/.test(index), 'index.html não deve c
 assert(index.includes('/runtime-config.js'), 'index.html deve carregar runtime-config.js');
 assert(worker.includes(`eleicoes-ms-${version.cacheSchema}`), 'cacheSchema de version.json diverge do Service Worker');
 assert(worker.includes('networkFirst(event.request)'), 'navegações devem usar network-first');
+assert(worker.includes("url.pathname === '/runtime-config.js'"), 'runtime config deve ter estratégia explícita');
+assert(worker.includes('networkFirstResource(event.request)'), 'runtime config e versão devem usar network-first');
 assert(!worker.includes("cache.put(event.request, clone)"), 'cache indiscriminado de qualquer GET voltou a ser usado');
 assert(JSON.stringify(vercel).includes('service-worker.js'), 'vercel.json deve definir headers do Service Worker');
 assert(JSON.stringify(vercel).includes('no-cache, no-store, must-revalidate'), 'Service Worker deve usar no-store');
@@ -44,6 +46,9 @@ assert(index.includes("gravarCredencialSegura('tester_token'"), 'token tester de
 assert(index.includes("lerCredencialSegura('tester_token'"), 'boot deve restaurar a sessão tester segura');
 assert(index.includes('storage: AUTH_STORAGE'), 'sessão Auth deve usar armazenamento seguro compartilhado entre abas');
 assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover credenciais e caches persistentes legados');
+assert(index.includes('id="appLoading"'), 'estado global de carregamento não encontrado');
+assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis não encontradas');
+assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');

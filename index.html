@@ -1164,30 +1164,44 @@ canvas {
 .admin-table th,.admin-table td { padding:7px; border-bottom:1px solid #334155; text-align:left; white-space:nowrap; }
 .admin-actions { display:flex; flex-wrap:wrap; gap:8px; }
 .admin-status { min-height:22px; color:#fbbf24; margin:8px 0; }
+.sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+#appLoading { position:fixed; inset:0; z-index:12000; display:grid; place-items:center; background:rgba(2,6,23,.92); color:#fff; text-align:center; padding:24px; }
+#appLoading.hidden { display:none; }
+.loading-spinner { width:38px; height:38px; border:4px solid #334155; border-top-color:#facc15; border-radius:50%; animation:girar .8s linear infinite; margin:0 auto 14px; }
+@keyframes girar { to { transform:rotate(360deg); } }
+#conectividadeStatus { position:fixed; top:0; left:0; right:0; z-index:11000; padding:7px; text-align:center; background:#991b1b; color:#fff; font-size:13px; }
+#conectividadeStatus.hidden { display:none; }
 </style>
 </head>
 <body>
+<div id="appLoading" class="hidden" role="status" aria-live="polite" aria-busy="true">
+  <div><div class="loading-spinner" aria-hidden="true"></div><span id="appLoadingTexto">Carregando dados...</span></div>
+</div>
+<div id="conectividadeStatus" class="hidden" role="status" aria-live="polite">Sem conexão. Os dados protegidos exigem internet.</div>
 
 <!-- TELA DE ATIVAÇÃO (bloqueia o app até validar um código de acesso) -->
 <div id="telaAtivacao" class="hidden">
   <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
   <h2>Ative seu acesso</h2>
   <p>Entre por e-mail e vincule o código recebido na confirmação da compra.</p>
+  <label class="sr-only" for="ativacaoEmail">E-mail</label>
   <input type="email" id="ativacaoEmail" placeholder="SEU E-MAIL" autocomplete="email"
          inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
   <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
+  <label class="sr-only" for="ativacaoInput">Código de acesso</label>
   <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
          inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
          autocapitalize="characters" autocomplete="off" spellcheck="false">
   <button id="btnAtivar" onclick="ativarAcesso()">Ativar</button>
   <p style="margin-top:18px;">Acesso temporário para testes</p>
+  <label class="sr-only" for="testerPassword">Senha master</label>
   <input type="password" id="testerPassword" placeholder="SENHA MASTER"
          inputmode="text" maxlength="14"
          pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
          autocomplete="current-password" autocapitalize="characters" spellcheck="false">
   <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
   <button id="btnAdminAtivacao" class="admin-only hidden" onclick="abrirPainelAdmin()">Administração</button>
-  <div id="ativacaoErro"></div>
+  <div id="ativacaoErro" role="status" aria-live="polite"></div>
 </div>
 
 <div id="adminModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="adminTitulo">
@@ -1196,7 +1210,7 @@ canvas {
       <div><h2 id="adminTitulo">Administração de acessos</h2><small id="adminIdentidade"></small></div>
       <button onclick="fecharPainelAdmin()">Fechar</button>
     </div>
-    <div id="adminStatus" class="admin-status"></div>
+    <div id="adminStatus" class="admin-status" role="status" aria-live="polite"></div>
     <div class="admin-grid">
       <section class="admin-card">
         <h3>Emitir códigos</h3>
@@ -1496,7 +1510,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.11.1</span>
+    <span class="rodape-versao" id="appVersion">v 2.12.0</span>
     </div>
   </div>
 
@@ -1959,10 +1973,26 @@ function ativarChipsTurno(idPrefix, onChange) {
   const el = document.getElementById(idPrefix+'_chip_turno');
   if (!el) return;
   el.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      el.querySelectorAll('.chip').forEach(c=>c.classList.remove('ativo'));
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+    chip.setAttribute('aria-pressed', chip.classList.contains('ativo') ? 'true' : 'false');
+    const selecionar = () => {
+      el.querySelectorAll('.chip').forEach(c => {
+        c.classList.remove('ativo');
+        c.setAttribute('aria-pressed', 'false');
+      });
       chip.classList.add('ativo');
+      chip.setAttribute('aria-pressed', 'true');
       onChange(chip.dataset.turno);
+    };
+    chip.addEventListener('click', () => {
+      selecionar();
+    });
+    chip.addEventListener('keydown', evento => {
+      if (evento.key === 'Enter' || evento.key === ' ') {
+        evento.preventDefault();
+        selecionar();
+      }
     });
   });
 }
@@ -2006,6 +2036,9 @@ async function obterDatasetAutorizado() {
     throw new Error('Sessão sem autorização para o dataset.');
   }
   if (!resp.ok) throw new Error(`Falha ao baixar dataset (${resp.status}).`);
+  if (resp.headers.get('X-Dataset-Version') !== CONFIG.datasetVersion) {
+    throw new Error('A versão dos dados recebida diverge da versão esperada. Atualize a página.');
+  }
   const b64 = (await resp.text()).trim();
   if (!b64.startsWith('H4sI') || b64.length < 1000) {
     throw new Error('Dataset recebido em formato inválido.');
@@ -2037,7 +2070,8 @@ function montarHome() {
 
   const grid = document.getElementById('grid9');
   grid.innerHTML = BOTOES.map(b => `
-    <div class="tile" onclick="abrirTela(${b.id})">
+    <div class="tile" role="button" tabindex="0" onclick="abrirTela(${b.id})"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirTela(${b.id})}">
       <div class="icone">${ICONES[b.icone]}</div>
       <div class="rotulo">${b.rotulo.replace('\n','<br>')}</div>
     </div>
@@ -3355,6 +3389,22 @@ async function exportarComoImagem(elementoId, nomeArquivo) {
 // ---------- SERVICE WORKER: registro e detecção de atualização ----------
 let atualizacaoEmAndamento = false;
 
+function definirCarregamento(ativo, texto = 'Carregando dados...') {
+  const painel = document.getElementById('appLoading');
+  const rotulo = document.getElementById('appLoadingTexto');
+  if (!painel || !rotulo) return;
+  rotulo.textContent = texto;
+  painel.classList.toggle('hidden', !ativo);
+  document.body.setAttribute('aria-busy', ativo ? 'true' : 'false');
+}
+
+function atualizarConectividade() {
+  const status = document.getElementById('conectividadeStatus');
+  if (status) status.classList.toggle('hidden', navigator.onLine);
+}
+window.addEventListener('online', atualizarConectividade);
+window.addEventListener('offline', atualizarConectividade);
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').then((registration) => {
@@ -3513,6 +3563,15 @@ const AUTH_CLIENT = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KE
     storage: AUTH_STORAGE
   }
 });
+const SESSION_CHANNEL = 'BroadcastChannel' in window ? new BroadcastChannel('peia-session-v1') : null;
+SESSION_CHANNEL?.addEventListener('message', evento => {
+  if (evento.data?.type === 'session-changed') location.reload();
+});
+AUTH_CLIENT?.auth.onAuthStateChange(evento => {
+  if (evento === 'SIGNED_IN' || evento === 'SIGNED_OUT') {
+    SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
+  }
+});
 
 async function obterAuthSession() {
   if (!AUTH_CLIENT) return null;
@@ -3566,6 +3625,7 @@ async function redefinirAcesso() {
   if ('caches' in window) tarefas.push(caches.delete(PRIVATE_DATASET_CACHE));
   if (AUTH_CLIENT) tarefas.push(AUTH_CLIENT.auth.signOut());
   await Promise.allSettled(tarefas);
+  SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
   location.reload();
 }
 window.redefinirAcesso = redefinirAcesso;
@@ -3645,9 +3705,13 @@ async function enviarLinkMagico() {
     email,
     options: { emailRedirectTo: location.origin }
   });
-  erro.textContent = error
-    ? 'Não foi possível enviar o link de acesso.'
-    : 'Link enviado. Abra-o neste dispositivo e volte para concluir a ativação.';
+  if (!error) {
+    erro.textContent = 'Link enviado. Abra o e-mail mais recente neste navegador.';
+  } else if (error.status === 429 || /rate limit/i.test(error.message || '')) {
+    erro.textContent = 'Limite de e-mails atingido. Aguarde a liberação da cota antes de tentar novamente.';
+  } else {
+    erro.textContent = 'Não foi possível enviar o link agora. Verifique o e-mail e tente novamente.';
+  }
 }
 window.enviarLinkMagico = enviarLinkMagico;
 
@@ -3678,6 +3742,7 @@ async function ativarAcessoTester() {
     testerSessionToken = resultado.sessao_token;
     await gravarCredencialSegura('tester_token', testerSessionToken);
     localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
+    SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
     await iniciarApp();
     esconderTelaAtivacao();
   } catch (e) {
@@ -3864,23 +3929,36 @@ Object.assign(window,{abrirPainelAdmin,fecharPainelAdmin,adminCriarCodigos,admin
 // BOOT
 // ============================================================
 async function iniciarApp() {
-  await carregarDados();
-  montarHome();
-  initBuscaUniversal();
-  carregarPreferenciaFonte();
+  definirCarregamento(true, 'Validando acesso e carregando dados...');
+  try {
+    await carregarDados();
+    montarHome();
+    initBuscaUniversal();
+    carregarPreferenciaFonte();
+  } finally {
+    definirCarregamento(false);
+  }
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  await carregarCredenciaisTester();
-  await limparPersistenciaLegada();
+  atualizarConectividade();
+  definirCarregamento(true, 'Verificando sua sessão...');
+  let armazenamentoDisponivel = true;
+  try {
+    await carregarCredenciaisTester();
+    await limparPersistenciaLegada();
+  } catch (erro) {
+    armazenamentoDisponivel = false;
+    console.error('Armazenamento seguro indisponível.', erro);
+  }
   const versao = document.getElementById('appVersion');
   if (versao && CONFIG?.appVersion) versao.textContent = `v ${CONFIG.appVersion}`;
   // Aplica tema/estilo antes de decidir qual tela mostrar, para que a
   // própria tela de ativação já nasça com o tema correto (evita flash)
   carregarPreferenciaEstilo();
-  await verificarAcessoAdmin();
+  if (armazenamentoDisponivel) await verificarAcessoAdmin();
 
-  if (await validarSessaoAtual()) {
+  if (armazenamentoDisponivel && await validarSessaoAtual()) {
     try {
       await iniciarApp();
     } catch (erro) {
@@ -3889,9 +3967,12 @@ window.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('ativacaoErro').textContent = erro.message;
     }
   } else {
+    definirCarregamento(false);
     mostrarTelaAtivacao();
     const erro = document.getElementById('ativacaoErro');
-    if (!navigator.onLine && obterSessaoToken()) {
+    if (!armazenamentoDisponivel) {
+      erro.textContent = 'O navegador bloqueou o armazenamento seguro. Habilite os dados do site e recarregue.';
+    } else if (!navigator.onLine && obterSessaoToken()) {
       erro.textContent = 'Conecte-se à internet para renovar sua sessão.';
     }
   }

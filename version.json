@@ -1,6 +1,6 @@
 {
-  "appVersion": "2.11.1",
+  "appVersion": "2.12.0",
   "datasetVersion": "tse-ms-2010-2024-v1",
-  "cacheSchema": "v30",
+  "cacheSchema": "v31",
   "releaseDate": "2026-07-30"
 }

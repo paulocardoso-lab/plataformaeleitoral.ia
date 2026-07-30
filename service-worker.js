@@ -2,7 +2,7 @@
 // Navegações usam network-first para não prender HTML/dataset antigo.
 // Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v30';
+const CACHE_VERSION = 'eleicoes-ms-v31';
 const ASSETS = [
   '/index.html',
   '/runtime-config.js',
@@ -85,6 +85,19 @@ async function staleWhileRevalidate(request, event) {
   return network;
 }
 
+async function networkFirstResource(request) {
+  try {
+    const response = await fetch(request, { cache: 'no-store' });
+    if (response && response.status === 200) {
+      const cache = await caches.open(CACHE_VERSION);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    return (await caches.match(request)) || Response.error();
+  }
+}
+
 // Somente recursos explicitamente conhecidos são persistidos.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
@@ -96,7 +109,12 @@ self.addEventListener('fetch', (event) => {
   }
   if (url.origin !== self.location.origin && event.request.url !== ASSET_HTML2CANVAS) return;
 
-  if (url.pathname === '/manifest.json' || url.pathname === '/runtime-config.js' || url.pathname === '/version.json') {
+  if (url.pathname === '/runtime-config.js' || url.pathname === '/version.json') {
+    event.respondWith(networkFirstResource(event.request));
+    return;
+  }
+
+  if (url.pathname === '/manifest.json') {
     event.respondWith(staleWhileRevalidate(event.request, event));
     return;
   }
