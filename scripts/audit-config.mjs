@@ -49,6 +49,8 @@ assert(index.includes('await limparPersistenciaLegada()'), 'boot deve remover cr
 assert(index.includes('id="appLoading"'), 'estado global de carregamento não encontrado');
 assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis não encontradas');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
+assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
+  'banner de atualização deve permanecer visível fora da área autenticada');
 assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
