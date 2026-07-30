@@ -12,9 +12,9 @@
 - `chartmini.js` — gráficos canvas puro (barras, linhas)
 - `dataset.b64` — 1.87 MB (gzip) → 15.6 MB (raw JSON)
 
-### PWA offline
+### PWA
 - `manifest.json` — installável em iOS/Android
-- `service-worker.js` — network-first para HTML e cache-first para assets imutáveis
+- `service-worker.js` — network-first para HTML/configuração e cache-first para o shell
 - `vercel.json` — headers corretos (SW nunca cacheado no CDN)
 - `runtime-config.js` — endpoint público único do Supabase
 - `version.json` — versão verificável do app, dataset e schema de cache
@@ -105,13 +105,13 @@ HTML ou a uma função versionada.
 
 - Clientes entram por link mágico e vinculam o código à sua conta.
 - Sessões opacas 2.8 foram revogadas e não possuem caminho de migração.
-- A senha master existe somente como hash no secret
-  `TESTER_MASTER_PASSWORD_HASH`.
-- Cinco falhas em 15 minutos bloqueiam temporariamente o fingerprint.
+- A senha master existe somente como hash em configuração privada; o secret
+  anterior permanece apenas como fallback operacional.
+- Cinco falhas em 15 minutos bloqueiam temporariamente o IP e o dispositivo.
 - Sessões tester expiram definitivamente após 90 dias.
 
-Para rotacionar a master, calcule SHA-256 da nova senha e atualize o secret;
-nunca grave a senha ou o hash no repositório.
+Para rotacionar a master, use o painel administrativo. Nunca grave a senha ou
+o hash no repositório.
 
 ## Performance
 
@@ -132,10 +132,9 @@ nunca grave a senha ou o hash no repositório.
 - DevTools > Lighthouse → Accessibility
 - WCAG 2.1 AA: text light contra bg dark = alto contraste ✓
 
-### Offline
-- Modo avião ativado
-- App já instalado
-- Abre e funciona normalmente
+### Rede
+- Sem conexão, o shell abre e informa que os dados protegidos exigem internet.
+- Ao reconectar, a sessão é revalidada antes do download.
 
 ## Links úteis
 

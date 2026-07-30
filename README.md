@@ -1,6 +1,6 @@
 # PE26 Eleitoral — Eleições MS 2010–2024
 
-PWA offline-first com resultados eleitorais dos 79 municípios de Mato Grosso do Sul.
+PWA com resultados eleitorais protegidos dos 79 municípios de Mato Grosso do Sul.
 
 **Desenvolvido por**: Girassol Inteligência  
 **URL ao vivo**: https://plataformaeleitoral.ia.br  
@@ -47,7 +47,7 @@ Pré-agregados em JSON gzip, armazenados em bucket privado do Supabase:
 - 79 municípios MS
 - 7 cargos eleitorais
 - 8 eleições (2010-2024)
-- offline após o primeiro download autorizado
+- acesso online com autorização revalidada no backend
 
 ## Verificação
 
@@ -57,8 +57,9 @@ node --check service-worker.js
 node scripts/audit-config.mjs
 ```
 
-O workflow `.github/workflows/audit.yml` executa essas verificações em pushes
-para `main` e em pull requests.
+O workflow `.github/workflows/audit.yml` valida pushes e pull requests.
+O workflow `.github/workflows/production-health.yml` verifica a produção a
+cada 30 minutos.
 
 ## Sessão de acesso
 
@@ -66,13 +67,16 @@ A partir da versão 2.7, a ativação retorna um token opaco. O Supabase armazen
 somente o hash do token e revalida a sessão no boot. As migrations devem ser
 aplicadas antes do deploy do frontend; veja `SECURITY_TRANSITION.md`.
 
-Na versão 2.8, o dataset não está mais no HTML público. A Edge Function
-`dataset` valida a sessão antes do download e o cliente mantém uma cópia
-offline privada, removida no logout.
+Na versão 2.8+, o dataset não está mais no HTML público. A Edge Function
+`dataset` valida a sessão antes de cada download e nenhuma cópia privada é
+mantida para autorização offline.
 
 Na versão 2.9 há somente dois acessos: link mágico por e-mail para clientes e senha
-master para testers. A senha master emite sessão revogável de 90 dias e nunca
-é armazenada no Git ou no banco.
+master para testers. A senha master emite sessão revogável de 90 dias; seu
+hash fica em configuração privada e a rotação ocorre pelo painel administrativo.
+
+Procedimentos de operação, incidente e rollback estão em
+[`RUNBOOK_OPERACIONAL.md`](RUNBOOK_OPERACIONAL.md).
 
 ---
 Desenvolvido em 2026 · Girassol Inteligência
