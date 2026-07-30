@@ -41,6 +41,10 @@ assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
 assert(index.includes('@supabase/supabase-js@2.111.0'), 'Supabase JS deve estar fixado em versão auditada');
+assert(index.includes('function formatarEmail'), 'máscara de e-mail não encontrada');
+assert(index.includes('function formatarCodigoAcesso'), 'máscara de código não encontrada');
+assert(index.includes('function formatarSenhaMaster'), 'máscara da senha master não encontrada');
+assert(index.includes('pattern="PEIA-[A-Za-z0-9]{24}"'), 'formato da senha master diverge do segredo emitido');
 
 const runtimeFiles = ['index.html', 'runtime-config.js', 'service-worker.js', 'README.md', 'DEVELOPMENT.md'];
 const accessCodePattern = /\bPEIA-[A-Z0-9]{4}-[A-Z0-9]{4}\b/g;
