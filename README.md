@@ -13,6 +13,8 @@ PE26ELEITORAL/
 ├── index.html           (app completo, 1.94 MB)
 ├── manifest.json        (metadados PWA)
 ├── service-worker.js    (cache offline)
+├── runtime-config.js    (configuração pública do backend)
+├── version.json         (versões do app, dataset e cache)
 ├── vercel.json          (config headers)
 ├── icons/               (ícones do app)
 ├── README.md
@@ -46,6 +48,23 @@ Pré-agregados em JSON gzip (base64 embutido no HTML):
 - 7 cargos eleitorais
 - 8 eleições (2010-2024)
 - 100% offline após 1ª visita (Service Worker)
+
+## Verificação
+
+```bash
+node --check runtime-config.js
+node --check service-worker.js
+node scripts/audit-config.mjs
+```
+
+O workflow `.github/workflows/audit.yml` executa essas verificações em pushes
+para `main` e em pull requests.
+
+## Sessão de acesso
+
+A partir da versão 2.7, a ativação retorna um token opaco. O Supabase armazena
+somente o hash do token e revalida a sessão no boot. As migrations devem ser
+aplicadas antes do deploy do frontend; veja `SECURITY_TRANSITION.md`.
 
 ---
 Desenvolvido em 2026 · Girassol Inteligência

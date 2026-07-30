@@ -18,6 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- html2canvas requer internet na primeira visita; após cache do Service Worker, funciona offline -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="/runtime-config.js"></script>
 <title>Plataforma Eleitoral Inteligente</title>
 <style>
 html {
@@ -1435,7 +1436,7 @@ canvas {
     <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao">v 2.5</span>
+    <span class="rodape-versao" id="appVersion">v 2.7.0</span>
     </div>
   </div>
 
@@ -3257,13 +3258,18 @@ async function exportarComoImagem(elementoId, nomeArquivo) {
 }
 
 // ---------- SERVICE WORKER: registro e detecção de atualização ----------
+let atualizacaoEmAndamento = false;
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').then((registration) => {
-      // Há uma versão nova instalada e pronta, mas o app ainda está
-      // rodando a versão antiga (só troca sozinho no próximo carregamento)
+      if (registration.waiting && navigator.serviceWorker.controller) {
+        mostrarBannerAtualizacao();
+      }
+
       registration.addEventListener('updatefound', () => {
         const novoWorker = registration.installing;
+        if (!novoWorker) return;
         novoWorker.addEventListener('statechange', () => {
           if (novoWorker.state === 'installed' && navigator.serviceWorker.controller) {
             mostrarBannerAtualizacao();
@@ -3289,17 +3295,30 @@ function mostrarBannerAtualizacao() {
 }
 
 function aplicarAtualizacao() {
+  if (atualizacaoEmAndamento) return;
+  atualizacaoEmAndamento = true;
+
+  const recarregarComNovoWorker = () => location.reload();
+  navigator.serviceWorker.addEventListener('controllerchange', recarregarComNovoWorker, { once: true });
+
   navigator.serviceWorker.getRegistration().then((reg) => {
     if (reg && reg.waiting) {
       reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+    } else {
+      atualizacaoEmAndamento = false;
+      navigator.serviceWorker.removeEventListener('controllerchange', recarregarComNovoWorker);
+      reg?.update();
     }
-    location.reload();
   });
 }
 
 // ---------- CONTROLE DE ACESSO (Supabase) ----------
-const SUPABASE_URL = 'https://rclbjiqfabuuhiwxmjwp.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjbGJqaXFmYWJ1dWhpd3htandwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTM4MTYsImV4cCI6MjA5OTA4OTgxNn0.2_bJssx4sJaRyUx0VzTq85myHjcwyLnzluf_Ap2bydU';
+const CONFIG = window.PEIA_CONFIG;
+if (!CONFIG || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(CONFIG.supabaseUrl)) {
+  throw new Error('Configuração pública do Supabase ausente ou inválida.');
+}
+const SUPABASE_URL = CONFIG.supabaseUrl.replace(/\/$/, '');
+const SUPABASE_ANON_KEY = CONFIG.supabaseAnonKey;
 
 function obterDeviceId() {
   let id = localStorage.getItem('pe26_device_id');
@@ -3310,12 +3329,29 @@ function obterDeviceId() {
   return id;
 }
 
-function acessoLiberado() {
-  return localStorage.getItem('pe26_acesso_liberado') === 'true';
+function obterSessaoToken() {
+  return localStorage.getItem('pe26_sessao_token');
+}
+
+function limparSessaoLocal() {
+  localStorage.removeItem('pe26_sessao_token');
+  localStorage.removeItem('pe26_sessao_validada_em');
+  localStorage.removeItem('pe26_acesso_liberado');
+}
+
+function sessaoOfflineValida() {
+  const token = obterSessaoToken();
+  const validadaEm = Number(localStorage.getItem('pe26_sessao_validada_em'));
+  const limiteMs = Number(CONFIG.offlineSessionGraceHours || 0) * 60 * 60 * 1000;
+  return Boolean(token && validadaEm && limiteMs > 0 && Date.now() - validadaEm <= limiteMs);
 }
 
 function redefinirAcesso() {
-  localStorage.removeItem('pe26_acesso_liberado');
+  const token = obterSessaoToken();
+  if (token && navigator.onLine) {
+    chamarRpc('revogar_sessao', { p_token: token, p_device_id: obterDeviceId() }).catch(() => {});
+  }
+  limparSessaoLocal();
   location.reload();
 }
 window.redefinirAcesso = redefinirAcesso;
@@ -3328,6 +3364,49 @@ function mostrarTelaAtivacao() {
 function esconderTelaAtivacao() {
   document.getElementById('telaAtivacao').classList.add('hidden');
   document.getElementById('app').style.display = '';
+}
+
+async function chamarRpc(nome, body) {
+  const resp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
+    method: 'POST',
+    cache: 'no-store',
+    credentials: 'omit',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) throw new Error(`Falha na RPC ${nome} (${resp.status}).`);
+  const contentType = resp.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`Resposta inesperada da RPC ${nome}.`);
+  }
+  return resp.json();
+}
+
+async function validarSessaoAtual() {
+  const token = obterSessaoToken();
+  if (!token) return false;
+  if (!navigator.onLine) return sessaoOfflineValida();
+
+  try {
+    const resultado = await chamarRpc('validar_sessao', {
+      p_token: token,
+      p_device_id: obterDeviceId()
+    });
+    if (resultado && resultado.valida === true) {
+      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
+      return true;
+    }
+  } catch (erro) {
+    console.warn('Não foi possível revalidar a sessão.', erro);
+    return sessaoOfflineValida();
+  }
+
+  limparSessaoLocal();
+  return false;
 }
 
 async function ativarAcesso() {
@@ -3350,21 +3429,19 @@ async function ativarAcesso() {
   btn.textContent = 'Verificando...';
 
   try {
-    const resp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/ativar_codigo`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ p_codigo: codigo, p_device_id: obterDeviceId() })
+    const resultado = await chamarRpc('ativar_codigo', {
+      p_codigo: codigo,
+      p_device_id: obterDeviceId()
     });
-    const resultado = await resp.json();
 
-    if (resultado.sucesso) {
-      localStorage.setItem('pe26_acesso_liberado', 'true');
+    if (resultado && resultado.sucesso === true && resultado.sessao_token) {
+      localStorage.setItem('pe26_sessao_token', resultado.sessao_token);
+      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
+      localStorage.removeItem('pe26_acesso_liberado');
       esconderTelaAtivacao();
       iniciarApp();
+    } else if (resultado && resultado.sucesso === true) {
+      erro.textContent = 'Atualização de segurança pendente. Tente novamente em instantes.';
     } else if (resultado.motivo === 'codigo_ja_utilizado') {
       erro.textContent = 'Este código já foi ativado em outro dispositivo.';
     } else {
@@ -3388,15 +3465,21 @@ function iniciarApp() {
   carregarPreferenciaFonte();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  const versao = document.getElementById('appVersion');
+  if (versao && CONFIG?.appVersion) versao.textContent = `v ${CONFIG.appVersion}`;
   // Aplica tema/estilo antes de decidir qual tela mostrar, para que a
   // própria tela de ativação já nasça com o tema correto (evita flash)
   carregarPreferenciaEstilo();
 
-  if (acessoLiberado()) {
+  if (await validarSessaoAtual()) {
     iniciarApp();
   } else {
     mostrarTelaAtivacao();
+    const erro = document.getElementById('ativacaoErro');
+    if (!navigator.onLine && obterSessaoToken()) {
+      erro.textContent = 'Conecte-se à internet para renovar sua sessão.';
+    }
   }
 
   const inputAtivacao = document.getElementById('ativacaoInput');
@@ -3406,9 +3489,19 @@ window.addEventListener('DOMContentLoaded', () => {
   inputAtivacao.addEventListener('input', formatarCodigoAcesso);
 });
 
+window.diagnosticoPEIA = () => Object.freeze({
+  appVersion: CONFIG.appVersion,
+  datasetVersion: CONFIG.datasetVersion,
+  supabaseProjectRef: new URL(SUPABASE_URL).hostname.split('.')[0],
+  online: navigator.onLine,
+  serviceWorkerControlled: Boolean(navigator.serviceWorker?.controller),
+  hasSession: Boolean(obterSessaoToken()),
+  sessionLastValidatedAt: localStorage.getItem('pe26_sessao_validada_em')
+});
+
 // Insere um hífen a cada 4 caracteres enquanto o usuário digita, sem impor
 // um número fixo de blocos (códigos podem ter tamanhos diferentes, ex:
-// "PEIA-63UA-86TG" tem 12 caracteres, "PEIA-ADMIN-MESTRE" tem 15).
+// códigos podem ter quantidades diferentes de blocos alfanuméricos).
 function formatarCodigoAcesso(e) {
   const input = e.target;
   const cursorNoFim = input.selectionStart === input.value.length;

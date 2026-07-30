@@ -14,8 +14,10 @@
 
 ### PWA offline
 - `manifest.json` — installável em iOS/Android
-- `service-worker.js` — cache-first estratégia
+- `service-worker.js` — network-first para HTML e cache-first para assets imutáveis
 - `vercel.json` — headers corretos (SW nunca cacheado no CDN)
+- `runtime-config.js` — endpoint público único do Supabase
+- `version.json` — versão verificável do app, dataset e schema de cache
 
 ## Cores neon (CSS vars)
 
@@ -54,13 +56,12 @@ Quando tiver novos dados TSE:
 
 2. **Substitui o `index.html`** (contém dataset embutido)
 
-3. **Incrementa `CACHE_VERSION`** no service-worker.js (ex: `eleicoes-ms-v21`):
-   ```javascript
-   const CACHE_VERSION = 'eleicoes-ms-v21'; // obrigatorio para invalidar cache PWA nos clientes
-   ```
-   Isso força atualização no celular dos usuários.
+3. Atualize `appVersion`, `datasetVersion` e `cacheSchema` em `version.json`.
+   Mantenha os mesmos valores em `runtime-config.js` e `service-worker.js`.
+   O CI bloqueia versões divergentes.
 
-> Nota de Segurança: Variáveis de ambiente como `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` estão documentadas no arquivo `.env.example`.
+> Nota de segurança: a anon key do Supabase é pública por design. Não coloque
+> service-role keys, códigos de ativação ou credenciais administrativas no Git.
 
 
 4. **Commit + Push**:
@@ -72,13 +73,24 @@ Quando tiver novos dados TSE:
 
 5. Vercel deployer em ~30s
 
+## Deploy da versão 2.7
+
+Esta versão depende das RPCs de sessão. Aplique primeiro, nesta ordem:
+
+1. `20260730110000_endurecer_permissoes_ativacao.sql`
+2. `20260730120000_criar_sessoes_acesso.sql`
+3. frontend estático
+
+Não publique o frontend 2.7 antes das migrations. Consulte
+`SECURITY_TRANSITION.md` para backup, testes e rollback.
+
 ## Performance
 
 - **Tamanho final**: 1.94 MB (single-file HTML)
 - **Descompressão**: <200ms em iPhone SE 2020
 - **First paint**: ~500ms (dataset parse + render)
 - **Scroll 60fps**: sim, canvas é nativo
-- **Cache**: Service Worker cache-first, nunca vai à rede se tiver no cache
+- **Cache**: navegação tenta a rede e usa o HTML em cache somente quando offline
 
 ## Testes recomendados
 
@@ -99,7 +111,7 @@ Quando tiver novos dados TSE:
 ## Links úteis
 
 - **Vercel dashboard**: https://vercel.com
-- **GitHub repo**: https://github.com/seu-usuario/PE26ELEITORAL
+- **GitHub repo**: https://github.com/paulocardoso-lab/plataformaeleitoral.ia
 - **App ao vivo**: https://plataformaeleitoral.ia.br
 - **Domínio**: `.ia.br` registrado em registro.br (categoria IA)
 

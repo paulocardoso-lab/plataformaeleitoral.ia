@@ -1,11 +1,12 @@
 // Service Worker — Eleições MS 2010-2024
-// Estratégia: cache-first (offline-first real). Incremente CACHE_VERSION
-// sempre que publicar uma nova versão dos dados/app para forçar atualização.
+// Navegações usam network-first para não prender HTML/dataset antigo.
+// Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v21';
+const CACHE_VERSION = 'eleicoes-ms-v23';
 const ASSETS = [
-  '/',
   '/index.html',
+  '/runtime-config.js',
+  '/version.json',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-192-maskable.png',
@@ -22,7 +23,6 @@ const ASSET_HTML2CANVAS = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.
 
 // Instala e pré-cacheia todos os assets essenciais
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_VERSION).then((cache) => {
       return cache.addAll(ASSETS).then(() =>
@@ -42,9 +42,8 @@ self.addEventListener('activate', (event) => {
       Promise.all(
         keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 // Permite que o cliente force a troca imediata do worker em espera
@@ -55,29 +54,53 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Cache-first: serve do cache imediatamente; só vai à rede se não tiver nada salvo
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request);
+    if (response && response.status === 200) {
+      const cache = await caches.open(CACHE_VERSION);
+      await cache.put('/index.html', response.clone());
+    }
+    return response;
+  } catch {
+    return (await caches.match('/index.html')) || Response.error();
+  }
+}
+
+async function staleWhileRevalidate(request, event) {
+  const cached = await caches.match(request);
+  const network = fetch(request).then(async (response) => {
+    if (response && response.status === 200) {
+      const cache = await caches.open(CACHE_VERSION);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  });
+  if (cached) {
+    event.waitUntil(network.catch(() => undefined));
+    return cached;
+  }
+  return network;
+}
+
+// Somente recursos explicitamente conhecidos são persistidos.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
+  const url = new URL(event.request.url);
+  if (event.request.mode === 'navigate') {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+  if (url.origin !== self.location.origin && event.request.url !== ASSET_HTML2CANVAS) return;
 
-      return fetch(event.request)
-        .then((response) => {
-          // salva no cache uma cópia da resposta para uso offline futuro
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => {
-          // sem rede e sem cache: fallback para a página principal
-          if (event.request.mode === 'navigate') {
-            return caches.match('/index.html');
-          }
-        });
-    })
-  );
+  if (url.pathname === '/manifest.json' || url.pathname === '/runtime-config.js' || url.pathname === '/version.json') {
+    event.respondWith(staleWhileRevalidate(event.request, event));
+    return;
+  }
+
+  const assetPath = url.origin === self.location.origin ? url.pathname : event.request.url;
+  if (ASSETS.includes(assetPath) || assetPath.startsWith('/icons/')) {
+    event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
+  }
 });
