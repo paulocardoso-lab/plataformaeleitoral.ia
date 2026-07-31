@@ -2,6 +2,11 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.6.1 — 31/07/2026
+
+- Simulador retorna ao campo de inclusão após confirmar uma candidatura.
+- Fontes de sugestões, resultados e controles de ajuda do simulador ajustadas para uma leitura mais compacta.
+
 ## 1.6.0 — 31/07/2026
 
 - Degradês do modo normal substituídos por cores sólidas da paleta existente.

@@ -81,6 +81,20 @@ assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutop
 assert(html.includes('id="simAutoPrevia"') && html.includes('id="simAutoConfirmar"'), 'Prévia e confirmação do autopreenchimento ausentes.');
 assert(html.includes('data-sim-editar-votos'), 'Edição individual de votos não foi implementada.');
 assert(html.includes('ultimoAutopreenchimento'), 'Estado necessário para desfazer o autopreenchimento ausente.');
+assert(html.includes("if (tipo === 'candidato') simRetornarAoFormulario();"),
+  'Inclusão de candidatura não retorna ao formulário.');
+const retornoFormulario = extractFunction('simRetornarAoFormulario');
+assert(retornoFormulario.includes("scrollIntoView({ behavior: reduzirMovimento ? 'auto' : 'smooth', block: 'start' })")
+  && retornoFormulario.includes("campo.focus({ preventScroll: true })")
+  && retornoFormulario.includes("prefers-reduced-motion: reduce"),
+  'Retorno ao formulário deve controlar rolagem, foco e movimento reduzido.');
+assert(/\.sim-sugestoes button\s*\{[^}]*font-size:\s*\.875rem/.test(html)
+  && /\.sim-sugestoes small\s*\{[^}]*font-size:\s*\.8125rem/.test(html),
+  'Sugestões do simulador não usam a tipografia compacta prevista.');
+assert(/\.sim-ajuda summary\s*\{[^}]*min-height:\s*44px[^}]*font-size:\s*\.8125rem/.test(html),
+  'Ajuda deve manter a área de toque e usar texto compacto.');
+assert(/\.sim-resultado li\s*\{[^}]*font-size:\s*\.875rem/.test(html),
+  'Itens dos resultados do simulador não usam a tipografia compacta prevista.');
 
 const proportional = context.simRatearVotos([
   {id:'1',nome:'A',votos:10},{id:'2',nome:'B',votos:20},{id:'3',nome:'C',votos:30}
