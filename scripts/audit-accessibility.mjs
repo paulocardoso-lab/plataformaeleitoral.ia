@@ -119,6 +119,21 @@ assert(/select,\s*input\[type="text"\],\s*input\[type="search"\][\s\S]*?min-heig
 assert(html.includes('Desenvolvido por Girassol Inteligência'), 'Assinatura completa da Girassol Inteligência ausente.');
 assert(/html:not\(\[data-estilo="aeroporto"\]\)\s+\.home-hero h1\s*\{[\s\S]*?color:\s*var\(--text-light\)[\s\S]*?background:\s*none/.test(html),
   'Título principal do modo padrão ainda não possui cor sólida compatível com o layout.');
+assert(/html:not\(\[data-estilo="aeroporto"\]\) \.marca-nome,[\s\S]*?html:not\(\[data-estilo="aeroporto"\]\) \.card-titulo\s*\{[\s\S]*?color:\s*var\(--neon-cyan\)[\s\S]*?background:\s*none/.test(html),
+  'Títulos do modo normal devem usar ciano sólido.');
+assert(/html:not\(\[data-estilo="aeroporto"\]\) \.home-hero\s*\{\s*background:\s*none/.test(html)
+  && /html:not\(\[data-estilo="aeroporto"\]\) #telaAtivacao\s*\{\s*background:\s*var\(--bg-0\)/.test(html),
+  'Fundos do modo normal ainda permitem degradê.');
+assert(/html:not\(\[data-estilo="aeroporto"\]\) \.tile::before\s*\{\s*background:\s*rgba\(0,217,255,\.09\)/.test(html),
+  'Interação dos botões da Home deve usar uma superfície sólida.');
+assert(/html:not\(\[data-estilo="aeroporto"\]\) #btnEnviarLink\s*\{\s*background:\s*var\(--neon-cyan\)/.test(html)
+  && /html:not\(\[data-estilo="aeroporto"\]\) #btnTester\s*\{\s*background:\s*var\(--neon-green\)/.test(html)
+  && /html:not\(\[data-estilo="aeroporto"\]\) \.rank-num\.top1\s*\{\s*background:\s*var\(--neon-yellow\)/.test(html)
+  && /html:not\(\[data-estilo="aeroporto"\]\) \.chip\.ativo\s*\{\s*background:\s*var\(--neon-cyan\)/.test(html),
+  'Controles e destaques do modo normal devem usar cores sólidas.');
+assert(/html\[data-estilo="aeroporto"\]\s*\{/.test(html)
+  && /\.chip\.ativo\s*\{[\s\S]*?linear-gradient/.test(html),
+  'Configuração visual original do modo aeroporto deve permanecer disponível.');
 assert(/\.rodape-marca\s*\{[\s\S]*?order:\s*2/.test(html) && /\.rodape-acoes\s*\{[\s\S]*?order:\s*1/.test(html),
   'Assinatura institucional não está abaixo dos controles do rodapé.');
 assert(!/@media\s*\(min-width:\s*480px\)[\s\S]*?\.rodape-fixo\s*\{[^}]*flex-direction:\s*row/.test(html),
