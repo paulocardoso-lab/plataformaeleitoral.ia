@@ -1,8 +1,8 @@
-# Status de liberação — versão pública 1.8.2
+# Status de liberação — versão pública 1.9.0
 
 - Data: 31/07/2026
 - Produção: `https://plataformaeleitoral.ia.br`
-- Cache: `v68`
+- Cache: `v69`
 - Dataset: `tse-ms-2010-2024-v1`
 
 ## Estado atual
@@ -13,7 +13,7 @@
 - Painel administrativo responsivo para celular, com cartões e ações adaptadas ao toque.
 - Tela “Sobre” contém compartilhamento comercial, assinatura institucional e saída segura.
 - Dataset privado exige licença ou sessão administrativa válida.
-- Repositório de produção sincronizado com `main` no commit `fd4afb7`.
+- Login orientado ao comprador, com primeira ativação por convite em fluxo secundário próprio.
 
 ## Ressalva operacional
 

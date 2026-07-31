@@ -744,13 +744,84 @@ summary:focus-visible {
 .login-etapa-bloqueada #ativacaoInput { cursor: not-allowed; }
 .convite-detalhes { margin-top: 16px; }
 .convite-detalhes > summary {
+  width: 48px;
+  height: 42px;
+  min-height: 42px;
+  margin: 24px auto 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
   color: var(--neon-cyan);
-  font-size: .82rem;
-  font-weight: 700;
+  font-size: 0;
+  cursor: pointer;
+  list-style: none;
+}
+.convite-detalhes > summary::-webkit-details-marker { display: none; }
+.convite-detalhes > summary svg {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 6px rgba(0,217,255,.35));
+}
+.convite-detalhes > summary:hover,
+.convite-detalhes > summary:focus-visible {
+  color: var(--text-light);
+  background: rgba(0,217,255,.07);
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 .convite-detalhes > .login-etapa { margin-top: 6px; }
+.login-compra .login-etapa-titulo {
+  font-size: .9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-align: center;
+}
+.login-compra .login-etapa-cabecalho {
+  display: block;
+  text-align: center;
+}
+.login-compra .login-etapa-descricao {
+  text-align: center;
+}
+.login-compra .login-label { font-weight: 600; }
+.login-info-list {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+.login-info-item {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+  color: var(--text-light);
+  font-size: .74rem;
+  font-weight: 400 !important;
+  line-height: 1.45;
+  text-align: left;
+}
+.login-info-item svg {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  color: var(--neon-cyan);
+}
+.login-info-item span { min-width: 0; }
+.login-compra .btn-enviar-link { font-weight: 600; }
+.login-ajuda-compra {
+  margin-top: 8px;
+  font-size: .66rem;
+  line-height: 1.4;
+  text-align: center;
+}
+.login-email-compra::placeholder {
+  font-size: .78rem;
+  text-align: center;
+}
 
-#ativacaoInput, #ativacaoEmail, #testerPassword {
+#ativacaoInput, .ativacao-email, #testerPassword {
   width: 100%;
   box-sizing: border-box;
   min-height: 52px;
@@ -768,19 +839,19 @@ summary:focus-visible {
   letter-spacing: 1.5px;
 }
 
-#ativacaoEmail {
+.ativacao-email {
   text-align: left;
   text-transform: none;
   letter-spacing: 0;
 }
 
-#ativacaoInput:focus, #ativacaoEmail:focus, #testerPassword:focus {
+#ativacaoInput:focus, .ativacao-email:focus, #testerPassword:focus {
   outline: 3px solid rgba(0,217,255,.18);
   outline-offset: 2px;
   border-color: var(--neon-cyan);
 }
 
-#btnAtivar, #btnEnviarLink, #btnTester {
+#btnAtivar, .btn-enviar-link, #btnTester {
   width: 100%;
   min-height: 50px;
   padding: 13px 16px;
@@ -796,7 +867,7 @@ summary:focus-visible {
 #btnAtivar { background: transparent; color: var(--neon-cyan); border: 1px solid var(--neon-cyan); }
 #btnTester { margin-top: 10px; }
 
-#btnAtivar:disabled, #btnEnviarLink:disabled, #btnTester:disabled {
+#btnAtivar:disabled, .btn-enviar-link:disabled, #btnTester:disabled {
   opacity: 0.6;
   cursor: default;
 }
@@ -887,6 +958,10 @@ summary:focus-visible {
 
 #ativacaoErro:empty {
   display: none;
+}
+#ativacaoErro.sucesso {
+  background: rgba(0,255,65,.08);
+  color: var(--neon-green);
 }
 
 .admin-icon-button {
@@ -1156,7 +1231,7 @@ html:not([data-estilo="aeroporto"]) #telaAtivacao {
   background: var(--bg-0);
 }
 
-html:not([data-estilo="aeroporto"]) #btnEnviarLink {
+html:not([data-estilo="aeroporto"]) .btn-enviar-link {
   background: var(--neon-cyan);
 }
 
@@ -2196,33 +2271,63 @@ canvas {
       <header class="login-header">
         <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
         <h2>Acesse sua conta</h2>
-        <p class="login-subtitulo">Entre com o e-mail usado na compra ou em uma ativação anterior.</p>
+        <p class="login-subtitulo">Informe o e-mail usado na compra para receber seu link seguro.</p>
       </header>
 
-      <section class="login-etapa" aria-labelledby="loginEmailTitulo">
+      <section class="login-etapa login-compra" aria-labelledby="loginCompraTitulo">
         <div class="login-etapa-cabecalho">
           <div>
-            <h3 class="login-etapa-titulo" id="loginEmailTitulo">Acesse com seu e-mail</h3>
-            <p class="login-etapa-descricao">Comprou a plataforma ou já ativou seu acesso? Use o mesmo e-mail cadastrado. Você não precisa de código.</p>
+            <h3 class="login-etapa-titulo sr-only" id="loginCompraTitulo">Acesso à plataforma</h3>
           </div>
         </div>
         <div class="login-grupo">
-          <label class="login-label" for="ativacaoEmail">E-mail</label>
-          <input type="email" id="ativacaoEmail" placeholder="nome@exemplo.com" autocomplete="email"
+          <label class="sr-only" for="ativacaoEmailCompra">E-mail</label>
+          <input type="email" class="ativacao-email login-email-compra" id="ativacaoEmailCompra" placeholder="Digite aqui seu e-mail" autocomplete="email"
                  inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
-          <small class="login-ajuda">Use o mesmo e-mail informado na aquisição do acesso.</small>
+          <small class="login-ajuda login-ajuda-compra">Clique no botão abaixo e acesse o link enviado para o seu e-mail cadastrado.</small>
         </div>
-        <button id="btnEnviarLink">Enviar link para meu e-mail</button>
+        <button class="btn-enviar-link" id="btnEnviarLinkCompra">Enviar meu link de acesso</button>
+        <div class="login-info-list" aria-label="Passo a passo para acessar">
+          <div class="login-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+            <span>Informe o e-mail usado na compra ou na ativação anterior.</span>
+          </div>
+          <div class="login-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v9l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+            <span>Clique no botão acima e abra o link recebido por e-mail.</span>
+          </div>
+          <div class="login-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg>
+            <span>Após a confirmação, o acesso será liberado automaticamente.</span>
+          </div>
+        </div>
       </section>
 
       <details class="acesso-secundario convite-detalhes" id="acessoPorCodigo">
-        <summary>Recebi um código-convite</summary>
+        <summary aria-label="Ativar código-convite" title="Ativar código-convite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+        </summary>
+        <section class="login-etapa" aria-labelledby="loginConviteEmailTitulo">
+          <div class="login-etapa-cabecalho">
+            <span class="login-etapa-numero" aria-hidden="true">1</span>
+            <div>
+              <h3 class="login-etapa-titulo" id="loginConviteEmailTitulo">Confirme seu e-mail</h3>
+              <p class="login-etapa-descricao">O convite será vinculado à conta criada com este e-mail.</p>
+            </div>
+          </div>
+          <div class="login-grupo">
+            <label class="login-label" for="ativacaoEmailConvite">E-mail da pessoa convidada</label>
+            <input type="email" class="ativacao-email" id="ativacaoEmailConvite" placeholder="nome@exemplo.com" autocomplete="email"
+                   inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
+          </div>
+          <button class="btn-enviar-link" id="btnEnviarLinkConvite">Enviar link de confirmação</button>
+        </section>
         <section class="login-etapa login-etapa-bloqueada" id="conviteCodigoEtapa" aria-labelledby="loginCodigoTitulo">
           <div class="login-etapa-cabecalho">
             <span class="login-etapa-numero" aria-hidden="true">2</span>
             <div>
               <h3 class="login-etapa-titulo" id="loginCodigoTitulo">Vincule o convite à sua conta</h3>
-              <p class="login-etapa-descricao" id="loginCodigoDescricao">Primeiro confirme seu e-mail pelo link acima. Depois informe o código-convite recebido.</p>
+              <p class="login-etapa-descricao" id="loginCodigoDescricao">Depois de abrir o link de confirmação, informe o código-convite recebido.</p>
             </div>
           </div>
           <p class="login-conta-confirmada hidden" id="loginContaConfirmada"></p>
@@ -6333,6 +6438,7 @@ function mascararEmailLogin(email) {
 async function atualizarEtapasLogin() {
   const session = await obterAuthSession();
   const autenticado = Boolean(session?.user);
+  const fluxo = new URLSearchParams(location.search).get('acesso');
   const detalhesCodigo = document.getElementById('acessoPorCodigo');
   const etapaCodigo = document.getElementById('conviteCodigoEtapa');
   const inputCodigo = document.getElementById('ativacaoInput');
@@ -6342,12 +6448,14 @@ async function atualizarEtapasLogin() {
   const conta = document.getElementById('loginContaConfirmada');
 
   etapaCodigo.classList.toggle('login-etapa-bloqueada', !autenticado);
-  if (autenticado) detalhesCodigo.open = true;
+  if (autenticado || fluxo === 'convite') detalhesCodigo.open = true;
   inputCodigo.disabled = !autenticado;
   btnAtivar.disabled = !autenticado;
   descricao.textContent = autenticado
-    ? 'Seu e-mail foi confirmado. Agora vincule o código-convite recebido à sua conta.'
-    : 'Primeiro confirme seu e-mail pelo link acima. Depois informe o código-convite recebido.';
+    ? (fluxo === 'convite'
+      ? 'Seu e-mail foi confirmado. Agora vincule o código-convite recebido à sua conta.'
+      : 'Seu e-mail foi confirmado, mas nenhuma licença ativa foi encontrada. Se você recebeu um convite, vincule o código à sua conta.')
+    : 'Depois de abrir o link de confirmação, informe o código-convite recebido.';
   ajuda.textContent = autenticado
     ? 'Este código será associado à conta confirmada e não precisará ser informado novamente.'
     : 'Aguardando a confirmação do e-mail.';
@@ -6404,11 +6512,13 @@ async function validarSessaoAtual() {
   return false;
 }
 
-async function enviarLinkMagico() {
-  const emailInput = document.getElementById('ativacaoEmail');
+async function enviarLinkMagico(origem) {
+  const convite = origem === 'convite';
+  const emailInput = document.getElementById(convite ? 'ativacaoEmailConvite' : 'ativacaoEmailCompra');
   const email = emailInput.value.trim().toLowerCase();
   const erro = document.getElementById('ativacaoErro');
-  const btn = document.getElementById('btnEnviarLink');
+  const btn = document.getElementById(convite ? 'btnEnviarLinkConvite' : 'btnEnviarLinkCompra');
+  erro.classList.remove('sucesso');
   emailInput.value = email;
   if (!AUTH_CLIENT || !emailInput.checkValidity()) {
     erro.textContent = 'Informe um e-mail válido.';
@@ -6419,10 +6529,13 @@ async function enviarLinkMagico() {
   try {
     const { error } = await AUTH_CLIENT.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: location.origin }
+      options: { emailRedirectTo: `${location.origin}${location.pathname}?acesso=${convite ? 'convite' : 'compra'}` }
     });
     if (!error) {
-      erro.textContent = `Link enviado para ${email}. Verifique também a caixa de spam.`;
+      erro.classList.add('sucesso');
+      erro.textContent = convite
+        ? `Link de confirmação enviado para ${email}. Depois de abri-lo, você retornará para vincular o código-convite.`
+        : `Link de acesso enviado para ${email}. Abra-o para entrar na plataforma.`;
     } else if (error.status === 429 || /rate limit/i.test(error.message || '')) {
       erro.textContent = 'Limite de e-mails atingido. Aguarde a liberação da cota antes de tentar novamente.';
     } else {
@@ -6430,7 +6543,7 @@ async function enviarLinkMagico() {
     }
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Enviar link para meu e-mail';
+    btn.textContent = convite ? 'Enviar link de confirmação' : 'Enviar meu link de acesso';
   }
 }
 window.enviarLinkMagico = enviarLinkMagico;
@@ -6439,6 +6552,7 @@ async function ativarAcessoTester() {
   const passwordInput = document.getElementById('testerPassword');
   const password = passwordInput.value;
   const erro = document.getElementById('ativacaoErro');
+  erro.classList.remove('sucesso');
   const btn = document.getElementById('btnTester');
   if (!passwordInput.checkValidity()) {
     erro.textContent = 'A senha master deve seguir o formato XXXX-XXXX-XXXX.';
@@ -6479,6 +6593,7 @@ window.ativarAcessoTester = ativarAcessoTester;
 async function ativarAcesso() {
   const input = document.getElementById('ativacaoInput');
   const erro = document.getElementById('ativacaoErro');
+  erro.classList.remove('sucesso');
   const btn = document.getElementById('btnAtivar');
   const codigo = input.value.trim().toUpperCase();
 
@@ -6727,7 +6842,8 @@ async function iniciarApp() {
 function vincularAcoesEstaticas() {
   const acoes = {
     btnAplicarAtualizacao: aplicarAtualizacao,
-    btnEnviarLink: enviarLinkMagico,
+    btnEnviarLinkCompra: () => enviarLinkMagico('compra'),
+    btnEnviarLinkConvite: () => enviarLinkMagico('convite'),
     btnAtivar: ativarAcesso,
     btnTester: ativarAcessoTester,
     btnAdminAtivacao: abrirPainelAdmin,
@@ -6800,13 +6916,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   await atualizarEtapasLogin();
 
   const inputAtivacao = document.getElementById('ativacaoInput');
-  const inputEmail = document.getElementById('ativacaoEmail');
+  const inputsEmail = document.querySelectorAll('.ativacao-email');
   const inputTester = document.getElementById('testerPassword');
   inputAtivacao.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') ativarAcesso();
   });
   inputAtivacao.addEventListener('input', formatarCodigoAcesso);
-  inputEmail.addEventListener('input', formatarEmail);
+  inputsEmail.forEach(input => input.addEventListener('input', formatarEmail));
   inputTester.addEventListener('input', formatarSenhaMaster);
   const btnMostrarMaster = document.getElementById('btnMostrarMaster');
   btnMostrarMaster.addEventListener('click', () => {

@@ -2,6 +2,16 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.9.0 — 31/07/2026
+
+- Login passa a priorizar visualmente o acesso de compradores e contas já ativadas.
+- Compra e primeira ativação por convite usam jornadas visuais distintas sobre a mesma autenticação do Supabase.
+- Retorno do link preserva o contexto de compra ou convite sem conceder autorização pelo parâmetro visual.
+- Fluxo de código-convite recolhido sob um envelope neon discreto e acessível.
+- Orientações de compra reorganizadas como passo a passo após o botão principal.
+- Mensagens de envio concluído passam a usar o verde de sucesso; alertas mantêm a cor de erro.
+- Textos, alinhamentos e tipografia do acesso por e-mail simplificados para leitura no mobile.
+
 ## 1.8.2 — 31/07/2026
 
 - Painel administrativo aprimorado para uso em celulares sem alterações na identidade visual.

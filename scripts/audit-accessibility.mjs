@@ -134,7 +134,7 @@ assert(/html:not\(\[data-estilo="aeroporto"\]\) \.home-hero\s*\{\s*background:\s
   'Fundos do modo normal ainda permitem degradê.');
 assert(/html:not\(\[data-estilo="aeroporto"\]\) \.tile::before\s*\{\s*background:\s*rgba\(0,217,255,\.09\)/.test(html),
   'Interação dos botões da Home deve usar uma superfície sólida.');
-assert(/html:not\(\[data-estilo="aeroporto"\]\) #btnEnviarLink\s*\{\s*background:\s*var\(--neon-cyan\)/.test(html)
+assert(/html:not\(\[data-estilo="aeroporto"\]\) \.btn-enviar-link\s*\{\s*background:\s*var\(--neon-cyan\)/.test(html)
   && /html:not\(\[data-estilo="aeroporto"\]\) #btnTester\s*\{\s*background:\s*var\(--neon-green\)/.test(html)
   && /html:not\(\[data-estilo="aeroporto"\]\) \.rank-num\.top1\s*\{\s*background:\s*var\(--neon-yellow\)/.test(html)
   && /html:not\(\[data-estilo="aeroporto"\]\) \.chip\.ativo\s*\{\s*background:\s*var\(--neon-cyan\)/.test(html),

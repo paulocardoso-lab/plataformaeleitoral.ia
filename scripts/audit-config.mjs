@@ -66,8 +66,11 @@ assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(!configSource.includes('offlineSessionGraceHours'), 'configuração não deve sugerir autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
-assert(index.includes('id="acessoPorCodigo"') && index.includes('Recebi um código-convite'),
-  'ativação manual deve permanecer separada como fluxo de código-convite');
+assert(index.includes('id="acessoPorCodigo"') && index.includes('aria-label="Ativar código-convite"'),
+  'ativação manual deve permanecer separada como controle de convite');
+assert(index.includes("btnEnviarLinkCompra: () => enviarLinkMagico('compra')")
+  && index.includes("btnEnviarLinkConvite: () => enviarLinkMagico('convite')"),
+  'compra e convite devem compartilhar a mesma infraestrutura de autenticação');
 assert(index.includes('id="ativacaoInput"') && index.includes('spellcheck="false" disabled'),
   'código manual deve iniciar bloqueado até a confirmação do e-mail');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
