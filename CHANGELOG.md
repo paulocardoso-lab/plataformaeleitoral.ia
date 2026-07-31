@@ -2,6 +2,10 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.5.3 — 31/07/2026
+
+- Símbolo do botão de alternância visual equalizado com os demais controles do rodapé.
+
 ## 1.5.2 — 31/07/2026
 
 - Tela “Sobre” simplificada para textos brancos e destaques amarelos, sem degradês.
