@@ -58,15 +58,34 @@ Deno.serve(async req => {
   const action=String(body.action||'');
 
   if(action==='summary') {
-    const [{data:codes},{data:licenses},{data:sessions},{data:logs},{data:users}] = await Promise.all([
+    const [{data:codes},{data:licenses},{data:sessions},{data:directInvites},{data:logs},{data:users}] = await Promise.all([
       client.from('codigos_acesso').select('id,codigo,status,origem,criado_em,usado_em').neq('origem','tester').order('criado_em',{ascending:false}).limit(100),
       client.from('licencas').select('id,user_id,status,criada_em,ultimo_acesso_em,revogada_em,codigos_acesso(codigo)').order('criada_em',{ascending:false}).limit(100),
       client.from('sessoes_acesso').select('id,device_id,ultimo_acesso_em,expira_em,revogado_em').eq('tipo','tester').order('ultimo_acesso_em',{ascending:false}).limit(100),
+      client.from('convites_diretos').select('id,nome,status,criado_em,expira_em,utilizado_em,revogado_em,sessoes_convite_direto(id,device_id,ultimo_acesso_em,expira_em,revogado_em)').order('criado_em',{ascending:false}).limit(100),
       client.from('auditoria_administrativa').select('id,administrador_email,acao,alvo_tipo,alvo_id,detalhes,criado_em').order('criado_em',{ascending:false}).limit(50),
       client.auth.admin.listUsers({page:1,perPage:1000})
     ]);
     const emails=new Map((users?.users||[]).map(user=>[user.id,user.email]));
-    return json(200,{admin:admin.email,codes:codes||[],licenses:(licenses||[]).map(item=>({...item,email:emails.get(item.user_id)||null})),sessions:sessions||[],logs:logs||[]},origin);
+    return json(200,{admin:admin.email,codes:codes||[],licenses:(licenses||[]).map(item=>({...item,email:emails.get(item.user_id)||null})),sessions:sessions||[],directInvites:directInvites||[],logs:logs||[]},origin);
+  }
+
+  if(action==='create_direct_invite') {
+    const name=String(body.name||'').trim().slice(0,120);
+    const days=Math.max(1,Math.min(365,Number(body.days)||30));
+    if(name.length<2) return json(400,{error:'invalid_name'},origin);
+    let code=''; let inserted=null; let error=null;
+    for(let attempt=0;attempt<3&&!inserted;attempt++) {
+      code=randomCode();
+      const result=await client.from('convites_diretos').insert({
+        nome:name,codigo_hash:await sha256(code),expira_em:new Date(Date.now()+days*86400000).toISOString(),criado_por:admin.email
+      }).select('id,nome,status,criado_em,expira_em').single();
+      inserted=result.data; error=result.error;
+      if(error?.code!=='23505') break;
+    }
+    if(error||!inserted) return json(503,{error:'create_direct_invite_failed'},origin);
+    await audit(admin.email,'criar_convite_direto','convite_direto',inserted.id,{nome:name,dias:days});
+    return json(200,{invite:{...inserted,code}},origin);
   }
 
   if(action==='create_codes') {
@@ -91,6 +110,16 @@ Deno.serve(async req => {
     const {error}=await client.from('sessoes_acesso').update({revogado_em:new Date().toISOString()}).eq('id',id).eq('tipo','tester');
     if(error) return json(503,{error:'revoke_failed'},origin);
     await audit(admin.email,'revogar_sessao','sessao_tester',id);
+    return json(200,{success:true},origin);
+  }
+
+  if(action==='revoke_direct_invite') {
+    const id=String(body.id||'');
+    const now=new Date().toISOString();
+    const {error}=await client.from('convites_diretos').update({status:'revogado',revogado_em:now}).eq('id',id);
+    if(error) return json(503,{error:'revoke_failed'},origin);
+    await client.from('sessoes_convite_direto').update({revogado_em:now}).eq('convite_id',id).is('revogado_em',null);
+    await audit(admin.email,'revogar_convite_direto','convite_direto',id);
     return json(200,{success:true},origin);
   }
 

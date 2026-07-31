@@ -28,18 +28,22 @@ node scripts/healthcheck-production.mjs
 
 1. Entre com o e-mail administrador por link mágico.
 2. Abra **Administração**.
-3. Emita códigos-convite somente na quantidade necessária.
+3. Crie o convite direto com identificação e prazo de validade, e entregue o código por um canal seguro.
 4. Revogue licenças ou sessões individualmente quando possível.
 5. Confira a ação na tabela de auditoria.
 
-No celular, as tabelas são apresentadas como cartões. Confirme e-mail, código,
+No celular, as tabelas são apresentadas como cartões. Confirme identificação, validade,
 estado e data dentro do mesmo cartão antes de tocar em **Revogar**.
 
 ## Fluxos de entrada
 
-- Comprador ou licença já ativada: solicitar o link usando o mesmo e-mail cadastrado; não informar código.
-- Código-convite: confirmar primeiro o e-mail e, no retorno, abrir **Recebi um código-convite**.
+- Comprador ou licença já ativada: informar o mesmo e-mail cadastrado, solicitar o link e abri-lo; não informar código.
+- Convite direto ainda não ativado: tocar no envelope neon e informar o código; nenhum e-mail será enviado.
+- Convite direto já ativado: a sessão permanece no dispositivo até expirar, ser revogada ou a pessoa sair; o código não pode ser reutilizado.
 - Modo admin: usar somente a senha master guardada em gerenciador seguro ou a conta administrativa autorizada.
+
+O marcador `acesso=compra` na URL serve somente para restaurar a jornada
+visual. Nunca o trate como prova de compra, convite ou autorização.
 
 ## Rotação da senha master
 
@@ -77,6 +81,8 @@ A senha não deve ser enviada por e-mail comum nem incluída no repositório.
    hora.
 4. Para operação em escala, configure SMTP transacional próprio. A adoção do
    Resend foi avaliada, mas não está configurada no estado atual.
+5. Confirme que a mensagem de envio concluído aparece em verde e que limites,
+   endereços inválidos e indisponibilidade continuam no estado de alerta.
 
 ## Rollback
 

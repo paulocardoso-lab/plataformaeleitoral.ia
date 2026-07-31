@@ -66,13 +66,13 @@ assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(!configSource.includes('offlineSessionGraceHours'), 'configuração não deve sugerir autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
-assert(index.includes('id="acessoPorCodigo"') && index.includes('aria-label="Ativar código-convite"'),
+assert(index.includes('id="acessoPorCodigo"') && index.includes('aria-label="Acessar com convite direto"'),
   'ativação manual deve permanecer separada como controle de convite');
 assert(index.includes("btnEnviarLinkCompra: () => enviarLinkMagico('compra')")
-  && index.includes("btnEnviarLinkConvite: () => enviarLinkMagico('convite')"),
-  'compra e convite devem compartilhar a mesma infraestrutura de autenticação');
-assert(index.includes('id="ativacaoInput"') && index.includes('spellcheck="false" disabled'),
-  'código manual deve iniciar bloqueado até a confirmação do e-mail');
+  && index.includes('CONFIG.directInviteFunctionUrl'),
+  'compra e convite direto devem usar jornadas de autenticação independentes');
+assert(index.includes('id="ativacaoInput"') && index.includes('autocomplete="one-time-code"'),
+  'código do convite direto deve aceitar ativação sem confirmação de e-mail');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(index.includes('CONFIG.adminFunctionUrl'), 'painel administrativo não foi encontrado');
 assert(index.includes('id="btnSairConta"') && index.includes('btnSairConta: solicitarSaidaConta'),
@@ -107,6 +107,7 @@ assert(datasetFunction.includes("'Access-Control-Expose-Headers': 'X-Dataset-Ver
   'browser deve conseguir validar o cabeçalho de versão do dataset');
 assert(datasetFunction.includes("from('licencas')"), 'Edge Function deve validar licença Auth');
 assert(datasetFunction.includes("validation?.tipo !== 'tester'"), 'token opaco deve ser restrito a tester');
+assert(datasetFunction.includes("validar_sessao_convite_direto"), 'dataset deve reconhecer sessão de convite direto');
 const testerFunction = read('supabase/functions/tester-access/index.ts');
 assert(testerFunction.includes('TESTER_MASTER_PASSWORD_HASH'), 'senha tester deve vir de secret');
 assert(testerFunction.includes('too_many_attempts'), 'acesso tester deve aplicar rate limit');
@@ -119,6 +120,14 @@ assert(adminFunction.includes("validation?.tipo!=='tester'"), 'API administrativ
 assert(adminFunction.includes("req.headers.get('x-device-id')"), 'API administrativa deve vincular o modo admin ao dispositivo');
 assert(adminFunction.includes("from('auditoria_administrativa')"), 'API administrativa deve registrar auditoria');
 assert(adminFunction.includes("action==='rotate_master'"), 'API administrativa deve permitir rotação segura');
+assert(adminFunction.includes("action==='create_direct_invite'"), 'API administrativa deve criar convite direto');
+assert(adminFunction.includes("action==='revoke_direct_invite'"), 'API administrativa deve revogar convite direto');
+const directInviteFunction=read('supabase/functions/direct-invite-access/index.ts');
+assert(directInviteFunction.includes('tentativas_convite_direto'), 'convite direto deve aplicar rate limit e auditoria');
+assert(directInviteFunction.includes('emitir_sessao_convite_direto'), 'convite direto deve emitir sessão pelo servidor');
+const directInviteMigration=read('supabase/migrations/20260731120000_criar_convites_diretos.sql');
+assert(directInviteMigration.includes('codigo_hash text not null unique'), 'convite direto deve persistir somente o hash do código');
+assert(directInviteMigration.includes('to service_role'), 'RPCs do convite direto devem ser exclusivas do servidor');
 
 if (failures.length) {
   console.error('Auditoria de configuração falhou:\n');

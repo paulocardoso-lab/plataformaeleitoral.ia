@@ -71,7 +71,13 @@ Deno.serve(async (request) => {
     });
     if (validationError) return jsonResponse(503, { error: 'session_validation_unavailable' }, origin);
     if (!validation?.valida || validation?.tipo !== 'tester') {
-      return jsonResponse(401, { error: validation?.motivo || 'tester_session_required' }, origin);
+      const {data:directValidation,error:directError}=await supabase.rpc('validar_sessao_convite_direto',{
+        p_token:token,p_device_id:deviceId
+      });
+      if(directError) return jsonResponse(503,{error:'session_validation_unavailable'},origin);
+      if(!directValidation?.valida||directValidation?.tipo!=='convite_direto') {
+        return jsonResponse(401,{error:directValidation?.motivo||'valid_session_required'},origin);
+      }
     }
   } else {
     const { data: userData, error: userError } = await supabase.auth.getUser(token);

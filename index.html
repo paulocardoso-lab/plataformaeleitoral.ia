@@ -2149,7 +2149,7 @@ canvas {
   .admin-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .admin-actions button,
   .admin-card > button { width: 100%; font-size: .76rem; }
-  #adminCodigosGerados {
+  #adminConviteGerado {
     max-width: 100%;
     max-height: 180px;
     overflow: auto;
@@ -2304,42 +2304,25 @@ canvas {
       </section>
 
       <details class="acesso-secundario convite-detalhes" id="acessoPorCodigo">
-        <summary aria-label="Ativar código-convite" title="Ativar código-convite">
+        <summary aria-label="Acessar com convite direto" title="Acessar com convite direto">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
         </summary>
-        <section class="login-etapa" aria-labelledby="loginConviteEmailTitulo">
+        <section class="login-etapa" aria-labelledby="loginConviteDiretoTitulo">
           <div class="login-etapa-cabecalho">
-            <span class="login-etapa-numero" aria-hidden="true">1</span>
             <div>
-              <h3 class="login-etapa-titulo" id="loginConviteEmailTitulo">Confirme seu e-mail</h3>
-              <p class="login-etapa-descricao">O convite será vinculado à conta criada com este e-mail.</p>
+              <h3 class="login-etapa-titulo" id="loginConviteDiretoTitulo">Recebi um convite direto</h3>
+              <p class="login-etapa-descricao">Informe o código recebido. Este acesso não precisa de confirmação por e-mail.</p>
             </div>
           </div>
-          <div class="login-grupo">
-            <label class="login-label" for="ativacaoEmailConvite">E-mail da pessoa convidada</label>
-            <input type="email" class="ativacao-email" id="ativacaoEmailConvite" placeholder="nome@exemplo.com" autocomplete="email"
-                   inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
-          </div>
-          <button class="btn-enviar-link" id="btnEnviarLinkConvite">Enviar link de confirmação</button>
-        </section>
-        <section class="login-etapa login-etapa-bloqueada" id="conviteCodigoEtapa" aria-labelledby="loginCodigoTitulo">
-          <div class="login-etapa-cabecalho">
-            <span class="login-etapa-numero" aria-hidden="true">2</span>
-            <div>
-              <h3 class="login-etapa-titulo" id="loginCodigoTitulo">Vincule o convite à sua conta</h3>
-              <p class="login-etapa-descricao" id="loginCodigoDescricao">Depois de abrir o link de confirmação, informe o código-convite recebido.</p>
-            </div>
-          </div>
-          <p class="login-conta-confirmada hidden" id="loginContaConfirmada"></p>
           <div class="acesso-secundario-conteudo">
             <div class="login-grupo">
-              <label class="login-label" for="ativacaoInput">Código-convite</label>
+              <label class="login-label" for="ativacaoInput">Código do convite</label>
               <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
                      inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-                     autocapitalize="characters" autocomplete="off" spellcheck="false" disabled>
-              <small class="login-ajuda" id="loginCodigoAjuda">Aguardando a confirmação do e-mail.</small>
+                     autocapitalize="characters" autocomplete="one-time-code" spellcheck="false">
+              <small class="login-ajuda">O convite será ativado neste dispositivo e não dá acesso ao painel administrativo.</small>
             </div>
-            <button id="btnAtivar" disabled>Vincular convite à minha conta</button>
+            <button id="btnAtivar">Acessar com convite</button>
           </div>
         </section>
       </details>
@@ -2388,10 +2371,13 @@ canvas {
     <div id="adminStatus" class="admin-status" role="status" aria-live="polite"></div>
     <div class="admin-grid">
       <section class="admin-card">
-        <h3>Emitir códigos</h3>
-        <label>Quantidade <input id="adminQuantidade" type="number" min="1" max="50" value="1"></label>
-        <button type="button" id="btnAdminCriarCodigos">Gerar códigos</button>
-        <pre id="adminCodigosGerados"></pre>
+        <h3>Criar convite direto</h3>
+        <label for="adminConviteNome">Nome ou identificação</label>
+        <input id="adminConviteNome" type="text" maxlength="120" placeholder="Ex.: Maria — demonstração">
+        <label for="adminConviteDias">Validade em dias</label>
+        <input id="adminConviteDias" type="number" min="1" max="365" value="30">
+        <button type="button" id="btnAdminCriarConvite">Gerar convite</button>
+        <pre id="adminConviteGerado"></pre>
       </section>
       <section class="admin-card">
         <h3>Rotacionar senha master</h3>
@@ -2404,7 +2390,7 @@ canvas {
         </div>
       </section>
     </div>
-    <section class="admin-card"><h3>Códigos</h3><div id="adminTabelaCodigos"></div></section>
+    <section class="admin-card"><h3>Convites diretos</h3><div id="adminTabelaConvites"></div></section>
     <section class="admin-card"><h3>Licenças</h3><div id="adminTabelaLicencas"></div></section>
     <section class="admin-card"><h3>Sessões administrativas</h3><div id="adminTabelaSessoes"></div></section>
     <section class="admin-card"><h3>Auditoria</h3><div id="adminTabelaAuditoria"></div></section>
@@ -6265,6 +6251,7 @@ const TESTER_DB_NAME = 'peia-security-v1';
 const TESTER_STORE_NAME = 'credentials';
 let testerSessionToken = null;
 let testerDeviceId = null;
+let opaqueSessionType = null;
 
 function abrirBancoSeguro() {
   return new Promise((resolve, reject) => {
@@ -6314,6 +6301,7 @@ async function carregarCredenciaisTester() {
   const tokenLegado = localStorage.getItem('pe26_sessao_token');
   const deviceLegado = localStorage.getItem('pe26_device_id');
   testerSessionToken = await lerCredencialSegura('tester_token') || tokenLegado;
+  opaqueSessionType = await lerCredencialSegura('session_type');
   testerDeviceId = await lerCredencialSegura('device_id') || deviceLegado;
   if (!testerDeviceId) {
     testerDeviceId = crypto.randomUUID
@@ -6381,7 +6369,9 @@ function obterSessaoToken() {
 
 function limparSessaoLocal() {
   testerSessionToken = null;
+  opaqueSessionType = null;
   removerCredencialSegura('tester_token').catch(() => undefined);
+  removerCredencialSegura('session_type').catch(() => undefined);
   localStorage.removeItem('pe26_sessao_token');
   localStorage.removeItem('pe26_device_id');
   localStorage.removeItem('pe26_acesso_liberado');
@@ -6400,6 +6390,11 @@ async function redefinirAcesso() {
       p_token: token,
       p_device_id: obterDeviceId()
     }));
+    tarefas.push(fetch(CONFIG.directInviteFunctionUrl, {
+      method: 'POST', cache: 'no-store', credentials: 'omit',
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'X-Device-Id': obterDeviceId() },
+      body: JSON.stringify({ action: 'logout' })
+    }));
   }
   limparSessaoLocal();
   if (AUTH_CLIENT) tarefas.push(AUTH_CLIENT.auth.signOut());
@@ -6410,7 +6405,9 @@ async function redefinirAcesso() {
 window.redefinirAcesso = redefinirAcesso;
 
 async function solicitarSaidaConta() {
-  const confirmado = confirm('Deseja sair desta conta? Para entrar novamente, será necessário receber um novo link no e-mail.');
+  const confirmado = confirm(opaqueSessionType === 'convite_direto'
+    ? 'Deseja sair deste acesso? Este convite é de uso único e será necessário solicitar um novo código para entrar novamente.'
+    : 'Deseja sair desta conta? Para entrar novamente, será necessário receber um novo link no e-mail.');
   if (!confirmado) return;
   const btn = document.getElementById('btnSairConta');
   btn.disabled = true;
@@ -6436,31 +6433,9 @@ function mascararEmailLogin(email) {
 }
 
 async function atualizarEtapasLogin() {
-  const session = await obterAuthSession();
-  const autenticado = Boolean(session?.user);
   const fluxo = new URLSearchParams(location.search).get('acesso');
   const detalhesCodigo = document.getElementById('acessoPorCodigo');
-  const etapaCodigo = document.getElementById('conviteCodigoEtapa');
-  const inputCodigo = document.getElementById('ativacaoInput');
-  const btnAtivar = document.getElementById('btnAtivar');
-  const descricao = document.getElementById('loginCodigoDescricao');
-  const ajuda = document.getElementById('loginCodigoAjuda');
-  const conta = document.getElementById('loginContaConfirmada');
-
-  etapaCodigo.classList.toggle('login-etapa-bloqueada', !autenticado);
-  if (autenticado || fluxo === 'convite') detalhesCodigo.open = true;
-  inputCodigo.disabled = !autenticado;
-  btnAtivar.disabled = !autenticado;
-  descricao.textContent = autenticado
-    ? (fluxo === 'convite'
-      ? 'Seu e-mail foi confirmado. Agora vincule o código-convite recebido à sua conta.'
-      : 'Seu e-mail foi confirmado, mas nenhuma licença ativa foi encontrada. Se você recebeu um convite, vincule o código à sua conta.')
-    : 'Depois de abrir o link de confirmação, informe o código-convite recebido.';
-  ajuda.textContent = autenticado
-    ? 'Este código será associado à conta confirmada e não precisará ser informado novamente.'
-    : 'Aguardando a confirmação do e-mail.';
-  conta.textContent = autenticado ? `Conta confirmada: ${mascararEmailLogin(session.user.email)}` : '';
-  conta.classList.toggle('hidden', !autenticado);
+  if (fluxo === 'convite') detalhesCodigo.open = true;
 }
 
 async function chamarRpc(nome, body) {
@@ -6501,23 +6476,35 @@ async function validarSessaoAtual() {
       p_device_id: obterDeviceId()
     });
     if (resultado && resultado.valida === true) {
+      opaqueSessionType = resultado.tipo || 'tester';
+      await gravarCredencialSegura('session_type', opaqueSessionType);
       return true;
     }
-  } catch (erro) {
-    console.warn('Não foi possível revalidar a sessão.', erro);
-    return false;
-  }
+  } catch (erro) { console.warn('Sessão administrativa não reconhecida.', erro); }
+
+  try {
+    const resp=await fetch(CONFIG.directInviteFunctionUrl,{
+      method:'POST',cache:'no-store',credentials:'omit',
+      headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json','X-Device-Id':obterDeviceId()},
+      body:JSON.stringify({action:'validate'})
+    });
+    const resultado=await resp.json().catch(()=>null);
+    if(resp.ok&&resultado?.valida===true) {
+      opaqueSessionType='convite_direto';
+      await gravarCredencialSegura('session_type',opaqueSessionType);
+      return true;
+    }
+  } catch(erro) { console.warn('Não foi possível revalidar o convite direto.',erro); }
 
   limparSessaoLocal();
   return false;
 }
 
 async function enviarLinkMagico(origem) {
-  const convite = origem === 'convite';
-  const emailInput = document.getElementById(convite ? 'ativacaoEmailConvite' : 'ativacaoEmailCompra');
+  const emailInput = document.getElementById('ativacaoEmailCompra');
   const email = emailInput.value.trim().toLowerCase();
   const erro = document.getElementById('ativacaoErro');
-  const btn = document.getElementById(convite ? 'btnEnviarLinkConvite' : 'btnEnviarLinkCompra');
+  const btn = document.getElementById('btnEnviarLinkCompra');
   erro.classList.remove('sucesso');
   emailInput.value = email;
   if (!AUTH_CLIENT || !emailInput.checkValidity()) {
@@ -6529,13 +6516,11 @@ async function enviarLinkMagico(origem) {
   try {
     const { error } = await AUTH_CLIENT.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${location.origin}${location.pathname}?acesso=${convite ? 'convite' : 'compra'}` }
+      options: { emailRedirectTo: `${location.origin}${location.pathname}?acesso=compra` }
     });
     if (!error) {
       erro.classList.add('sucesso');
-      erro.textContent = convite
-        ? `Link de confirmação enviado para ${email}. Depois de abri-lo, você retornará para vincular o código-convite.`
-        : `Link de acesso enviado para ${email}. Abra-o para entrar na plataforma.`;
+      erro.textContent = `Link de acesso enviado para ${email}. Abra-o para entrar na plataforma.`;
     } else if (error.status === 429 || /rate limit/i.test(error.message || '')) {
       erro.textContent = 'Limite de e-mails atingido. Aguarde a liberação da cota antes de tentar novamente.';
     } else {
@@ -6543,7 +6528,7 @@ async function enviarLinkMagico(origem) {
     }
   } finally {
     btn.disabled = false;
-    btn.textContent = convite ? 'Enviar link de confirmação' : 'Enviar meu link de acesso';
+    btn.textContent = 'Enviar meu link de acesso';
   }
 }
 window.enviarLinkMagico = enviarLinkMagico;
@@ -6576,6 +6561,8 @@ async function ativarAcessoTester() {
     const resultado = await resp.json();
     testerSessionToken = resultado.sessao_token;
     await gravarCredencialSegura('tester_token', testerSessionToken);
+    opaqueSessionType = 'tester';
+    await gravarCredencialSegura('session_type', opaqueSessionType);
     SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
     await iniciarApp();
     await verificarAcessoAdmin();
@@ -6611,29 +6598,30 @@ async function ativarAcesso() {
   btn.textContent = 'Verificando...';
 
   try {
-    const authSession = await obterAuthSession();
-    if (!authSession) throw new Error('Abra primeiro o link enviado ao seu e-mail.');
-    const { data: resultado, error: rpcError } = await AUTH_CLIENT.rpc('ativar_codigo_usuario', {
-      p_codigo: codigo
+    const resp=await fetch(CONFIG.directInviteFunctionUrl,{
+      method:'POST',cache:'no-store',credentials:'omit',
+      headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json','X-Device-Id':obterDeviceId()},
+      body:JSON.stringify({action:'activate',code:codigo})
     });
-    if (rpcError) throw rpcError;
-
-    if (resultado && resultado.sucesso === true) {
+    const resultado=await resp.json().catch(()=>({}));
+    if(resp.status===429) throw new Error('Muitas tentativas. Aguarde 15 minutos.');
+    if (resp.ok && resultado.sucesso === true) {
+      testerSessionToken=resultado.sessao_token;
+      opaqueSessionType='convite_direto';
+      await gravarCredencialSegura('tester_token',testerSessionToken);
+      await gravarCredencialSegura('session_type',opaqueSessionType);
       localStorage.removeItem('pe26_acesso_liberado');
       await iniciarApp();
       esconderTelaAtivacao();
-    } else if (resultado.motivo === 'codigo_ja_utilizado') {
-      erro.textContent = 'Este código já está vinculado a outra conta.';
-    } else if (resultado.motivo === 'codigo_requer_migracao') {
-      erro.textContent = 'Este código já foi usado. Entre no dispositivo original para migrar o acesso.';
     } else {
-      erro.textContent = 'Código inválido. Verifique e tente novamente.';
+      const mensagens={codigo_utilizado:'Este convite já foi utilizado.',convite_expirado:'Este convite expirou.',convite_revogado:'Este convite foi revogado.'};
+      erro.textContent = mensagens[resultado.error] || 'Código inválido. Verifique e tente novamente.';
     }
   } catch (e) {
     erro.textContent = e.message || 'Não foi possível verificar o código agora.';
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Vincular convite à minha conta';
+    btn.textContent = 'Acessar com convite';
   }
 }
 
@@ -6683,9 +6671,13 @@ function prepararTabelasAdminResponsivas() {
 function renderizarAdmin(resumo) {
   adminResumoAtual = resumo;
   document.getElementById('adminIdentidade').textContent = resumo.admin;
-  document.getElementById('adminTabelaCodigos').innerHTML = tabelaAdmin(
-    ['Código','Status','Origem','Criado','Usado'],
-    resumo.codes.map(item=>`<tr><td>${escaparAdmin(item.codigo)}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.origem)}</td><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.usado_em||'—')}</td></tr>`)
+  document.getElementById('adminTabelaConvites').innerHTML = tabelaAdmin(
+    ['Pessoa/identificação','Status','Criado','Expira','Último acesso','Ação'],
+    (resumo.directInvites||[]).map(item=>{
+      const sessao=(item.sessoes_convite_direto||[])[0];
+      const ativo=!item.revogado_em&&item.status!=='revogado'&&new Date(item.expira_em)>new Date();
+      return `<tr><td>${escaparAdmin(item.nome)}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.expira_em)}</td><td>${escaparAdmin(sessao?.ultimo_acesso_em||'—')}</td><td>${ativo?`<button type="button" data-admin-revogar-convite="${escaparAdmin(item.id)}">Revogar</button>`:'—'}</td></tr>`;
+    })
   );
   document.getElementById('adminTabelaLicencas').innerHTML = tabelaAdmin(
     ['E-mail','Código','Status','Último acesso','Ação'],
@@ -6705,6 +6697,9 @@ function renderizarAdmin(resumo) {
   });
   document.querySelectorAll('[data-admin-revogar-tester]').forEach(botao => {
     botao.addEventListener('click', () => adminRevogarTester(botao.dataset.adminRevogarTester));
+  });
+  document.querySelectorAll('[data-admin-revogar-convite]').forEach(botao => {
+    botao.addEventListener('click',()=>adminRevogarConvite(botao.dataset.adminRevogarConvite));
   });
 }
 
@@ -6784,10 +6779,13 @@ function fecharPainelAdmin() {
   if (focoAntesAdmin?.isConnected) focoAntesAdmin.focus();
 }
 
-async function adminCriarCodigos() {
-  const quantidade = Number(document.getElementById('adminQuantidade').value);
-  const resultado = await chamarAdmin('create_codes', { quantity: quantidade });
-  document.getElementById('adminCodigosGerados').textContent = resultado.codes.map(item=>item.codigo).join('\n');
+async function adminCriarConvite() {
+  const nome=document.getElementById('adminConviteNome').value.trim();
+  const dias=Number(document.getElementById('adminConviteDias').value);
+  if(nome.length<2) return document.getElementById('adminStatus').textContent='Informe o nome ou a identificação da pessoa.';
+  const resultado=await chamarAdmin('create_direct_invite',{name:nome,days:dias});
+  document.getElementById('adminConviteGerado').textContent=`${resultado.invite.code}\nVálido até: ${new Date(resultado.invite.expira_em).toLocaleString('pt-BR')}`;
+  document.getElementById('adminConviteNome').value='';
   await carregarPainelAdmin();
 }
 
@@ -6820,8 +6818,13 @@ async function adminRevogarTester(id) {
   await chamarAdmin('revoke_tester_session',{id});
   await carregarPainelAdmin();
 }
+async function adminRevogarConvite(id) {
+  if(!confirm('Revogar este convite e encerrar o acesso ativo?')) return;
+  await chamarAdmin('revoke_direct_invite',{id});
+  await carregarPainelAdmin();
+}
 
-Object.assign(window,{abrirPainelAdmin,fecharPainelAdmin,adminCriarCodigos,adminGerarMaster,adminRotacionarMaster,adminRevogarLicenca,adminRevogarTester});
+Object.assign(window,{abrirPainelAdmin,fecharPainelAdmin,adminCriarConvite,adminGerarMaster,adminRotacionarMaster,adminRevogarLicenca,adminRevogarTester,adminRevogarConvite});
 
 // ============================================================
 // BOOT
@@ -6843,13 +6846,12 @@ function vincularAcoesEstaticas() {
   const acoes = {
     btnAplicarAtualizacao: aplicarAtualizacao,
     btnEnviarLinkCompra: () => enviarLinkMagico('compra'),
-    btnEnviarLinkConvite: () => enviarLinkMagico('convite'),
     btnAtivar: ativarAcesso,
     btnTester: ativarAcessoTester,
     btnAdminAtivacao: abrirPainelAdmin,
     btnAdminRodape: abrirPainelAdmin,
     btnFecharAdmin: fecharPainelAdmin,
-    btnAdminCriarCodigos: adminCriarCodigos,
+    btnAdminCriarConvite: adminCriarConvite,
     btnAdminGerarMaster: adminGerarMaster,
     btnAdminRotacionarMaster: adminRotacionarMaster,
     btnVoltar: voltarHome,

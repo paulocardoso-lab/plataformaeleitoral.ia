@@ -1,19 +1,23 @@
-# Status de liberação — versão pública 1.9.0
+# Status de liberação — versão pública 1.10.0
 
 - Data: 31/07/2026
 - Produção: `https://plataformaeleitoral.ia.br`
-- Cache: `v69`
+- Cache: `v70`
 - Dataset: `tse-ms-2010-2024-v1`
 
 ## Estado atual
 
 - Health check de produção aprovado em 20 verificações.
 - Compradores e contas licenciadas entram por link mágico sem código.
-- Código-convite permanece separado e exige confirmação prévia do e-mail.
+- A jornada do comprador exibe campo, botão e passo a passo em sequência direta.
+- Convite direto permanece recolhido sob envelope neon e dispensa confirmação por e-mail.
+- Compra usa Supabase Auth; convite direto usa sessão opaca, vinculada ao dispositivo, com expiração e revogação.
+- Mensagens de envio concluído usam verde de sucesso e erros preservam o estado de alerta.
 - Painel administrativo responsivo para celular, com cartões e ações adaptadas ao toque.
 - Tela “Sobre” contém compartilhamento comercial, assinatura institucional e saída segura.
 - Dataset privado exige licença ou sessão administrativa válida.
 - Login orientado ao comprador, com primeira ativação por convite em fluxo secundário próprio.
+- Repositório de produção sincronizado com `main` no commit `851965a`.
 
 ## Ressalva operacional
 

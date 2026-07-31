@@ -54,9 +54,18 @@ A lista original de nove telas foi ampliada. A navegação atual também inclui 
 
 ## Acesso atual
 
-- Compra ou licença existente: link mágico no mesmo e-mail cadastrado; nenhum código é solicitado.
-- Convite administrativo: confirmação do e-mail seguida da vinculação do código-convite.
+- Compra ou licença existente: campo principal de e-mail, envio de link e passo a passo abaixo do botão; nenhum código é solicitado.
+- Convite direto: envelope neon sem texto visível abre a entrada do código descartável, sem Supabase Auth ou e-mail.
 - Modo admin: senha master ou conta administrativa autorizada.
+
+A jornada de compra usa `signInWithOtp`. O convite direto chama a Edge Function
+`direct-invite-access`, que aplica rate limit, consome o código uma única vez e
+emite uma sessão opaca vinculada ao dispositivo. Essa sessão acessa somente o
+dataset e nunca é aceita pela API administrativa.
+
+O status compartilhado `#ativacaoErro` recebe a classe `sucesso` apenas quando
+o Supabase aceita o envio do link. Novas validações removem essa classe para que
+erros não sejam apresentados em verde.
 
 O painel administrativo usa tabelas no desktop e cartões rotulados abaixo de
 600 px. Campos permanecem com 16 px no mobile para evitar zoom automático;

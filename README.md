@@ -67,9 +67,16 @@ Estado atual: autenticação e carregamento do dataset protegido exigem internet
 
 Na linha pública atual existem três situações claramente separadas:
 
-- compradores e contas já ativadas entram pelo link mágico enviado ao e-mail cadastrado, sem código;
-- pessoas convidadas confirmam primeiro o e-mail e depois vinculam um código-convite à conta;
+- compradores e contas já ativadas informam o e-mail cadastrado, solicitam o link e entram após abri-lo;
+- a jornada principal apresenta esse processo como passo a passo abaixo do botão de envio;
+- pessoas convidadas abrem o envelope neon ao final da tela e informam um convite direto, sem confirmação ou envio de e-mail;
 - o Modo admin usa senha master e emite uma sessão administrativa revogável, com validade máxima de 90 dias.
+
+Compras continuam usando Supabase Auth. Convites diretos usam código descartável,
+sessão opaca vinculada ao dispositivo, validade e revogação próprias. O parâmetro de
+retorno `acesso=compra` restaura apenas o contexto visual da jornada e
+não concede licença nem substitui as verificações do backend. Confirmações de
+envio usam o estado verde de sucesso; falhas permanecem no estado de alerta.
 
 O dataset não está no HTML público. A Edge Function `dataset` valida uma licença
 ou sessão administrativa antes de cada download, e nenhuma cópia privada é

@@ -36,5 +36,8 @@ verify_jwt = false
 [functions.admin-access]
 verify_jwt = false
 
+[functions.direct-invite-access]
+verify_jwt = false
+
 [functions.kiwify-webhook]
 verify_jwt = false

@@ -31,9 +31,11 @@ tecnologias assistivas e particularidades de navegadores reais.
 
 ### Login e acesso
 
-- Link mágico: preencher e-mail, enviar, validar mensagens e retornar.
-- Compra/licença existente: confirmar que a tela informa que nenhum código é necessário.
-- Código-convite: abrir o fluxo secundário, confirmar o bloqueio antes do e-mail, preencher a máscara completa e validar erros.
+- Link mágico: preencher o campo centralizado, enviar, validar a confirmação e retornar.
+- Compra/licença existente: conferir o passo a passo após o botão e a entrada sem código.
+- Código-convite: localizar o envelope neon pelo nome acessível **Ativar código-convite**, abrir o fluxo secundário, confirmar o bloqueio antes do e-mail, preencher a máscara completa e validar erros.
+- Confirmar que `acesso=compra|convite` apenas restaura a jornada visual e não altera a autorização.
+- Verificar que sucesso e erro possuem texto compreensível independentemente das cores verde e magenta.
 - Tester: autenticar, fechar e reabrir o app, confirmando persistência.
 - Abrir e fechar o painel administrativo por teclado e por toque.
 - Confirmar que o teclado virtual não cobre campo, erro ou botão principal.

@@ -2,6 +2,14 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.10.0 — 31/07/2026
+
+- Convites diretos passam a liberar acesso sem autenticação ou envio de e-mail pelo Supabase.
+- Códigos descartáveis ficam armazenados somente como hash e são vinculados ao dispositivo na ativação.
+- Sessões de convidados recebem validade, revogação administrativa e limitação de tentativas.
+- Painel administrativo passa a criar, identificar e revogar convites diretos.
+- Acesso por convite permanece isolado das permissões administrativas.
+
 ## 1.9.0 — 31/07/2026
 
 - Login passa a priorizar visualmente o acesso de compradores e contas já ativadas.
