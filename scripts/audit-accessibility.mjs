@@ -92,6 +92,19 @@ assert(html.includes("evento.key === 'Escape'") && html.includes("evento.key ===
 // Mobile-first e alvos de toque.
 assert(/\.grid9\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/.test(html),
   'Grade base deixou de usar duas colunas em telas estreitas.');
+const ordemHome = [
+  "{ id:1, icone:'buscar'",
+  "{ id:5, icone:'evolucao'",
+  "{ id:2, icone:'ranking'",
+  "{ id:3, icone:'municipio'",
+  "{ id:4, icone:'comparar'",
+  "{ id:6, icone:'partidos'",
+  "{ id:11, icone:'presgov'",
+  "{ id:10, icone:'simulador'",
+  "{ id:9, icone:'estado'"
+].map(item => html.indexOf(item));
+assert(ordemHome.every((posicao, indice) => posicao >= 0 && (indice === 0 || posicao > ordemHome[indice - 1])),
+  'Ordem da jornada principal foi alterada.');
 assert(/@media\s*\(min-width:\s*380px\)[\s\S]*?repeat\(3,\s*minmax\(0,\s*1fr\)\)/.test(html),
   'Progressão para três colunas não encontrada.');
 assert(/\.filtro-linha\s*\{[\s\S]*?flex-direction:\s*column/.test(html) &&
