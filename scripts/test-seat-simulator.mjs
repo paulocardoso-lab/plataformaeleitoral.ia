@@ -88,6 +88,20 @@ assert(retornoFormulario.includes("scrollIntoView({ behavior: reduzirMovimento ?
   && retornoFormulario.includes("campo.focus({ preventScroll: true })")
   && retornoFormulario.includes("prefers-reduced-motion: reduce"),
   'Retorno ao formulário deve controlar rolagem, foco e movimento reduzido.');
+const avancarCampo = extractFunction('simAvancarPara');
+assert(avancarCampo.includes("scrollIntoView({ behavior: reduzirMovimento ? 'auto' : 'smooth', block: 'center' })")
+  && avancarCampo.includes("destino.focus({ preventScroll: true })")
+  && avancarCampo.includes("prefers-reduced-motion: reduce"),
+  'Avanço entre campos deve controlar rolagem, foco e movimento reduzido.');
+assert(html.includes("simAvancarPara('simVotosValidos')")
+  && html.includes("simAvancarPara('simNome')")
+  && html.includes("simAvancarPara('simPartido')")
+  && html.includes("simAvancarPara('simVotosCandidato')")
+  && html.includes("simAvancarPara('simAdicionarCandidato')"),
+  'Sequência de avanço automático do simulador está incompleta.');
+assert(html.includes("evento.key === 'Enter' && nome.value.trim() && !simSelecionado")
+  && html.includes("evento.key === 'Enter' && partido.value.trim() && !simOrganizacaoSelecionada"),
+  'Nomes e organizações digitados não avançam mediante confirmação explícita.');
 assert(/\.sim-sugestoes button\s*\{[^}]*font-size:\s*\.875rem/.test(html)
   && /\.sim-sugestoes small\s*\{[^}]*font-size:\s*\.8125rem/.test(html),
   'Sugestões do simulador não usam a tipografia compacta prevista.');

@@ -107,6 +107,14 @@ assert(ordemHome.every((posicao, indice) => posicao >= 0 && (indice === 0 || pos
   'Ordem da jornada principal foi alterada.');
 assert(/@media\s*\(min-width:\s*380px\)[\s\S]*?repeat\(3,\s*minmax\(0,\s*1fr\)\)/.test(html),
   'Progressão para três colunas não encontrada.');
+assert(/@media\s*\(max-width:\s*430px\)[\s\S]*?html:not\(\[data-fonte\]\)\s*\{[\s\S]*?font-size:\s*clamp\(15px,\s*3\.82vw,\s*16px\)/.test(html),
+  'Enquadramento compacto não preserva a preferência manual de fonte.');
+assert(/@media\s*\(hover:\s*none\)\s*and\s*\(pointer:\s*coarse\)[\s\S]*?input,[\s\S]*?select,[\s\S]*?textarea\s*\{[\s\S]*?font-size:\s*max\(16px,\s*1rem\)\s*!important/.test(html),
+  'Campos de toque podem provocar ampliação automática no Safari.');
+assert(/@media\s*\(max-height:\s*540px\)\s*and\s*\(orientation:\s*landscape\)/.test(html),
+  'Enquadramento para celulares em paisagem ausente.');
+assert(/@media\s*\(min-width:\s*768px\)\s*and\s*\(max-width:\s*1180px\)[\s\S]*?\.grid9\s*\{\s*max-width:\s*720px/.test(html),
+  'Aproveitamento responsivo da área útil de tablets ausente.');
 assert(/\.filtro-linha\s*\{[\s\S]*?flex-direction:\s*column/.test(html) &&
   /@media\s*\(min-width:\s*480px\)[\s\S]*?\.filtro-linha\s*\{[\s\S]*?flex-direction:\s*row/.test(html),
   'Filtros não seguem coluna móvel e linha progressiva.');

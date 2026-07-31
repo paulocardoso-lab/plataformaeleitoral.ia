@@ -2,6 +2,17 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.7.1 — 31/07/2026
+
+- Simulador avança automaticamente para o próximo campo após cada seleção ou preenchimento concluído.
+- Retorno ao início da inclusão após adicionar uma candidatura preservado.
+
+## 1.7.0 — 31/07/2026
+
+- Enquadramento automático por largura, altura e orientação para celulares e tablets.
+- Campos em dispositivos de toque protegidos contra a ampliação automática do Safari.
+- Espaçamentos compactos aplicados sem interferir nas preferências A− e A+.
+
 ## 1.6.1 — 31/07/2026
 
 - Simulador retorna ao campo de inclusão após confirmar uma candidatura.
