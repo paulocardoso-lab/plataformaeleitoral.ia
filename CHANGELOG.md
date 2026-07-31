@@ -2,6 +2,11 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.4.5 — 31/07/2026
+
+- Logomarca do cabeçalho restaurada para a versão original anterior.
+- Nova logomarca mantida somente na tela de acesso.
+
 ## 1.4.4 — 31/07/2026
 
 - Fonte da assinatura institucional reduzida para a faixa de 7 a 9 px.
