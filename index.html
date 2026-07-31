@@ -2009,19 +2009,24 @@ canvas {
 /* ===== SIMULADOR DE VAGAS 2026 ===== */
 .simulador-wrap { max-width: 680px; margin: 0 auto; padding: 12px 10px 24px; }
 .simulador-intro { margin: 0 0 12px; color: var(--text-muted); font-size: .875rem; line-height: 1.5; }
-.sim-card { margin: 0 0 12px; padding: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
+.sim-card { position: relative; margin: 0 0 12px; padding: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; transition: border-color .2s ease, opacity .2s ease; }
+.sim-card.etapa-ativa { border-color: rgba(0,217,255,.7); }
+.sim-card.etapa-concluida { border-color: rgba(0,255,65,.4); }
+.sim-card.etapa-concluida > h2::after { content: " ✓"; color: var(--neon-green); }
+.sim-card.etapa-pendente { opacity: .78; }
 .sim-card h2 { margin: 0 0 5px; color: var(--text-light); font-size: 1.125rem; }
 .sim-card-sub { margin: 0 0 14px; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
 .sim-ajuda { margin: 10px 0 0; border-top: 1px solid var(--border); }
-.sim-ajuda summary { display: flex; align-items: center; min-height: 44px; color: var(--neon-cyan); cursor: pointer; font-size: .8125rem; font-weight: 700; }
+.sim-ajuda summary { display: flex; align-items: center; min-height: 40px; color: var(--text-muted); cursor: pointer; font-size: .8125rem; font-weight: 700; }
+.sim-ajuda summary:hover, .sim-ajuda summary:focus-visible { color: var(--text-light); }
 .sim-ajuda p { margin: 0 0 12px; color: var(--text-light); font-size: .8125rem; line-height: 1.55; }
 .sim-cargos { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .sim-cargo { min-height: 64px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg-1); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
 .sim-cargo strong, .sim-cargo span { display: block; }
 .sim-cargo span { margin-top: 3px; color: var(--text-muted); font-size: .8125rem; }
-.sim-cargo.ativo { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,217,255,.16); }
+.sim-cargo.ativo { border-color: var(--neon-cyan); box-shadow: none; }
 .sim-campo { margin-top: 12px; }
-.sim-campo label { display: block; margin-bottom: 6px; color: var(--neon-green); font-size: .8125rem; font-weight: 700; }
+.sim-campo label { display: block; margin-bottom: 6px; color: var(--text-light); font-size: .8125rem; font-weight: 700; }
 .sim-campo input, .sim-campo select { min-height: 54px; width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; }
 .sim-campo input[type="number"] { appearance: textfield; background: var(--bg-1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-light); font-family: var(--font-corpo); }
 .sim-campo input[type="number"]::-webkit-inner-spin-button { appearance: none; }
@@ -2029,13 +2034,16 @@ canvas {
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
 .sim-btn-principal:disabled { cursor: not-allowed; opacity: .5; }
-.sim-btn-secundario { border: 1px solid var(--neon-cyan); background: transparent; color: var(--neon-cyan); padding: 10px 14px; }
+.sim-btn-secundario { border: 1px solid var(--border); background: transparent; color: var(--text-light); padding: 10px 14px; }
+.sim-btn-secundario:hover, .sim-btn-secundario:focus-visible { border-color: var(--text-muted); }
+.sim-acoes-inclusao .sim-btn-secundario { min-height: 42px; font-size: .8125rem; font-weight: 600; }
 .sim-btn-remover { width: 44px; min-width: 44px; border: 1px solid var(--border); background: transparent; color: var(--text-light); }
 .sim-sugestoes { margin-top: 5px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
 .sim-sugestoes button { display: block; width: 100%; min-height: 48px; padding: 9px 11px; border: 0; border-bottom: 1px solid var(--border); background: var(--bg-1); color: var(--text-light); text-align: left; font-family: inherit; font-size: .875rem; line-height: 1.35; cursor: pointer; }
 .sim-sugestoes button:last-child { border-bottom: 0; }
 .sim-sugestoes small { display: block; color: var(--text-muted); margin-top: 2px; font-size: .8125rem; }
-.sim-selecionado { margin-top: 8px; padding: 9px 11px; border-left: 3px solid var(--neon-green); background: rgba(0,255,65,.06); font-size: .8125rem; line-height: 1.45; }
+.sim-selecionado { margin-top: 8px; padding: 9px 11px; border-left: 3px solid var(--border); background: rgba(255,255,255,.025); color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
+.sim-selecionado.ok { border-left-color: var(--neon-green); background: rgba(0,255,65,.05); color: var(--text-light); }
 .sim-lista { margin-top: 14px; }
 .sim-item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 11px 0; border-top: 1px solid var(--border); }
 .sim-item-nome { color: var(--text-light); font-weight: 700; overflow-wrap: anywhere; }
@@ -2051,7 +2059,8 @@ canvas {
 .sim-auto-opcoes p { margin: 0; color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
 .sim-auto-previa ul { margin: 8px 0 0; padding-left: 20px; }
 .sim-auto-previa li { margin-bottom: 5px; font-size: .8125rem; line-height: 1.4; }
-.sim-placar { flex-shrink: 0; padding: 10px 12px; border-top: 2px solid var(--border); background: var(--bg-1); box-shadow: 0 -8px 24px rgba(0,0,0,.35); }
+.sim-placar { flex-shrink: 0; padding: 9px 12px; border-top: 1px solid var(--border); background: var(--bg-1); box-shadow: 0 -4px 14px rgba(0,0,0,.2); }
+.sim-placar.aguardando { padding-top: 8px; padding-bottom: 8px; }
 .sim-placar-inner { max-width: 680px; margin: 0 auto; }
 .sim-placar-linha { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .sim-placar-linha strong { font-size: 1rem; }
@@ -2059,6 +2068,7 @@ canvas {
 .sim-progresso { height: 9px; margin: 8px 0; overflow: hidden; border-radius: 99px; background: var(--border); }
 .sim-progresso > span { display: block; height: 100%; max-width: 100%; background: var(--neon-cyan); transition: width .2s ease; }
 .sim-status { margin: 0 0 8px; font-size: .8125rem; line-height: 1.4; }
+.sim-status.neutro { color: var(--text-muted); }
 .sim-status.ok { color: var(--neon-green); }
 .sim-status.aviso { color: var(--neon-yellow); }
 .sim-status.erro { color: #ff8b8b; }
@@ -2070,6 +2080,7 @@ canvas {
 @media (min-width: 520px) {
   .sim-cargos { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .sim-form-acoes { grid-template-columns: 1fr 1fr; }
+  .sim-acoes-inclusao .sim-btn-principal { grid-column: 1 / -1; }
 }
 
 #adminModal {
@@ -2643,25 +2654,25 @@ canvas {
       <div class="simulador-wrap">
         <p class="simulador-intro">Monte uma projeção simples para Mato Grosso do Sul. O cenário é salvo automaticamente somente neste navegador.</p>
 
-        <section class="sim-card" aria-labelledby="simEtapa1Titulo">
+        <section class="sim-card" id="simEtapa1Card" aria-labelledby="simEtapa1Titulo">
           <h2 id="simEtapa1Titulo">1. Escolha o cargo</h2>
           <p class="sim-card-sub">Eleições 2026 · Mato Grosso do Sul</p>
           <div class="sim-cargos" role="group" aria-label="Cargo da simulação">
             <button type="button" class="sim-cargo ativo" id="simCargoEstadual" data-sim-cargo="deputado estadual" aria-pressed="true"><strong>Deputado estadual</strong><span>24 vagas</span></button>
             <button type="button" class="sim-cargo" id="simCargoFederal" data-sim-cargo="deputado federal" aria-pressed="false"><strong>Deputado federal</strong><span>8 vagas</span></button>
           </div>
-          <details class="sim-ajuda"><summary>❔ Ajuda para escolher</summary><p>Escolha qual cargo deseja simular. O estado e a quantidade de vagas já estão preenchidos e não precisam ser alterados.</p></details>
+          <details class="sim-ajuda"><summary>Como escolher o cargo?</summary><p>Escolha qual cargo deseja simular. O estado e a quantidade de vagas já estão preenchidos e não precisam ser alterados.</p></details>
         </section>
 
-        <section class="sim-card" aria-labelledby="simEtapa2Titulo">
+        <section class="sim-card" id="simEtapa2Card" aria-labelledby="simEtapa2Titulo">
           <h2 id="simEtapa2Titulo">2. Informe os votos válidos</h2>
           <p class="sim-card-sub">Não inclua votos brancos e nulos.</p>
           <div class="sim-campo"><label for="simVotosValidos">Votos válidos estimados</label><input type="number" id="simVotosValidos" min="1" step="1" inputmode="numeric" placeholder="Ex.: 1.500.000"></div>
-          <div class="sim-selecionado" id="simQuociente" role="status" aria-live="polite">Informe os votos válidos para ver o quociente estimado.</div>
-          <details class="sim-ajuda"><summary>❔ O que preencher aqui?</summary><p>Informe o total de votos que você estima para este cargo em todo o estado. Esse número serve para calcular quantos votos serão necessários para a distribuição das vagas.</p></details>
+          <div class="sim-selecionado" id="simQuociente" role="status" aria-live="polite">Digite a estimativa de votos válidos para continuar.</div>
+          <details class="sim-ajuda"><summary>O que preencher aqui?</summary><p>Informe o total de votos que você estima para este cargo em todo o estado. Esse número serve para calcular quantos votos serão necessários para a distribuição das vagas.</p></details>
         </section>
 
-        <section class="sim-card" aria-labelledby="simEtapa3Titulo">
+        <section class="sim-card" id="simEtapa3Card" aria-labelledby="simEtapa3Titulo">
           <h2 id="simEtapa3Titulo">3. Adicione candidaturas e votos</h2>
           <p class="sim-card-sub">Pesquise alguém do histórico ou digite um nome novo.</p>
           <div class="sim-campo">
@@ -2677,19 +2688,19 @@ canvas {
             <div id="simOrganizacaoSelecionada" class="sim-selecionado hidden"></div>
           </div>
           <div class="sim-campo"><label for="simVotosCandidato">Votos estimados</label><input type="number" id="simVotosCandidato" min="0" step="1" inputmode="numeric" placeholder="Ex.: 35.000"></div>
-          <div class="sim-form-acoes">
+          <div class="sim-form-acoes sim-acoes-inclusao">
             <button type="button" class="sim-btn-principal" id="simAdicionarCandidato">Adicionar candidatura</button>
-            <button type="button" class="sim-btn-secundario" id="simAdicionarLegenda">Adicionar votos de legenda</button>
-            <button type="button" class="sim-btn-secundario" id="simAdicionarOutros">Adicionar votos de outras candidaturas</button>
+            <button type="button" class="sim-btn-secundario" id="simAdicionarLegenda">Incluir votos de legenda</button>
+            <button type="button" class="sim-btn-secundario" id="simAdicionarOutros">Incluir outros votos</button>
           </div>
           <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
-          <details class="sim-ajuda"><summary>❔ Ajuda para adicionar</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
+          <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
           <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
           <section class="sim-auto hidden" id="simAutoArea" aria-labelledby="simAutoTitulo">
             <h3 id="simAutoTitulo">Preenchimento rápido</h3>
             <p class="sim-card-sub" id="simAutoResumo"></p>
             <div class="sim-form-acoes">
-              <button type="button" class="sim-btn-secundario" id="simAbrirAuto">Completar votos automaticamente</button>
+              <button type="button" class="sim-btn-secundario" id="simAbrirAuto">Completar votos restantes</button>
               <button type="button" class="sim-btn-secundario hidden" id="simDesfazerAuto">Desfazer autopreenchimento</button>
             </div>
             <div class="sim-auto-opcoes hidden" id="simAutoOpcoes">
@@ -2712,10 +2723,10 @@ canvas {
     </div>
     <aside class="sim-placar" aria-label="Placar do cenário">
       <div class="sim-placar-inner">
-        <div class="sim-placar-linha"><strong id="simPlacarTitulo">Comece pelos votos válidos</strong><span id="simPlacarNumeros">0 de 0 votos</span></div>
-        <div class="sim-progresso" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
-        <p class="sim-status aviso" id="simPlacarStatus" role="status" aria-live="polite">Informe o total de votos válidos.</p>
-        <button type="button" class="sim-btn-principal" id="simCalcular" disabled>Calcular vagas e sobras</button>
+        <div class="sim-placar-linha"><strong id="simPlacarTitulo">Preencha os votos válidos para iniciar</strong><span class="hidden" id="simPlacarNumeros">0 de 0 votos</span></div>
+        <div class="sim-progresso hidden" id="simProgressoTrilha" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
+        <p class="sim-status neutro hidden" id="simPlacarStatus" role="status" aria-live="polite"></p>
+        <button type="button" class="sim-btn-principal hidden" id="simCalcular" disabled>Calcular resultado</button>
       </div>
     </aside>
   </div>
@@ -5759,9 +5770,16 @@ function renderSimulador() {
   });
   document.getElementById('simVotosValidos').value = cenario.votosValidos || '';
   const qe = simQuociente(cenario.votosValidos, config.vagas);
-  document.getElementById('simQuociente').innerHTML = qe
+  const quociente = document.getElementById('simQuociente');
+  quociente.innerHTML = qe
     ? `<strong>Quociente eleitoral estimado:</strong> ${formatarNum(qe)} votos para ${config.vagas} vagas.`
-    : 'Informe os votos válidos para ver o quociente estimado.';
+    : 'Digite a estimativa de votos válidos para continuar.';
+  quociente.classList.toggle('ok', Boolean(qe));
+  const temVotosValidos = simNumero(cenario.votosValidos) > 0;
+  const temParticipantes = cenario.itens.length > 0;
+  document.getElementById('simEtapa1Card').className = 'sim-card etapa-concluida';
+  document.getElementById('simEtapa2Card').className = `sim-card ${temVotosValidos ? 'etapa-concluida' : 'etapa-ativa'}`;
+  document.getElementById('simEtapa3Card').className = `sim-card ${temVotosValidos ? (temParticipantes ? 'etapa-concluida' : 'etapa-ativa') : 'etapa-pendente'}`;
   const lista = document.getElementById('simLista');
   const contagemChapas = new Map();
   cenario.itens.filter(item=>item.tipo==='candidato').forEach(item => {
@@ -5797,7 +5815,7 @@ function renderAutopreenchimento() {
     ? 'Seus dados manuais permanecem fixos. Você pode ajustar as candidaturas simuladas e redistribuir somente o complemento automático.'
     : `${listas.length === 1 ? 'Uma lista atingiu' : `${listas.length} listas atingiram`} o mínimo de ${config.minimoAutopreenchimento} candidaturas. O preenchimento rápido criará apenas os nomes simulados que faltam até o limite legal da lista.`;
   const abrir = document.getElementById('simAbrirAuto');
-  abrir.textContent = possuiAutomaticos ? 'Redistribuir votos restantes' : 'Completar votos automaticamente';
+  abrir.textContent = possuiAutomaticos ? 'Redistribuir votos restantes' : 'Completar votos restantes';
   abrir.disabled = !simNumero(cenario.votosValidos);
   document.getElementById('simDesfazerAuto').classList.toggle('hidden', !cenario.ultimoAutopreenchimento);
   document.getElementById('simAutoOpcoes').classList.add('hidden');
@@ -5815,15 +5833,22 @@ function renderPlacarSimulador() {
   const titulo = document.getElementById('simPlacarTitulo');
   const status = document.getElementById('simPlacarStatus');
   const calcular = document.getElementById('simCalcular');
+  const placar = document.querySelector('.sim-placar');
+  const numeros = document.getElementById('simPlacarNumeros');
+  const trilha = document.getElementById('simProgressoTrilha');
+  placar.classList.toggle('aguardando', !validos);
+  numeros.classList.toggle('hidden', !validos);
+  trilha.classList.toggle('hidden', !validos);
   calcular.disabled = true;
+  calcular.classList.add('hidden');
   if (!validos) {
-    titulo.textContent = 'Comece pelos votos válidos';
-    status.className = 'sim-status aviso';
-    status.textContent = 'Informe o total de votos válidos.';
+    titulo.textContent = 'Preencha os votos válidos para iniciar';
+    status.className = 'sim-status neutro hidden';
+    status.textContent = '';
   } else if (diferenca > 0) {
     titulo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
     status.className = 'sim-status aviso';
-    status.textContent = 'Associe os votos restantes a candidaturas, partidos ou federações. Sem isso, as vagas não podem ser calculadas corretamente.';
+    status.textContent = 'Distribua os votos restantes entre candidaturas, partidos ou federações.';
   } else if (diferenca < 0) {
     titulo.textContent = `${formatarNum(Math.abs(diferenca))} votos a mais`;
     status.className = 'sim-status erro';
@@ -5833,6 +5858,7 @@ function renderPlacarSimulador() {
     status.className = 'sim-status ok';
     status.textContent = 'Todos os votos foram distribuídos. O cálculo está liberado.';
     calcular.disabled = cenario.itens.length === 0;
+    calcular.classList.toggle('hidden', calcular.disabled);
   }
 }
 
@@ -5917,7 +5943,7 @@ function simCalcularResultado() {
     <h3>Vagas por partido ou federação</h3><ul>${resumoPartidos || '<li>Nenhuma vaga calculada.</li>'}</ul>
     <h3>Pessoas eleitas — projeção</h3><ol>${eleitos || '<li>Nenhum nome pôde ser confirmado.</li>'}</ol>
     <h3>Pessoas suplentes — projeção</h3><ul>${suplentes || '<li>Nenhuma pessoa suplente individualizada.</li>'}</ul>
-    <details class="sim-ajuda"><summary>❔ Como o resultado foi calculado?</summary><p>O simulador aplicou o quociente eleitoral, as vagas diretas, a etapa de sobras 80/20 e, depois, as sobras gerais por maiores médias. Esta é uma projeção baseada nos números informados, não um resultado oficial.</p></details>`;
+    <details class="sim-ajuda"><summary>Como o resultado foi calculado?</summary><p>O simulador aplicou o quociente eleitoral, as vagas diretas, a etapa de sobras 80/20 e, depois, as sobras gerais por maiores médias. Esta é uma projeção baseada nos números informados, não um resultado oficial.</p></details>`;
   out.querySelectorAll('[data-sim-empate]').forEach(botao => {
     botao.addEventListener('click', () => {
       const empate = resultado.empates[Number(botao.dataset.simEmpate)];
