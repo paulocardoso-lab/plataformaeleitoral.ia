@@ -16,8 +16,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- html2canvas requer internet na primeira visita; após cache do Service Worker, funciona offline -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="/runtime-config.js"></script>
 <script src="/security.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
@@ -808,7 +806,10 @@ summary:focus-visible {
   margin-top: 1px;
   color: var(--neon-cyan);
 }
-.login-info-item span { min-width: 0; }
+.login-info-item span {
+  min-width: 0;
+  text-align: center;
+}
 .login-compra .btn-enviar-link { font-weight: 600; }
 .login-ajuda-compra {
   margin-top: 8px;
@@ -1594,12 +1595,10 @@ canvas {
 }
 
 .barra-exportar {
-  padding: 8px 14px;
-  background: var(--bg-1);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: flex-end;
+  display: none;
 }
+
+#btnExportarCandidatoDetalhes { display: none; }
 
 .btn-exportar-fixo {
   background: var(--bg-2);
@@ -6064,71 +6063,7 @@ function carregarPreferenciaEstilo() {
 
 // ---------- EXPORTAR RESULTADO COMO IMAGEM ----------
 async function exportarComoImagem(elementoId, nomeArquivo) {
-  const elementoOriginal = document.getElementById(elementoId);
-  if (!elementoOriginal) return;
-  if (typeof html2canvas === 'undefined') {
-    alert('Exportação de imagem indisponível offline (sem conexão na primeira visita).');
-    return;
-  }
-
-  // Cria um container temporário fora da tela, com o card + carimbo de marca
-  const container = document.createElement('div');
-  container.style.cssText = 'position:fixed; left:-9999px; top:0; width:375px; background:var(--bg-0); padding:16px;';
-
-  const cardClone = elementoOriginal.cloneNode(true);
-  cardClone.style.margin = '0 0 16px 0';
-
-  // cloneNode() não copia o conteúdo desenhado de <canvas> (limitação do
-  // DOM) — redesenha manualmente cada canvas clonado a partir do original
-  // antes da captura, senão gráficos (ex: Ranking de Partidos) saem em branco
-  const canvasOriginais = elementoOriginal.querySelectorAll('canvas');
-  const canvasClonados = cardClone.querySelectorAll('canvas');
-  canvasOriginais.forEach((original, i) => {
-    const clone = canvasClonados[i];
-    if (!clone) return;
-    clone.width = original.width;
-    clone.height = original.height;
-    clone.getContext('2d').drawImage(original, 0, 0);
-  });
-
-  container.appendChild(cardClone);
-
-  // Carimbo de rodapé (Girassol + PE.IA juntos)
-  const carimbo = document.createElement('div');
-  carimbo.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-top:1px solid var(--border);';
-  carimbo.innerHTML = `
-    <img src="/icons/icon-32.png" alt="PE.IA" style="width:24px; height:24px;">
-    <div style="text-align:left;">
-      <div style="font-size:11px; font-weight:700; color:var(--text-light); font-family:'Playfair Display', serif;">Girassol Inteligência · PE.IA</div>
-      <div style="font-size:9px; color:var(--text-muted);">Fonte: TSE · plataformaeleitoral.ia.br</div>
-    </div>
-  `;
-  container.appendChild(carimbo);
-
-  document.body.appendChild(container);
-
-  try {
-    const canvas = await html2canvas(container, {
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-0').trim(),
-      scale: 2
-    });
-
-    canvas.toBlob(async (blob) => {
-      const arquivo = new File([blob], `${nomeArquivo}.png`, { type: 'image/png' });
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-        await navigator.share({ files: [arquivo], title: nomeArquivo });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${nomeArquivo}.png`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    }, 'image/png');
-  } finally {
-    document.body.removeChild(container);
-  }
+  return false;
 }
 
 // ---------- SERVICE WORKER: registro e detecção de atualização ----------
