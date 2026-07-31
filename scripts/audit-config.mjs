@@ -54,7 +54,8 @@ assert(
   'assinatura da Girassol deve abrir o acesso tester recolhido'
 );
 assert(!index.includes('<summary>Acesso temporário para testers</summary>'), 'rótulo tester antigo não deve permanecer visível');
-assert(index.includes('/icons/logo-plataforma-eleitoral.webp'), 'nova logomarca WebP da plataforma não encontrada');
+assert(index.includes('/icons/logopeia.png') && index.includes('/icons/logopeia-topbar.png'),
+  'logomarcas originais do login e do cabeçalho devem permanecer ativas');
 assert(index.includes('/icons/girassol-inteligencia.png'), 'logomarca da Girassol no acesso tester não encontrada');
 assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');

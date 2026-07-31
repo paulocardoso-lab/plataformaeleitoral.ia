@@ -2,6 +2,11 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.4.8 — 31/07/2026
+
+- Logomarca original anterior restaurada também na tela de login.
+- Assinatura discreta da Girassol e sua função tester preservadas.
+
 ## 1.4.7 — 31/07/2026
 
 - Acesso tester reposicionado como assinatura institucional discreta no fim do cartão de login.
