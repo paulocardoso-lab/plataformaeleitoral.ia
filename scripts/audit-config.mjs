@@ -51,12 +51,13 @@ assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis nã
 assert(index.includes('class="login-shell"'), 'estrutura mobile-first do login não encontrada');
 assert(
   /<details class="acesso-secundario tester-detalhes">\s*<summary class="tester-assinatura"[^>]*>[\s\S]*?Desenvolvido por Girassol Inteligência[\s\S]*?<\/summary>/.test(index),
-  'assinatura da Girassol deve abrir o acesso tester recolhido'
+  'assinatura da Girassol deve abrir o modo admin recolhido'
 );
-assert(!index.includes('<summary>Acesso temporário para testers</summary>'), 'rótulo tester antigo não deve permanecer visível');
+assert(!index.includes('Entrar como tester') && !index.includes('Sessões tester') && !index.includes('Acesso temporário para testers'),
+  'terminologia tester não deve permanecer visível na interface');
 assert(index.includes('/icons/logopeia.png') && index.includes('/icons/logopeia-topbar.png'),
   'logomarcas originais do login e do cabeçalho devem permanecer ativas');
-assert(index.includes('/icons/girassol-inteligencia.png'), 'logomarca da Girassol no acesso tester não encontrada');
+assert(index.includes('/icons/girassol-inteligencia.png'), 'logomarca da Girassol no modo admin não encontrada');
 assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
 assert(!index.includes("evento === 'SIGNED_IN' || evento === 'SIGNED_OUT'"),
@@ -106,6 +107,9 @@ assert(testerFunction.includes(".eq('ip_hash',ipHash)"), 'rate limit deve ser ap
 assert(testerFunction.includes('MASTER_PATTERN.test(password)'), 'senha master deve ser validada no servidor');
 const adminFunction = read('supabase/functions/admin-access/index.ts');
 assert(adminFunction.includes("from('administradores')"), 'API administrativa deve validar allowlist');
+assert(adminFunction.includes("client.rpc('validar_sessao'"), 'API administrativa deve validar a sessão master no servidor');
+assert(adminFunction.includes("validation?.tipo!=='tester'"), 'API administrativa deve restringir a sessão master ao tipo interno esperado');
+assert(adminFunction.includes("req.headers.get('x-device-id')"), 'API administrativa deve vincular o modo admin ao dispositivo');
 assert(adminFunction.includes("from('auditoria_administrativa')"), 'API administrativa deve registrar auditoria');
 assert(adminFunction.includes("action==='rotate_master'"), 'API administrativa deve permitir rotação segura');
 

@@ -9,12 +9,12 @@ Produção: `https://plataformaeleitoral.ia.br`
 
 - Auditoria estática de endpoints, versões, cache e segredos.
 - Health check de produção: 20 verificações.
-- Sessão tester emitida com validade de 90 dias.
+- Sessão do Modo admin emitida com validade de 90 dias.
 - Dataset autorizado: `200`, versão `tse-ms-2010-2024-v1`.
-- Revogação da sessão tester: acesso posterior retorna `401`.
+- Revogação da sessão administrativa: acesso posterior retorna `401`.
 - Administração sem autenticação: `403`.
 - Origem externa nas Edge Functions: `403`.
-- Rate limit tester: bloqueio por IP e dispositivo.
+- Rate limit do Modo admin: bloqueio por IP e dispositivo.
 - Desktop 1280 px: sem overflow horizontal.
 - Mobile 390 × 844: sem overflow horizontal.
 - Runtime config e versão em estratégia network-first.
@@ -36,5 +36,5 @@ Antes de usar ações administrativas em rotina:
 5. Confirmar os dois eventos na auditoria.
 6. Gerar uma sugestão de master sem confirmar a rotação.
 
-Essa ressalva não afeta o acesso tester, o dataset nem o bloqueio da API
+Essa ressalva não afeta o Modo admin, o dataset nem o bloqueio da API
 administrativa para usuários não autorizados.

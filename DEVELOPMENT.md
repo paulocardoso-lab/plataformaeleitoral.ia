@@ -118,14 +118,14 @@ supabase functions deploy dataset \
 O arquivo `dataset*.b64` é ignorado pelo Git. Nunca volte a incorporá-lo ao
 HTML ou a uma função versionada.
 
-## Histórico: autenticação e acesso tester — versão interna 2.9+
+## Histórico: autenticação e Modo admin — versão interna 2.9+
 
 - Clientes entram por link mágico e vinculam o código à sua conta.
 - Sessões opacas 2.8 foram revogadas e não possuem caminho de migração.
 - A senha master existe somente como hash em configuração privada; o secret
   anterior permanece apenas como fallback operacional.
 - Cinco falhas em 15 minutos bloqueiam temporariamente o IP e o dispositivo.
-- Sessões tester expiram definitivamente após 90 dias.
+- Sessões administrativas por senha master expiram definitivamente após 90 dias.
 
 Para rotacionar a master, use o painel administrativo. Nunca grave a senha ou
 o hash no repositório.

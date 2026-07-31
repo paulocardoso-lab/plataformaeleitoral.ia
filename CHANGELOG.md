@@ -2,6 +2,13 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.5.0 — 31/07/2026
+
+- Acesso por senha master renomeado para “Modo admin” em toda a interface.
+- Engrenagem administrativa liberada somente após validação da sessão master no servidor.
+- API administrativa passa a aceitar tanto a sessão master válida quanto a conta administrativa autorizada.
+- Sessões do painel renomeadas para “Sessões administrativas”.
+
 ## 1.4.8 — 31/07/2026
 
 - Logomarca original anterior restaurada também na tela de login.

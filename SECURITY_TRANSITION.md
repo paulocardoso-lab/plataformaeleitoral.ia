@@ -22,14 +22,14 @@ offline é criado explicitamente no dispositivo autorizado e apagado no logout.
 
 O device ID continua sendo um identificador controlado pelo cliente. A próxima
 evolução de identidade foi iniciada na versão 2.9 com Supabase Auth por link
-mágico. O device ID permanece somente no caminho tester e no legado temporário.
+mágico. O device ID permanece somente no Modo admin e no legado temporário.
 
 ## Modelo híbrido 2.9
 
 - `auth.users` + `licencas`: acesso principal, recuperável em mobile e desktop.
-- `tester-access`: valida a master por hash constante, aplica rate limit e emite
+- `tester-access` (nome técnico legado): valida a master por hash constante, aplica rate limit e emite
   sessão com validade máxima de 90 dias.
-- O dataset aceita somente JWT de usuário licenciado ou token tester válido.
+- O dataset aceita somente JWT de usuário licenciado ou token administrativo válido.
 - Sessões legadas 2.8 foram revogadas e a RPC anônima antiga foi removida.
 
 ## Ordem obrigatória de implantação

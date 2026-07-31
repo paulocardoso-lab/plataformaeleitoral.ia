@@ -73,8 +73,8 @@ Na versão 2.8+, o dataset não está mais no HTML público. A Edge Function
 `dataset` valida a sessão antes de cada download e nenhuma cópia privada é
 mantida para autorização offline.
 
-Na versão 2.9 há somente dois acessos: link mágico por e-mail para clientes e senha
-master para testers. A senha master emite sessão revogável de 90 dias; seu
+Na versão 2.9 há somente dois acessos: link mágico por e-mail para clientes e
+Modo admin por senha master. A senha master emite sessão administrativa revogável de 90 dias; seu
 hash fica em configuração privada e a rotação ocorre pelo painel administrativo.
 
 Procedimentos de operação, incidente e rollback estão em

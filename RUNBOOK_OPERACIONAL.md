@@ -47,7 +47,7 @@ A senha não deve ser enviada por e-mail comum nem incluída no repositório.
 
 1. Revogue a licença ou sessão afetada no painel.
 2. Em caso de exposição da master, rotacione-a e revogue todas as sessões
-   tester.
+   administrativas.
 3. Consulte `auditoria_administrativa` e logs das Edge Functions.
 4. Preserve horários, IDs e evidências sem copiar tokens.
 5. Registre causa, alcance, contenção e prevenção.

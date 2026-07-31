@@ -9,7 +9,7 @@ const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 const cors = (origin:string|null) => ({
   'Access-Control-Allow-Origin': origin && origins.has(origin) ? origin : 'https://plataformaeleitoral.ia.br',
-  'Access-Control-Allow-Headers': 'authorization,apikey,content-type',
+  'Access-Control-Allow-Headers': 'authorization,apikey,content-type,x-device-id',
   'Access-Control-Allow-Methods': 'POST,OPTIONS',
   'Vary': 'Origin'
 });
@@ -29,10 +29,18 @@ async function authorize(req:Request) {
   if(!token) return null;
   const {data,error}=await client.auth.getUser(token);
   const email=data.user?.email?.toLowerCase();
-  if(error||!email) return null;
-  const {data:admin}=await client.from('administradores').select('email')
-    .eq('email',email).eq('ativo',true).maybeSingle();
-  return admin ? {email,userId:data.user!.id} : null;
+  if(!error&&email) {
+    const {data:admin}=await client.from('administradores').select('email')
+      .eq('email',email).eq('ativo',true).maybeSingle();
+    if(admin) return {email,userId:data.user!.id,modo:'conta'};
+  }
+  const deviceId=req.headers.get('x-device-id')||'';
+  if(!/^[a-f0-9]{64}$/i.test(token)||deviceId.length<16) return null;
+  const {data:validation,error:validationError}=await client.rpc('validar_sessao',{
+    p_token:token,p_device_id:deviceId
+  });
+  if(validationError||validation?.valida!==true||validation?.tipo!=='tester') return null;
+  return {email:'Modo admin',userId:null,modo:'master'};
 }
 async function audit(email:string,acao:string,tipo:string,id?:string,detalhes:Record<string,unknown>={}) {
   await client.from('auditoria_administrativa').insert({
