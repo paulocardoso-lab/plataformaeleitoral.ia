@@ -2007,6 +2007,9 @@ canvas {
 }
 
 /* ===== SIMULADOR DE VAGAS 2026 ===== */
+.simulador-wrap .hidden,
+.sim-placar.hidden,
+.sim-placar .hidden { display: none !important; }
 .simulador-wrap { max-width: 680px; margin: 0 auto; padding: 12px 10px 24px; }
 .simulador-intro { margin: 0 0 12px; color: var(--text-muted); font-size: .875rem; line-height: 1.5; }
 .sim-card { position: relative; margin: 0 0 12px; padding: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; transition: border-color .2s ease, opacity .2s ease; }
@@ -2059,9 +2062,15 @@ canvas {
 .sim-auto-opcoes p { margin: 0; color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
 .sim-auto-previa ul { margin: 8px 0 0; padding-left: 20px; }
 .sim-auto-previa li { margin-bottom: 5px; font-size: .8125rem; line-height: 1.4; }
-.sim-placar { flex-shrink: 0; padding: 9px 12px; border-top: 1px solid var(--border); background: var(--bg-1); box-shadow: 0 -4px 14px rgba(0,0,0,.2); }
-.sim-placar.aguardando { padding-top: 8px; padding-bottom: 8px; }
+.sim-placar { flex-shrink: 0; padding: 8px 12px; border-top: 1px solid var(--border); background: var(--bg-1); box-shadow: 0 -4px 14px rgba(0,0,0,.2); }
 .sim-placar-inner { max-width: 680px; margin: 0 auto; }
+.sim-placar-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-2); color: var(--text-light); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+.sim-placar-toggle:hover, .sim-placar-toggle:focus-visible { border-color: var(--text-muted); }
+.sim-placar-toggle.completo { border-color: transparent; background: var(--neon-cyan); color: #06101b; }
+.sim-placar-toggle.erro { border-color: #ff8b8b; color: #ffb0b0; }
+.sim-placar-toggle-icone { flex: 0 0 auto; font-size: 1.25rem; line-height: 1; transition: transform .2s ease; }
+.sim-placar-toggle[aria-expanded="true"] .sim-placar-toggle-icone { transform: rotate(90deg); }
+.sim-placar-painel { padding: 10px 4px 2px; }
 .sim-placar-linha { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .sim-placar-linha strong { font-size: 1rem; }
 .sim-placar-linha span { color: var(--text-muted); font-size: .8125rem; text-align: right; }
@@ -2721,12 +2730,18 @@ canvas {
         </section>
       </div>
     </div>
-    <aside class="sim-placar" aria-label="Placar do cenário">
+    <aside class="sim-placar hidden" aria-label="Resumo do cenário">
       <div class="sim-placar-inner">
-        <div class="sim-placar-linha"><strong id="simPlacarTitulo">Preencha os votos válidos para iniciar</strong><span class="hidden" id="simPlacarNumeros">0 de 0 votos</span></div>
-        <div class="sim-progresso hidden" id="simProgressoTrilha" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
-        <p class="sim-status neutro hidden" id="simPlacarStatus" role="status" aria-live="polite"></p>
-        <button type="button" class="sim-btn-principal hidden" id="simCalcular" disabled>Calcular resultado</button>
+        <button type="button" class="sim-placar-toggle" id="simPlacarToggle" aria-expanded="false" aria-controls="simPlacarPainel">
+          <span id="simPlacarResumo">Acompanhar cenário</span>
+          <span class="sim-placar-toggle-icone" aria-hidden="true">›</span>
+        </button>
+        <div class="sim-placar-painel hidden" id="simPlacarPainel">
+          <div class="sim-placar-linha"><strong id="simPlacarTitulo">Resumo do cenário</strong><span id="simPlacarNumeros">0 de 0 votos</span></div>
+          <div class="sim-progresso" id="simProgressoTrilha" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
+          <p class="sim-status neutro" id="simPlacarStatus" role="status" aria-live="polite"></p>
+          <button type="button" class="sim-btn-principal hidden" id="simCalcular" disabled>Calcular resultado</button>
+        </div>
       </div>
     </aside>
   </div>
@@ -5322,6 +5337,7 @@ function initSimulador() {
     document.getElementById('simAutoCancelar').addEventListener('click', simCancelarAutopreenchimento);
     document.getElementById('simDesfazerAuto').addEventListener('click', simDesfazerAutopreenchimento);
     document.getElementById('simCalcular').addEventListener('click', simCalcularResultado);
+    document.getElementById('simPlacarToggle').addEventListener('click', simAlternarPlacar);
     document.addEventListener('click', evento => {
       if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
       if (!evento.target.closest('#simPartido, #simPartidoSugestoes')) simFecharOrganizacoes();
@@ -5834,32 +5850,54 @@ function renderPlacarSimulador() {
   const status = document.getElementById('simPlacarStatus');
   const calcular = document.getElementById('simCalcular');
   const placar = document.querySelector('.sim-placar');
-  const numeros = document.getElementById('simPlacarNumeros');
-  const trilha = document.getElementById('simProgressoTrilha');
-  placar.classList.toggle('aguardando', !validos);
-  numeros.classList.toggle('hidden', !validos);
-  trilha.classList.toggle('hidden', !validos);
+  const toggle = document.getElementById('simPlacarToggle');
+  const resumo = document.getElementById('simPlacarResumo');
+  const painel = document.getElementById('simPlacarPainel');
+  placar.classList.toggle('hidden', !validos);
   calcular.disabled = true;
   calcular.classList.add('hidden');
+  toggle.className = 'sim-placar-toggle';
   if (!validos) {
-    titulo.textContent = 'Preencha os votos válidos para iniciar';
+    resumo.textContent = 'Acompanhar cenário';
+    titulo.textContent = 'Resumo do cenário';
     status.className = 'sim-status neutro hidden';
     status.textContent = '';
+    painel.classList.add('hidden');
+    toggle.setAttribute('aria-expanded', 'false');
   } else if (diferenca > 0) {
+    resumo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
     titulo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
     status.className = 'sim-status aviso';
     status.textContent = 'Distribua os votos restantes entre candidaturas, partidos ou federações.';
   } else if (diferenca < 0) {
+    resumo.textContent = `${formatarNum(Math.abs(diferenca))} votos acima do total — Corrigir`;
+    toggle.classList.add('erro');
     titulo.textContent = `${formatarNum(Math.abs(diferenca))} votos a mais`;
     status.className = 'sim-status erro';
     status.textContent = 'A soma ultrapassou os votos válidos. Reduza as estimativas ou corrija o total de votos válidos.';
   } else {
+    resumo.textContent = 'Cenário completo — Calcular resultado';
+    toggle.classList.add('completo');
     titulo.textContent = 'Cenário completo';
     status.className = 'sim-status ok';
     status.textContent = 'Todos os votos foram distribuídos. O cálculo está liberado.';
     calcular.disabled = cenario.itens.length === 0;
-    calcular.classList.toggle('hidden', calcular.disabled);
+    painel.classList.add('hidden');
+    toggle.setAttribute('aria-expanded', 'false');
   }
+}
+
+function simAlternarPlacar() {
+  const calcular = document.getElementById('simCalcular');
+  if (!calcular.disabled) {
+    simCalcularResultado();
+    return;
+  }
+  const toggle = document.getElementById('simPlacarToggle');
+  const painel = document.getElementById('simPlacarPainel');
+  const abrir = painel.classList.contains('hidden');
+  painel.classList.toggle('hidden', !abrir);
+  toggle.setAttribute('aria-expanded', String(abrir));
 }
 
 function calcularVagasSimulador(cenario, cargo) {
