@@ -127,6 +127,18 @@ assert(/\.tester-detalhes\s*>\s*\.tester-assinatura\s*\{[\s\S]*?min-height:\s*au
 assert(/\.tester-assinatura-conteudo\s*\{[\s\S]*?grid-template-columns:\s*1fr auto 1fr/.test(html)
   && /\.tester-assinatura-texto\s*\{[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\s\S]*?font-size:\s*clamp\(7px,\s*2vw,\s*9px\)/.test(html),
   'Assinatura tester deve repetir a formatação institucional da aplicação.');
+assert(/#tela-sobre \.sec-titulo,[\s\S]*?color:\s*var\(--neon-yellow\)[\s\S]*?background:\s*none/.test(html),
+  'Tela Sobre deve usar títulos amarelos sólidos, sem degradê.');
+assert(/#tela-sobre \.sobre-p,[\s\S]*?#tela-sobre \.sobre-p b\s*\{[\s\S]*?color:\s*var\(--text-light\)/.test(html),
+  'Textos da tela Sobre devem permanecer brancos.');
+assert(/href="https:\/\/girassolinteligencia\.com\.br"[^>]+target="_blank"[^>]+rel="noopener noreferrer"/.test(html),
+  'Link externo oficial da Girassol Inteligência ausente ou inseguro.');
+assert(/<img src="\/icons\/girassol-inteligencia\.png"[^>]+class="sobre-girassol-logo"/.test(html),
+  'Logomarca oficial da Girassol Inteligência ausente na tela Sobre.');
+assert(/id="btnCompartilharPlataforma"/.test(html) && html.includes('https://pay.kiwify.com.br/411alXg'),
+  'Compartilhamento do link comercial não está configurado na tela Sobre.');
+assert(html.includes('navigator.share(dados)') && html.includes('navigator.clipboard.writeText(url)'),
+  'Compartilhamento deve oferecer API nativa e cópia como alternativa.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');

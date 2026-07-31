@@ -2,6 +2,12 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.5.2 — 31/07/2026
+
+- Tela “Sobre” simplificada para textos brancos e destaques amarelos, sem degradês.
+- Assinatura oficial e link ativo da Girassol Inteligência adicionados ao encerramento da tela.
+- Botão de compartilhamento do link comercial com suporte nativo no celular e cópia no desktop.
+
 ## 1.5.1 — 31/07/2026
 
 - Reconhecimento de voz encerrado imediatamente após a transcrição final ou a seleção de um resultado.
