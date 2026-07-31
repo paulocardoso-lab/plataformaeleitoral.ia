@@ -26,6 +26,9 @@ jobs:
           node --check scripts/audit-accessibility.mjs
           node --check scripts/healthcheck-production.mjs
           node --check scripts/test-election-features.mjs
+          node --check scripts/test-seat-simulator.mjs
+          node --check scripts/test-security-rendering.mjs
+          node --check scripts/smoke-authenticated.mjs
           test ! -f dataset_v2.b64
       - name: Audit endpoints, versions and cache
         run: node scripts/audit-config.mjs
@@ -33,3 +36,7 @@ jobs:
         run: node scripts/audit-accessibility.mjs
       - name: Test election rendering rules
         run: node scripts/test-election-features.mjs
+      - name: Test seat simulator
+        run: node scripts/test-seat-simulator.mjs
+      - name: Test safe dynamic rendering
+        run: node scripts/test-security-rendering.mjs

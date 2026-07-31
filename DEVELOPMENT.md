@@ -34,7 +34,9 @@
 --text-muted: #a0a0a0   /* texto secundário */
 ```
 
-## As 9 telas
+## Módulos da aplicação
+
+A lista original de nove telas foi ampliada. A navegação atual também inclui o Simulador de Vagas 2026 e a seleção por tipo de eleição.
 
 1. **Buscar Candidato** — busca por nome, mostra votos/ano/cargo
 2. **Ranking Geral** — top 30 por cargo/ano/município
@@ -90,7 +92,7 @@ Quando tiver novos dados TSE:
 
 5. Vercel deployer em ~30s
 
-## Deploy da versão 2.7
+## Histórico: deploy da versão interna 2.7
 
 Esta versão depende das RPCs de sessão. Aplique primeiro, nesta ordem:
 
@@ -101,7 +103,7 @@ Esta versão depende das RPCs de sessão. Aplique primeiro, nesta ordem:
 Não publique o frontend 2.7 antes das migrations. Consulte
 `SECURITY_TRANSITION.md` para backup, testes e rollback.
 
-## Dataset privado — versão 2.8+
+## Histórico: dataset privado — versão interna 2.8+
 
 ```bash
 supabase storage cp dataset_v2.b64 \
@@ -116,7 +118,7 @@ supabase functions deploy dataset \
 O arquivo `dataset*.b64` é ignorado pelo Git. Nunca volte a incorporá-lo ao
 HTML ou a uma função versionada.
 
-## Auth e acesso tester — versão 2.9+
+## Histórico: autenticação e acesso tester — versão interna 2.9+
 
 - Clientes entram por link mágico e vinculam o código à sua conta.
 - Sessões opacas 2.8 foram revogadas e não possuem caminho de migração.

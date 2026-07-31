@@ -1,6 +1,6 @@
-# PE26 Eleitoral — Eleições MS 2010–2024
+# PE.IA — Plataforma Eleitoral Inteligente
 
-PWA com resultados eleitorais protegidos dos 79 municípios de Mato Grosso do Sul.
+Plataforma mobile-first com dados eleitorais protegidos desde 2010 e indicadores socioeconômicos de Mato Grosso do Sul.
 
 **Desenvolvido por**: Girassol Inteligência  
 **URL ao vivo**: https://plataformaeleitoral.ia.br  
@@ -38,7 +38,7 @@ Fluxo:
 - **Neon premium**: preto profundo + verde, ciano, magenta, amarelo
 - **Tipografia**: Playfair Display (títulos) + Inter (corpo)
 - **Ícones**: SVG stroke vetorial, sem emojis
-- **9 telas**: busca candidato, ranking, município, comparação, evolução, partidos, prefeito, presidente, sobre
+- **11 módulos**: perfil eleitoral, ranking, município, comparação, evolução, partidos, eleições municipais, eleições gerais, panorama, simulador e seleção por eleição
 
 ## Dados
 
@@ -63,6 +63,8 @@ cada 30 minutos.
 
 ## Sessão de acesso
 
+Estado atual: autenticação e carregamento do dataset protegido exigem internet. O Service Worker mantém somente a estrutura pública e os recursos estáticos da aplicação; o dataset não é persistido para autorização offline.
+
 A partir da versão 2.7, a ativação retorna um token opaco. O Supabase armazena
 somente o hash do token e revalida a sessão no boot. As migrations devem ser
 aplicadas antes do deploy do frontend; veja `SECURITY_TRANSITION.md`.
@@ -77,6 +79,18 @@ hash fica em configuração privada e a rotação ocorre pelo painel administrat
 
 Procedimentos de operação, incidente e rollback estão em
 [`RUNBOOK_OPERACIONAL.md`](RUNBOOK_OPERACIONAL.md).
+
+Correções e alterações técnicas são registradas em [`CHANGELOG.md`](CHANGELOG.md). O campo “Sobre” apresenta somente os grandes marcos públicos da plataforma.
+
+## Verificação autenticada
+
+O smoke test usa uma credencial fornecida apenas no ambiente e revoga a sessão criada ao terminar:
+
+```powershell
+$env:PEIA_TESTER_MASTER='senha-fornecida-fora-do-repositorio'
+node scripts/smoke-authenticated.mjs
+Remove-Item Env:PEIA_TESTER_MASTER
+```
 
 ---
 Desenvolvido em 2026 · Girassol Inteligência

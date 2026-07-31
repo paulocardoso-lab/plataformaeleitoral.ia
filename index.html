@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Eleições MS">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0e27">
-<meta name="description" content="Resultados eleitorais dos 79 municípios de Mato Grosso do Sul, 2010 a 2024. Dados oficiais do TSE.">
+<meta name="description" content="Dados eleitorais desde 2010 e indicadores socioeconômicos de Mato Grosso do Sul, com informações oficiais e ferramentas de análise.">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16.png">
@@ -19,6 +19,7 @@
 <!-- html2canvas requer internet na primeira visita; após cache do Service Worker, funciona offline -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="/runtime-config.js"></script>
+<script src="/security.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
 <title>Plataforma Eleitoral Inteligente</title>
 <style>
@@ -246,6 +247,14 @@ html, body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+html:not([data-estilo="aeroporto"]) .home-hero h1 {
+  color: var(--text-light);
+  background: none;
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  background-clip: border-box;
 }
 
 .home-hero p {
@@ -771,7 +780,7 @@ summary:focus-visible {
 .senha-wrap { position:relative; }
 .senha-wrap #testerPassword { padding-right:72px; }
 .senha-toggle {
-  position:absolute; right:7px; top:7px; width:58px; height:38px;
+  position:absolute; right:4px; top:4px; width:64px; height:44px;
   border:0; border-radius:9px; background:transparent; color:var(--neon-cyan);
   font-size:.72rem; font-weight:700; cursor:pointer;
 }
@@ -1131,7 +1140,7 @@ canvas {
 }
 
 .sobre-p {
-  font-size: 0.78125rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: var(--text-light);
   margin: 0 14px 12px;
@@ -1197,6 +1206,11 @@ canvas {
   min-width: 0;
   flex-shrink: 1;
   justify-content: center;
+  order: 2;
+  width: 100%;
+  margin-top: 1px;
+  opacity: .72;
+  overflow: visible;
 }
 
 .rodape-acoes {
@@ -1207,24 +1221,26 @@ canvas {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+  order: 1;
 }
 
 .rodape-logo {
-  width: 20px;
-  height: 20px;
+  width: clamp(14px, 4vw, 18px);
+  height: clamp(14px, 4vw, 18px);
   object-fit: contain;
   opacity: 0.85;
   flex-shrink: 0;
 }
 
 .rodape-texto {
-  font-size: 13px;
+  font-size: clamp(8px, 2.8vw, 11px) !important;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.3px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
+  flex-shrink: 1;
 }
 
 .rodape-versao {
@@ -1263,6 +1279,38 @@ canvas {
   font-weight: 700;
   font-size: 0.8125rem;
   cursor: pointer;
+  min-height: 44px;
+}
+
+@media (max-width: 600px) {
+  #bannerAtualizacao.visivel {
+    display: grid;
+  }
+
+  #bannerAtualizacao {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    z-index: 10000;
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-content: stretch;
+    gap: 10px;
+    padding: 12px;
+    border: 2px solid var(--bg-0);
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    text-align: left;
+  }
+
+  #bannerAtualizacao span {
+    align-self: center;
+    line-height: 1.35;
+  }
+
+  #bannerAtualizacao button {
+    padding-inline: 16px;
+  }
 }
 
 @keyframes slideUp {
@@ -1356,6 +1404,28 @@ canvas {
   width: 18px;
   height: 18px;
 }
+
+.sobre-lista {
+  margin: 0 14px 14px;
+  padding-left: 22px;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.sobre-lista li { margin-bottom: 5px; }
+.sobre-meta { margin: 0 14px 14px; }
+.sobre-meta > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--border);
+}
+.sobre-meta dt { color: var(--text-muted); font-size: 0.8125rem; }
+.sobre-meta dd { margin: 0; color: var(--text-light); font-size: 0.8125rem; font-weight: 700; overflow-wrap: anywhere; }
+.sobre-historico-interno { margin: 0 14px 16px; border-top: 1px solid var(--border); }
+.sobre-historico-interno summary { min-height: 44px; display: flex; align-items: center; color: var(--neon-cyan); font-size: 0.8125rem; font-weight: 700; cursor: pointer; }
+.sobre-historico-interno p { margin: 0 0 12px; color: var(--text-muted); font-size: 0.8125rem; line-height: 1.5; }
 
 .btn-ver-detalhes {
   min-height: 44px;
@@ -1558,10 +1628,6 @@ canvas {
   .filtro-linha {
     flex-direction: row;
   }
-  .rodape-fixo {
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
   .rodape-acoes {
     width: auto;
     flex-wrap: nowrap;
@@ -1579,6 +1645,72 @@ canvas {
     margin-right: auto;
     max-width: 600px;
   }
+}
+
+/* ===== SIMULADOR DE VAGAS 2026 ===== */
+.simulador-wrap { max-width: 680px; margin: 0 auto; padding: 12px 10px 24px; }
+.simulador-intro { margin: 0 0 12px; color: var(--text-muted); font-size: .875rem; line-height: 1.5; }
+.sim-card { margin: 0 0 12px; padding: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
+.sim-card h2 { margin: 0 0 5px; color: var(--text-light); font-size: 1.125rem; }
+.sim-card-sub { margin: 0 0 14px; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
+.sim-ajuda { margin: 10px 0 0; border-top: 1px solid var(--border); }
+.sim-ajuda summary { display: flex; align-items: center; min-height: 44px; color: var(--neon-cyan); cursor: pointer; font-size: .875rem; font-weight: 700; }
+.sim-ajuda p { margin: 0 0 12px; color: var(--text-light); font-size: .8125rem; line-height: 1.55; }
+.sim-cargos { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.sim-cargo { min-height: 64px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg-1); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
+.sim-cargo strong, .sim-cargo span { display: block; }
+.sim-cargo span { margin-top: 3px; color: var(--text-muted); font-size: .8125rem; }
+.sim-cargo.ativo { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,217,255,.16); }
+.sim-campo { margin-top: 12px; }
+.sim-campo label { display: block; margin-bottom: 6px; color: var(--neon-green); font-size: .8125rem; font-weight: 700; }
+.sim-campo input, .sim-campo select { min-height: 54px; width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; }
+.sim-campo input[type="number"] { appearance: textfield; background: var(--bg-1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-light); font-family: var(--font-corpo); }
+.sim-campo input[type="number"]::-webkit-inner-spin-button { appearance: none; }
+.sim-form-acoes { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 14px; }
+.sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
+.sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
+.sim-btn-principal:disabled { cursor: not-allowed; opacity: .5; }
+.sim-btn-secundario { border: 1px solid var(--neon-cyan); background: transparent; color: var(--neon-cyan); padding: 10px 14px; }
+.sim-btn-remover { width: 44px; min-width: 44px; border: 1px solid var(--border); background: transparent; color: var(--text-light); }
+.sim-sugestoes { margin-top: 5px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.sim-sugestoes button { display: block; width: 100%; min-height: 48px; padding: 9px 11px; border: 0; border-bottom: 1px solid var(--border); background: var(--bg-1); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
+.sim-sugestoes button:last-child { border-bottom: 0; }
+.sim-sugestoes small { display: block; color: var(--text-muted); margin-top: 2px; }
+.sim-selecionado { margin-top: 8px; padding: 9px 11px; border-left: 3px solid var(--neon-green); background: rgba(0,255,65,.06); font-size: .8125rem; line-height: 1.45; }
+.sim-lista { margin-top: 14px; }
+.sim-item { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 11px 0; border-top: 1px solid var(--border); }
+.sim-item-nome { color: var(--text-light); font-weight: 700; overflow-wrap: anywhere; }
+.sim-item-meta { margin-top: 3px; color: var(--text-muted); font-size: .8125rem; line-height: 1.4; }
+.sim-item-votos { color: var(--neon-yellow); font-weight: 800; }
+.sim-item-edicao { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: end; margin-top: 8px; }
+.sim-item-edicao label { color: var(--text-muted); font-size: .75rem; }
+.sim-item-edicao input { width: 100%; min-height: 46px; box-sizing: border-box; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-1); color: var(--text-light); font-size: 1rem; }
+.sim-origem-votos { display: inline-block; margin-top: 5px; color: var(--neon-cyan); font-size: .75rem; font-weight: 700; }
+.sim-auto { margin-top: 14px; padding: 12px; border: 1px solid rgba(0,217,255,.35); border-radius: 10px; background: rgba(0,217,255,.05); }
+.sim-auto h3 { margin: 0 0 5px; color: var(--neon-cyan); font-size: 1rem; }
+.sim-auto-opcoes, .sim-auto-previa { margin-top: 12px; }
+.sim-auto-opcoes p { margin: 0; color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
+.sim-auto-previa ul { margin: 8px 0 0; padding-left: 20px; }
+.sim-auto-previa li { margin-bottom: 5px; font-size: .8125rem; line-height: 1.4; }
+.sim-placar { flex-shrink: 0; padding: 10px 12px; border-top: 2px solid var(--border); background: var(--bg-1); box-shadow: 0 -8px 24px rgba(0,0,0,.35); }
+.sim-placar-inner { max-width: 680px; margin: 0 auto; }
+.sim-placar-linha { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.sim-placar-linha strong { font-size: 1rem; }
+.sim-placar-linha span { color: var(--text-muted); font-size: .8125rem; text-align: right; }
+.sim-progresso { height: 9px; margin: 8px 0; overflow: hidden; border-radius: 99px; background: var(--border); }
+.sim-progresso > span { display: block; height: 100%; max-width: 100%; background: var(--neon-cyan); transition: width .2s ease; }
+.sim-status { margin: 0 0 8px; font-size: .8125rem; line-height: 1.4; }
+.sim-status.ok { color: var(--neon-green); }
+.sim-status.aviso { color: var(--neon-yellow); }
+.sim-status.erro { color: #ff8b8b; }
+.sim-resultado { margin-top: 12px; }
+.sim-resultado h3 { margin: 15px 0 6px; color: var(--neon-cyan); font-size: 1rem; }
+.sim-resultado ol, .sim-resultado ul { margin: 0; padding-left: 22px; }
+.sim-resultado li { margin-bottom: 8px; line-height: 1.45; }
+.sim-aviso { padding: 10px; border: 1px solid rgba(255,214,10,.4); border-radius: 8px; background: rgba(255,214,10,.07); color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
+@media (min-width: 520px) {
+  .sim-cargos { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .sim-form-acoes { grid-template-columns: 1fr 1fr; }
 }
 
 #adminModal {
@@ -1691,7 +1823,7 @@ canvas {
 <div id="conectividadeStatus" class="hidden" role="status" aria-live="polite">Sem conexão. Os dados protegidos exigem internet.</div>
 <div id="bannerAtualizacao" role="status" aria-live="polite">
   <span>Nova versão disponível</span>
-  <button onclick="aplicarAtualizacao()">Atualizar</button>
+  <button type="button" id="btnAplicarAtualizacao">Atualizar</button>
 </div>
 
 <!-- TELA DE ATIVAÇÃO (bloqueia o app até validar um código de acesso) -->
@@ -1711,7 +1843,7 @@ canvas {
                  inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
           <small class="login-ajuda">Use o mesmo e-mail informado na aquisição do acesso.</small>
         </div>
-        <button id="btnEnviarLink" onclick="enviarLinkMagico()">Enviar link de acesso</button>
+        <button id="btnEnviarLink">Enviar link de acesso</button>
       </section>
 
       <details class="acesso-secundario" id="acessoPorCodigo">
@@ -1724,7 +1856,7 @@ canvas {
                    autocapitalize="characters" autocomplete="off" spellcheck="false">
             <small class="login-ajuda">Abra primeiro o link enviado ao seu e-mail e depois informe o código.</small>
           </div>
-          <button id="btnAtivar" onclick="ativarAcesso()">Ativar acesso</button>
+          <button id="btnAtivar">Ativar acesso</button>
         </section>
       </details>
 
@@ -1740,12 +1872,12 @@ canvas {
             <button type="button" class="senha-toggle" id="btnMostrarMaster"
                     aria-label="Mostrar senha master" aria-pressed="false">Ver</button>
           </div>
-          <button id="btnTester" onclick="ativarAcessoTester()">Entrar como tester</button>
+          <button id="btnTester">Entrar como tester</button>
         </div>
       </details>
 
       <button id="btnAdminAtivacao" class="login-admin admin-icon-button admin-only hidden"
-              onclick="abrirPainelAdmin()" aria-label="Abrir administração" title="Administração">
+              aria-label="Abrir administração" title="Administração">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6l7-3z"/>
           <circle cx="12" cy="10" r="2"/>
@@ -1754,7 +1886,7 @@ canvas {
       </button>
       <div id="ativacaoErro" role="status" aria-live="polite"></div>
     </main>
-    <footer class="login-rodape">Girassol Inteligência · <span data-app-version>v 2.13.0</span></footer>
+    <footer class="login-rodape">Girassol Inteligência · <span data-app-version>v 1.4.1</span></footer>
   </div>
 </div>
 
@@ -1762,14 +1894,14 @@ canvas {
   <div class="admin-shell" role="document">
     <div class="admin-head">
       <div><h2 id="adminTitulo">Administração de acessos</h2><small id="adminIdentidade"></small></div>
-      <button type="button" id="btnFecharAdmin" onclick="fecharPainelAdmin()">Fechar</button>
+      <button type="button" id="btnFecharAdmin">Fechar</button>
     </div>
     <div id="adminStatus" class="admin-status" role="status" aria-live="polite"></div>
     <div class="admin-grid">
       <section class="admin-card">
         <h3>Emitir códigos</h3>
         <label>Quantidade <input id="adminQuantidade" type="number" min="1" max="50" value="1"></label>
-        <button onclick="adminCriarCodigos()">Gerar códigos</button>
+        <button type="button" id="btnAdminCriarCodigos">Gerar códigos</button>
         <pre id="adminCodigosGerados"></pre>
       </section>
       <section class="admin-card">
@@ -1778,8 +1910,8 @@ canvas {
         <input id="adminNovaMaster" type="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}" placeholder="XXXX-XXXX-XXXX">
         <label><input id="adminRevogarTesters" type="checkbox"> Revogar sessões tester existentes</label>
         <div class="admin-actions">
-          <button onclick="adminGerarMaster()">Gerar</button>
-          <button onclick="adminRotacionarMaster()">Confirmar rotação</button>
+          <button type="button" id="btnAdminGerarMaster">Gerar</button>
+          <button type="button" id="btnAdminRotacionarMaster">Confirmar rotação</button>
         </div>
       </section>
     </div>
@@ -1793,7 +1925,7 @@ canvas {
 <div id="candidatoDetalhesModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="candidatoDetalhesTitulo" aria-hidden="true">
   <div class="candidato-detalhes-painel" role="document">
     <div class="candidato-detalhes-cabecalho">
-      <h2 id="candidatoDetalhesTitulo">Detalhes do candidato</h2>
+      <h2 id="candidatoDetalhesTitulo">Detalhes da candidatura</h2>
       <button type="button" class="candidato-detalhes-fechar" id="btnFecharCandidatoDetalhes" aria-label="Fechar detalhes">×</button>
     </div>
     <div id="candidatoDetalhesConteudo"></div>
@@ -1809,7 +1941,7 @@ canvas {
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <button type="button" class="voltar hidden" id="btnVoltar" onclick="voltarHome()" aria-label="Voltar à tela inicial">‹</button>
+    <button type="button" class="voltar hidden" id="btnVoltar" aria-label="Voltar à tela inicial">‹</button>
     <div class="marca-topbar" id="marcaTopbar">
       <img src="/icons/logopeia-topbar.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-completa">
       <div class="marca-texto">
@@ -1826,15 +1958,15 @@ canvas {
       <div class="home-hero">
         <div class="tag">Dados oficiais TSE</div>
         <h1>Eleições em Mato Grosso do Sul</h1>
-        <p>Consulte resultados dos 79 municípios, de 2010 a 2024. Funciona sem internet.</p>
+        <p>Explore dados eleitorais desde 2010 e indicadores socioeconômicos de Mato Grosso do Sul.</p>
       </div>
       <div class="busca-universal" id="buscaUniversalBox">
-        <label class="sr-only" for="buscaUniversalInput">Buscar candidato, cidade ou cargo</label>
+        <label class="sr-only" for="buscaUniversalInput">Buscar candidatura, cidade ou cargo</label>
         <input type="search" class="bu-input" id="buscaUniversalInput"
-               placeholder="Buscar candidato, cidade ou cargo..."
+               placeholder="Buscar candidatura, cidade ou cargo..."
                role="combobox" aria-autocomplete="list" aria-expanded="false"
                aria-controls="buscaUniversalResultados" autocomplete="off">
-        <button class="btn-microfone" id="btnMicrofoneUniversal" onclick="iniciarBuscaPorVoz('buscaUniversalInput')" aria-label="Buscar por voz" title="Falar para buscar">
+        <button class="btn-microfone" id="btnMicrofoneUniversal" aria-label="Buscar por voz" title="Falar para buscar">
           <svg><use href="#icon-microfone"></use></svg>
         </button>
         <div class="bu-resultados hidden" id="buscaUniversalResultados" role="listbox" aria-label="Resultados da busca"></div>
@@ -1850,15 +1982,15 @@ canvas {
     <div class="filtros">
       <div class="busca-box">
         <span class="lupa">⌕</span>
-        <label class="sr-only" for="buscaCandidatoInput">Nome do candidato</label>
-        <input type="search" id="buscaCandidatoInput" placeholder="Nome do candidato..."
+        <label class="sr-only" for="buscaCandidatoInput">Nome da pessoa</label>
+        <input type="search" id="buscaCandidatoInput" placeholder="Pesquisar por nome..."
                role="combobox" aria-autocomplete="list" aria-expanded="false"
                aria-controls="sugestoesBuscaCandidato" autocomplete="off">
-        <button class="btn-microfone" id="btnMicrofoneCandidato" onclick="iniciarBuscaPorVoz('buscaCandidatoInput')" aria-label="Buscar por voz" title="Falar para buscar">
+        <button class="btn-microfone" id="btnMicrofoneCandidato" aria-label="Buscar por voz" title="Falar para buscar">
           <svg><use href="#icon-microfone"></use></svg>
         </button>
         <div class="sugestoes-dropdown" id="sugestoesBuscaCandidato" role="listbox"
-             aria-label="Sugestões de candidatos" style="display:none;"></div>
+             aria-label="Sugestões de candidaturas" style="display:none;"></div>
       </div>
     </div>
     <div class="conteudo" id="resultadoBuscaCandidato"></div>
@@ -1874,7 +2006,7 @@ canvas {
       <div class="select-box"><label for="rk_municipio">Município</label><select id="rk_municipio"></select></div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('cardExportarRanking', 'ranking')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="cardExportarRanking" data-exportar-nome="ranking" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
@@ -1890,7 +2022,7 @@ canvas {
       </div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('resultadoMeuMunicipio', 'municipio')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="resultadoMeuMunicipio" data-exportar-nome="municipio" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
@@ -1910,7 +2042,7 @@ canvas {
       </div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('cardExportarComparar', 'comparar')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="cardExportarComparar" data-exportar-nome="comparar" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
@@ -1922,8 +2054,8 @@ canvas {
     <div class="filtros">
       <div class="busca-box">
         <span class="lupa">⌕</span>
-        <label class="sr-only" for="evo_busca">Nome do candidato</label>
-        <input type="search" id="evo_busca" placeholder="Nome do candidato..." autocomplete="off">
+        <label class="sr-only" for="evo_busca">Nome da pessoa</label>
+        <input type="search" id="evo_busca" placeholder="Pesquisar por nome..." autocomplete="off">
       </div>
       <div class="select-box"><label for="evo_municipio">Município (opcional)</label><select id="evo_municipio"></select></div>
     </div>
@@ -1940,7 +2072,7 @@ canvas {
       <div class="select-box"><label for="pt_municipio">Município</label><select id="pt_municipio"></select></div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('cardExportarPartidos', 'partidos')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="cardExportarPartidos" data-exportar-nome="partidos" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
@@ -1960,11 +2092,37 @@ canvas {
       </div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('cardExportarPrefVer', 'prefver')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="cardExportarPrefVer" data-exportar-nome="prefver" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
     <div class="conteudo" id="resultadoPrefVer"></div>
+  </div>
+
+  <!-- TELA 11: RESULTADOS POR ELEIÇÃO -->
+  <div class="tela" id="tela-11">
+    <div class="conteudo">
+      <div class="simulador-wrap">
+        <section class="sim-card" aria-labelledby="eleicaoHubTitulo">
+          <h2 id="eleicaoHubTitulo">Qual eleição você quer consultar?</h2>
+          <p class="sim-card-sub">Escolha uma das opções para ver somente os cargos e anos correspondentes.</p>
+          <div class="sim-cargos">
+            <button type="button" class="sim-cargo" data-tipo-eleicao="7">
+              <strong>Eleições municipais</strong>
+              <span>Prefeito e vereador</span>
+            </button>
+            <button type="button" class="sim-cargo" data-tipo-eleicao="8">
+              <strong>Eleições gerais</strong>
+              <span>Presidente, governador, senador e deputados</span>
+            </button>
+          </div>
+          <details class="sim-ajuda">
+            <summary>❔ Ajuda para escolher</summary>
+            <p>Use “Eleições municipais” para consultar prefeito e vereador. Use “Eleições gerais” para presidente, governador, senador, deputado federal e deputado estadual.</p>
+          </details>
+        </section>
+      </div>
+    </div>
   </div>
 
   <!-- TELA 8: PRESIDENTE & GOVERNADOR -->
@@ -1983,7 +2141,7 @@ canvas {
       </div>
     </div>
     <div class="barra-exportar">
-      <button onclick="exportarComoImagem('cardExportarPresGov', 'presgov')" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
+      <button type="button" data-exportar-alvo="cardExportarPresGov" data-exportar-nome="presgov" class="btn-exportar-fixo" aria-label="Exportar resultado" title="Exportar resultado">
         <svg width="18" height="18"><use href="#icon-exportar"/></svg>
       </button>
     </div>
@@ -2008,65 +2166,142 @@ canvas {
     <div class="conteudo" id="resultadoMeuEstado"></div>
   </div>
 
+  <!-- TELA 10: SIMULADOR DE VAGAS 2026 -->
+  <div class="tela" id="tela-10">
+    <div class="conteudo" id="simConteudo">
+      <div class="simulador-wrap">
+        <p class="simulador-intro">Monte uma projeção simples para Mato Grosso do Sul. O cenário é salvo automaticamente somente neste navegador.</p>
+
+        <section class="sim-card" aria-labelledby="simEtapa1Titulo">
+          <h2 id="simEtapa1Titulo">1. Escolha o cargo</h2>
+          <p class="sim-card-sub">Eleições 2026 · Mato Grosso do Sul</p>
+          <div class="sim-cargos" role="group" aria-label="Cargo da simulação">
+            <button type="button" class="sim-cargo ativo" id="simCargoEstadual" data-sim-cargo="deputado estadual" aria-pressed="true"><strong>Deputado estadual</strong><span>24 vagas</span></button>
+            <button type="button" class="sim-cargo" id="simCargoFederal" data-sim-cargo="deputado federal" aria-pressed="false"><strong>Deputado federal</strong><span>8 vagas</span></button>
+          </div>
+          <details class="sim-ajuda"><summary>❔ Ajuda para escolher</summary><p>Escolha qual cargo deseja simular. O estado e a quantidade de vagas já estão preenchidos e não precisam ser alterados.</p></details>
+        </section>
+
+        <section class="sim-card" aria-labelledby="simEtapa2Titulo">
+          <h2 id="simEtapa2Titulo">2. Informe os votos válidos</h2>
+          <p class="sim-card-sub">Não inclua votos brancos e nulos.</p>
+          <div class="sim-campo"><label for="simVotosValidos">Votos válidos estimados</label><input type="number" id="simVotosValidos" min="1" step="1" inputmode="numeric" placeholder="Ex.: 1.500.000"></div>
+          <div class="sim-selecionado" id="simQuociente" role="status" aria-live="polite">Informe os votos válidos para ver o quociente estimado.</div>
+          <details class="sim-ajuda"><summary>❔ O que preencher aqui?</summary><p>Informe o total de votos que você estima para este cargo em todo o estado. Esse número serve para calcular quantos votos serão necessários para a distribuição das vagas.</p></details>
+        </section>
+
+        <section class="sim-card" aria-labelledby="simEtapa3Titulo">
+          <h2 id="simEtapa3Titulo">3. Adicione candidaturas e votos</h2>
+          <p class="sim-card-sub">Pesquise alguém do histórico ou digite um nome novo.</p>
+          <div class="sim-campo">
+            <label for="simNome">Nome da pessoa</label>
+            <input type="search" id="simNome" placeholder="Digite pelo menos 3 letras" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="simSugestoes" autocomplete="off">
+            <div id="simSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Candidaturas do histórico eleitoral"></div>
+            <div id="simCandidatoSelecionado" class="sim-selecionado hidden"></div>
+          </div>
+          <div class="sim-campo">
+            <label for="simPartido">Partido ou federação em 2026</label>
+            <input type="search" id="simPartido" maxlength="80" placeholder="Digite a sigla, o partido ou a federação" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="simPartidoSugestoes" autocomplete="off">
+            <div id="simPartidoSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Partidos e federações de 2026"></div>
+            <div id="simOrganizacaoSelecionada" class="sim-selecionado hidden"></div>
+          </div>
+          <div class="sim-campo"><label for="simVotosCandidato">Votos estimados</label><input type="number" id="simVotosCandidato" min="0" step="1" inputmode="numeric" placeholder="Ex.: 35.000"></div>
+          <div class="sim-form-acoes">
+            <button type="button" class="sim-btn-principal" id="simAdicionarCandidato">Adicionar candidatura</button>
+            <button type="button" class="sim-btn-secundario" id="simAdicionarLegenda">Adicionar votos de legenda</button>
+            <button type="button" class="sim-btn-secundario" id="simAdicionarOutros">Adicionar votos de outras candidaturas</button>
+          </div>
+          <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
+          <details class="sim-ajuda"><summary>❔ Ajuda para adicionar</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
+          <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
+          <section class="sim-auto hidden" id="simAutoArea" aria-labelledby="simAutoTitulo">
+            <h3 id="simAutoTitulo">Preenchimento rápido</h3>
+            <p class="sim-card-sub" id="simAutoResumo"></p>
+            <div class="sim-form-acoes">
+              <button type="button" class="sim-btn-secundario" id="simAbrirAuto">Completar votos automaticamente</button>
+              <button type="button" class="sim-btn-secundario hidden" id="simDesfazerAuto">Desfazer autopreenchimento</button>
+            </div>
+            <div class="sim-auto-opcoes hidden" id="simAutoOpcoes">
+              <p>Escolha como distribuir somente os votos restantes. Seus nomes e valores manuais serão preservados; as novas linhas serão identificadas como outras candidaturas simuladas.</p>
+              <div class="sim-form-acoes">
+                <button type="button" class="sim-btn-principal" id="simAutoProporcional">Distribuir proporcionalmente (recomendado)</button>
+                <button type="button" class="sim-btn-secundario" id="simAutoIgual">Distribuir igualmente</button>
+                <button type="button" class="sim-btn-secundario" id="simAutoCancelar">Cancelar</button>
+              </div>
+            </div>
+            <div class="sim-auto-previa hidden" id="simAutoPrevia" role="region" aria-live="polite" aria-label="Prévia do preenchimento automático"></div>
+          </section>
+        </section>
+
+        <section class="sim-card hidden" id="simResultadoCard" aria-labelledby="simResultadoTitulo">
+          <h2 id="simResultadoTitulo">Resultado estimado</h2>
+          <div id="simResultado" class="sim-resultado"></div>
+        </section>
+      </div>
+    </div>
+    <aside class="sim-placar" aria-label="Placar do cenário">
+      <div class="sim-placar-inner">
+        <div class="sim-placar-linha"><strong id="simPlacarTitulo">Comece pelos votos válidos</strong><span id="simPlacarNumeros">0 de 0 votos</span></div>
+        <div class="sim-progresso" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
+        <p class="sim-status aviso" id="simPlacarStatus" role="status" aria-live="polite">Informe o total de votos válidos.</p>
+        <button type="button" class="sim-btn-principal" id="simCalcular" disabled>Calcular vagas e sobras</button>
+      </div>
+    </aside>
+  </div>
+
   <!-- TELA SOBRE -->
   <div class="tela" id="tela-sobre">
     <div class="conteudo" style="overflow-y:auto;">
-      <div class="sec-titulo">Sobre este aplicativo</div>
-      <p class="sobre-p">Resultados oficiais das eleições de <b>Mato Grosso do Sul</b> entre <b>2010 e 2024</b>, cobrindo os <b>79 municípios</b> do estado.</p>
+      <div class="sec-titulo">Sobre a plataforma</div>
+      <p class="sobre-p">A <b>Plataforma Eleitoral Inteligente</b> reúne dados, análises e ferramentas para compreender as eleições em Mato Grosso do Sul. Consulte resultados eleitorais desde 2010 nos 79 municípios, compare desempenhos e simule cenários para as Eleições 2026.</p>
 
-      <div class="sec-titulo">Fonte dos dados</div>
-      <p class="sobre-p">Todos os dados têm origem no <b>Tribunal Superior Eleitoral (TSE)</b>, órgão oficial responsável pela organização e apuração das eleições no Brasil.</p>
+      <div class="sec-titulo">O que você encontra</div>
+      <ul class="sobre-lista">
+        <li>perfil e histórico de candidaturas;</li>
+        <li>ranking de candidaturas e desempenho dos partidos;</li>
+        <li>resultados por município e tipo de eleição;</li>
+        <li>comparação entre municípios;</li>
+        <li>panorama socioeconômico de Mato Grosso do Sul;</li>
+        <li>Simulador de Vagas 2026;</li>
+        <li>exportação e compartilhamento de análises.</li>
+      </ul>
 
-      <div class="sec-titulo">O que você encontra aqui</div>
-      <p class="sobre-p">Resultados de votação para <b>Prefeito, Vereador, Governador, Presidente, Senador, Deputado Federal e Deputado Estadual</b>, incluindo número de votos, situação do candidato (eleito, não eleito, suplente) e votação por partido.</p>
+      <div class="sec-titulo">Fontes dos dados</div>
+      <p class="sobre-p">Os resultados eleitorais e os históricos de candidaturas têm como fonte o <b>Tribunal Superior Eleitoral (TSE)</b>. Os indicadores do Panorama de MS utilizam fontes públicas identificadas em cada seção, incluindo a <b>SEMADESC/MS</b>.</p>
 
-      <div class="sec-titulo">Funcionamento offline</div>
-      <p class="sobre-p">Este aplicativo funciona <b>100% sem internet</b> depois de instalado. Todos os dados ficam salvos no seu celular.</p>
+      <div class="sec-titulo">Simulador de Vagas 2026</div>
+      <p class="sobre-p">O simulador aplica as regras do sistema proporcional aos valores informados na simulação. Seus resultados são <b>projeções</b> e não representam pesquisa eleitoral, resultado oficial ou garantia de eleição.</p>
+      <p class="sobre-p">Candidaturas, organizações e estimativas criadas no simulador pertencem somente ao cenário salvo e <b>não alteram a base histórica oficial</b>.</p>
 
-      <div class="sec-titulo">Atualização dos dados</div>
-      <p class="sobre-p" id="sobreDataGeracao">Dados gerados em: —</p>
+      <div class="sec-titulo">Conexão e armazenamento</div>
+      <p class="sobre-p">A autenticação e o carregamento dos dados protegidos exigem conexão com a internet. Preferências e cenários do simulador ficam salvos neste navegador para permitir a continuação do preenchimento.</p>
+      <p class="sobre-p">Os cenários salvos neste dispositivo não aparecem automaticamente em outro celular ou computador e podem ser removidos ao apagar os dados do navegador.</p>
 
-      <div class="sec-titulo">Histórico de versões</div>
+      <div class="sec-titulo">Transparência</div>
+      <p class="sobre-p">A Plataforma Eleitoral Inteligente é uma ferramenta independente de consulta e análise. Não representa nem possui vínculo institucional com o TSE, partidos, federações, candidaturas ou campanhas.</p>
+
+      <div class="sec-titulo">Atualização</div>
+      <dl class="sobre-meta">
+        <div><dt>Versão da plataforma</dt><dd id="sobreAppVersion">—</dd></div>
+        <div><dt>Base eleitoral</dt><dd id="sobreDatasetVersion">—</dd></div>
+        <div><dt>Última eleição disponível</dt><dd id="sobreUltimaEleicao">—</dd></div>
+        <div><dt>Dados gerados em</dt><dd id="sobreDataGeracao">—</dd></div>
+      </dl>
+
+      <div class="sec-titulo">Acessibilidade</div>
+      <p class="sobre-p">A plataforma adota layout mobile-first, ampliação de fonte, contraste reforçado, foco visível, navegação por teclado e respeito à preferência por movimento reduzido.</p>
+
+      <div class="sec-titulo">Evolução da plataforma</div>
       <div class="historico-versoes">
-        <div class="versao-item">
-          <span class="versao-numero">v2.5</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Nova logomarca com transparência real, ajustes de tamanho e espaçamento em toda a plataforma, busca por voz mais tolerante a erros de transcrição e correções de acessibilidade no rodapé.</p>
-        </div>
-        <div class="versao-item">
-          <span class="versao-numero">v2.4</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Novo painel "Meu Estado" com dados socioeconômicos, demográficos e eleitorais de MS. Acesso à tela Sobre movido para o rodapé.</p>
-        </div>
-        <div class="versao-item">
-          <span class="versao-numero">v2.3</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Busca por voz e sugestões automáticas ao pesquisar.</p>
-        </div>
-        <div class="versao-item">
-          <span class="versao-numero">v2.2</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Correção na exibição de resultados de 1º e 2º turno.</p>
-        </div>
-        <div class="versao-item">
-          <span class="versao-numero">v2.1</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Novo tema visual disponível, com fontes maiores para leitura.</p>
-        </div>
-        <div class="versao-item">
-          <span class="versao-numero">v2.0</span>
-          <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Nova identidade visual PE.IA e exportação de resultados em imagem.</p>
-        </div>
         <div class="versao-item">
           <span class="versao-numero">v1.0</span>
           <span class="versao-data">Julho 2026</span>
-          <p class="versao-desc">Lançamento da plataforma.</p>
+          <p class="versao-desc">Primeira versão pública da Plataforma Eleitoral Inteligente, com resultados eleitorais, análises municipais, indicadores socioeconômicos e o Simulador de Vagas 2026.</p>
         </div>
       </div>
 
       <div class="sec-titulo">Desenvolvido por</div>
-      <p class="sobre-p"><b>Girassol Inteligência</b> · Inteligência de dados e tecnologia aplicada.</p>
+      <p class="sobre-p"><b>Girassol Inteligência</b><br>Inteligência de dados e tecnologia aplicada à análise eleitoral.</p>
       
       <div style="height: 20px;"></div>
     </div>
@@ -2075,24 +2310,24 @@ canvas {
   <footer class="rodape-fixo">
     <div class="rodape-marca">
     <img src="data:image/png;base64,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" alt="Girassol Inteligência" class="rodape-logo">
-    <span class="rodape-texto">Girassol Inteligência</span>
+    <span class="rodape-texto">Desenvolvido por Girassol Inteligência</span>
     </div>
     <div class="rodape-acoes">
     <button id="btnAdminRodape" class="admin-icon-button admin-only hidden"
-            onclick="abrirPainelAdmin()" aria-label="Abrir administração" title="Administração">
+            aria-label="Abrir administração" title="Administração">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
         <path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6l7-3z"/>
         <circle cx="12" cy="10" r="2"/>
         <path d="M12 12v5m0-2h2"/>
       </svg>
     </button>
-    <button class="rodape-btn-acessibilidade" id="btnFonteMenor" onclick="diminuirTamanhoFonte()" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A-</button>
-    <button class="rodape-btn-acessibilidade" id="btnFonteGrande" onclick="aumentarTamanhoFonte()" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
-    <button class="rodape-btn-estilo" id="btnEstilo" onclick="alternarEstilo()" aria-label="Alternar estilo visual" title="Alternar estilo: Neon / Aeroporto">◧</button>
-    <button class="rodape-btn-sobre" onclick="abrirTelaSobre()" aria-label="Sobre o aplicativo" title="Sobre">
+    <button class="rodape-btn-acessibilidade" id="btnFonteMenor" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A-</button>
+    <button class="rodape-btn-acessibilidade" id="btnFonteGrande" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
+    <button class="rodape-btn-estilo" id="btnEstilo" aria-label="Alternar estilo visual" title="Alternar estilo: Neon / Aeroporto">◧</button>
+    <button class="rodape-btn-sobre" id="btnSobre" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 2.12.1</span>
+    <span class="rodape-versao" id="appVersion">v 1.4.1</span>
     </div>
   </footer>
 
@@ -2306,6 +2541,7 @@ function formatarPercentual(valor, casas=2) {
 
 let DB = null; // dataset descompactado
 let telaAtual = 'home';
+const escaparHtml = window.PEIA_SECURITY.escaparHtml;
 
 const ICONES = {
   buscar: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
@@ -2318,18 +2554,21 @@ const ICONES = {
   presgov: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><path d="M4 20h16M6 20V10l6-6 6 6v10M10 20v-5h4v5"/></svg>',
   sobre: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>',
   estado: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><path d="M3 8l6-3 6 3 6-3v13l-6 3-6-3-6 3V8z" stroke-linejoin="round"/><path d="M9 5v13M15 8v13"/></svg>'
+  ,simulador: '<svg viewBox="0 0 24 24" fill="none" stroke="#F0C863" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 19h8"/></svg>'
 };
 
 const BOTOES = [
-  { id:1, icone:'buscar',   rotulo:'Buscar\nCandidato',      titulo:'Buscar Candidato' },
-  { id:2, icone:'ranking',  rotulo:'Ranking\nGeral',          titulo:'Ranking Geral' },
-  { id:3, icone:'municipio',rotulo:'Meu\nMunicípio',          titulo:'Meu Município' },
+  { id:1, icone:'buscar',   rotulo:'Perfil\nEleitoral',       titulo:'Perfil Eleitoral' },
+  { id:2, icone:'ranking',  rotulo:'Ranking de\nCandidaturas',  titulo:'Ranking de Candidaturas' },
+  { id:3, icone:'municipio',rotulo:'Resultados por\nMunicípio',    titulo:'Resultados por Município' },
   { id:4, icone:'comparar', rotulo:'Comparar\nMunicípios',    titulo:'Comparar Municípios' },
-  { id:5, icone:'evolucao', rotulo:'Evolução\nno Tempo',      titulo:'Evolução no Tempo' },
-  { id:6, icone:'partidos', rotulo:'Ranking de\nPartidos',    titulo:'Ranking de Partidos' },
-  { id:7, icone:'prefver',  rotulo:'Prefeito &\nVereador',    titulo:'Prefeito & Vereador' },
-  { id:8, icone:'presgov',  rotulo:'Presidente &\nGovernador',titulo:'Presidente & Governador' },
-  { id:9, icone:'estado',   rotulo:'Meu\nEstado',             titulo:'Meu Estado' },
+  { id:5, icone:'evolucao', rotulo:'Evolução da\nCandidatura', titulo:'Evolução da Candidatura' },
+  { id:6, icone:'partidos', rotulo:'Desempenho dos\nPartidos', titulo:'Desempenho dos Partidos' },
+  { id:7, icone:'prefver',  rotulo:'Prefeito &\nVereador',    titulo:'Eleições Municipais', home:false },
+  { id:8, icone:'presgov',  rotulo:'Presidente &\nGovernador',titulo:'Eleições Gerais', home:false },
+  { id:9, icone:'estado',   rotulo:'Panorama de\nMS',           titulo:'Panorama de MS' },
+  { id:10, icone:'simulador',rotulo:'Simulador de\nVagas 2026',titulo:'Simulador de Vagas 2026' },
+  { id:11, icone:'presgov', rotulo:'Resultados por\nEleição', titulo:'Resultados por Eleição' },
 ];
 
 const CARGO_LABEL = {
@@ -2576,8 +2815,6 @@ function ativarChipsTurno(idPrefix, onChange) {
 }
 
 // ---------- CARREGAMENTO DE DADOS ----------
-const PRIVATE_DATASET_CACHE = 'peia-private-datasets-v1';
-
 function descompactarDataset(b64) {
   const binStr = atob(b64);
   const bytes = new Uint8Array(binStr.length);
@@ -2610,7 +2847,6 @@ async function obterDatasetAutorizado() {
   });
   if (resp.status === 401 || resp.status === 403) {
     limparSessaoLocal();
-    if ('caches' in window) await caches.delete(PRIVATE_DATASET_CACHE);
     throw new Error('Sessão sem autorização para o dataset.');
   }
   if (!resp.ok) throw new Error(`Falha ao baixar dataset (${resp.status}).`);
@@ -2643,16 +2879,19 @@ const AVISO_HOME = '';
 function montarHome() {
   const aviso = document.getElementById('avisoHome');
   aviso.innerHTML = AVISO_HOME
-    ? `<div class="card aviso-home"><p>${AVISO_HOME}</p></div>`
+    ? `<div class="card aviso-home"><p>${escaparHtml(AVISO_HOME)}</p></div>`
     : '';
 
   const grid = document.getElementById('grid9');
-  grid.innerHTML = BOTOES.map(b => `
-    <button type="button" class="tile" onclick="abrirTela(${b.id})">
+  grid.innerHTML = BOTOES.filter(b => b.home !== false).map(b => `
+    <button type="button" class="tile" data-tela-id="${b.id}">
       <div class="icone">${ICONES[b.icone]}</div>
       <div class="rotulo">${b.rotulo.replace('\n','<br>')}</div>
     </button>
   `).join('');
+  grid.querySelectorAll('[data-tela-id]').forEach(botao => {
+    botao.addEventListener('click', () => abrirTela(Number(botao.dataset.telaId)));
+  });
 }
 
 function fecharBuscaUniversal() {
@@ -2683,7 +2922,18 @@ function abrirTela(id) {
   requestAnimationFrame(() => document.getElementById('btnVoltar').focus());
 }
 
+let retornoParaEscolhaEleicao = false;
+function abrirTipoEleicao(id) {
+  retornoParaEscolhaEleicao = true;
+  abrirTela(id);
+}
+
 function voltarHome() {
+  if (retornoParaEscolhaEleicao && (telaAtual === 7 || telaAtual === 8)) {
+    retornoParaEscolhaEleicao = false;
+    abrirTela(11);
+    return;
+  }
   fecharBuscaUniversal();
   document.querySelectorAll('.tela').forEach(t => {
     t.classList.remove('ativa');
@@ -2703,8 +2953,8 @@ function voltarHome() {
 // ---------- HELPERS DE SELECT ----------
 function preencherSelect(el, valores, comTodos, labelTodos) {
   let html = '';
-  if (comTodos) html += `<option value="">${labelTodos||'Todos'}</option>`;
-  html += valores.map(v => `<option value="${v}">${CARGO_LABEL[v]||v}</option>`).join('');
+  if (comTodos) html += `<option value="">${escaparHtml(labelTodos||'Todos')}</option>`;
+  html += valores.map(v => `<option value="${escaparHtml(v)}">${escaparHtml(CARGO_LABEL[v]||v)}</option>`).join('');
   el.innerHTML = html;
 }
 
@@ -2719,15 +2969,18 @@ function obterMunicipioPreferido() {
 function badgeResultado(resultado) {
   if (!resultado) return '';
   const r = resultado.toLowerCase();
-  if (r.startsWith('eleito')) return `<span class="badge badge-eleito">${resultado}</span>`;
-  if (r === 'não eleito') return `<span class="badge badge-naoeleito">${resultado}</span>`;
-  if (r === 'suplente') return `<span class="badge badge-suplente">${resultado}</span>`;
+  if (r.startsWith('eleito')) {
+    const resultadoNeutro = resultado.replace(/^eleito/i, 'Pessoa eleita');
+    return `<span class="badge badge-eleito">${escaparHtml(resultadoNeutro)}</span>`;
+  }
+  if (r === 'não eleito') return `<span class="badge badge-naoeleito">Não eleita</span>`;
+  if (r === 'suplente') return `<span class="badge badge-suplente">Pessoa suplente</span>`;
   if (r === '—') return '';
-  return `<span class="badge badge-outro">${resultado}</span>`;
+  return `<span class="badge badge-outro">${escaparHtml(resultado)}</span>`;
 }
 
 function telaVazia(msg) {
-  return `<div class="vazio"><div class="emoji">🗳️</div><p>${msg}</p></div>`;
+  return `<div class="vazio"><div class="emoji">🗳️</div><p>${escaparHtml(msg)}</p></div>`;
 }
 
 // ============================================================
@@ -2743,6 +2996,7 @@ function inicializarTela(id) {
   if (id===7) initPrefVer();
   if (id===8) initPresGov();
   if (id===9) initMeuEstado();
+  if (id===10) initSimulador();
 }
 
 // ---------- BUSCA UNIVERSAL (HOME) ----------
@@ -2863,7 +3117,7 @@ function renderBuscaUniversal() {
     }
   }
   Object.values(candidatosPorChave).forEach(c => {
-    resultados.push({ tipo:'Candidato', label:c.candidato, valor:c.candidato });
+    resultados.push({ tipo:'Candidatura', label:c.candidato, valor:c.candidato });
     if (resultados.length >= 40) return;
   });
 
@@ -2896,7 +3150,7 @@ function renderBuscaUniversal() {
       }
     }
     Object.values(candidatosAprox).forEach(c => {
-      resultados.push({ tipo:'Candidato', label:c.candidato, valor:c.candidato });
+      resultados.push({ tipo:'Candidatura', label:c.candidato, valor:c.candidato });
     });
 
     DB.meta.municipios.forEach(m => {
@@ -2914,12 +3168,18 @@ function renderBuscaUniversal() {
   }
 
   const finais = resultados.slice(0, 8);
-  box.innerHTML = finais.map(r => `
-    <button type="button" class="bu-item" role="option" onclick='selecionarBuscaUniversal(${JSON.stringify(r.tipo)}, ${JSON.stringify(r.valor)})'>
-      <div class="bu-item-tipo">${r.tipo}</div>
-      <div class="bu-item-nome">${r.label}</div>
+  box.innerHTML = finais.map((r, indice) => `
+    <button type="button" class="bu-item" role="option" data-busca-universal-indice="${indice}">
+      <div class="bu-item-tipo">${escaparHtml(r.tipo)}</div>
+      <div class="bu-item-nome">${escaparHtml(r.label)}</div>
     </button>
   `).join('');
+  box.querySelectorAll('[data-busca-universal-indice]').forEach(botao => {
+    botao.addEventListener('click', () => {
+      const resultado = finais[Number(botao.dataset.buscaUniversalIndice)];
+      if (resultado) selecionarBuscaUniversal(resultado.tipo, resultado.valor);
+    });
+  });
   box.classList.remove('hidden');
   input.setAttribute('aria-expanded', 'true');
 }
@@ -2928,7 +3188,7 @@ function selecionarBuscaUniversal(tipo, valor) {
   document.getElementById('buscaUniversalResultados').classList.add('hidden');
   document.getElementById('buscaUniversalInput').value = '';
 
-  if (tipo === 'Candidato') {
+  if (tipo === 'Candidatura') {
     abrirTela(1);
     document.getElementById('buscaCandidatoInput').value = valor;
     renderBuscaCandidato();
@@ -2993,12 +3253,18 @@ function renderizarSugestoes(inputId, dropdownId) {
     return;
   }
 
-  dropdown.innerHTML = sugestoes.map(s => `
-    <button type="button" class="sugestao-item" role="option" onclick='selecionarSugestao(${JSON.stringify(s.tipo)}, ${JSON.stringify(s.texto)}, ${JSON.stringify(inputId)}, ${JSON.stringify(dropdownId)})'>
-      <span class="sugestao-texto">${s.texto}</span>
-      <span class="sugestao-contexto">${s.contexto}</span>
+  dropdown.innerHTML = sugestoes.map((s, indice) => `
+    <button type="button" class="sugestao-item" role="option" data-sugestao-indice="${indice}">
+      <span class="sugestao-texto">${escaparHtml(s.texto)}</span>
+      <span class="sugestao-contexto">${escaparHtml(s.contexto)}</span>
     </button>
   `).join('');
+  dropdown.querySelectorAll('[data-sugestao-indice]').forEach(botao => {
+    botao.addEventListener('click', () => {
+      const sugestao = sugestoes[Number(botao.dataset.sugestaoIndice)];
+      if (sugestao) selecionarSugestao(sugestao.tipo, sugestao.texto, inputId, dropdownId);
+    });
+  });
   dropdown.style.display = 'block';
   input.setAttribute('aria-expanded', 'true');
 }
@@ -3089,18 +3355,18 @@ function initBuscarCandidato() {
     });
     buscaCandidatoInit = true;
   }
-  document.getElementById('resultadoBuscaCandidato').innerHTML = telaVazia('Digite ao menos 3 letras do nome do candidato para buscar.');
+  document.getElementById('resultadoBuscaCandidato').innerHTML = telaVazia('Digite ao menos 3 letras do nome da pessoa para pesquisar.');
 }
 
 function renderBuscaCandidato() {
   const termo = normalizarTexto(document.getElementById('buscaCandidatoInput').value.trim());
   const out = document.getElementById('resultadoBuscaCandidato');
-  if (termo.length < 3) { out.innerHTML = telaVazia('Digite ao menos 3 letras do nome do candidato para buscar.'); return; }
+  if (termo.length < 3) { out.innerHTML = telaVazia('Digite ao menos 3 letras do nome da pessoa para pesquisar.'); return; }
 
   // presidente: v.candidato é o número do candidato, não um nome (dataset
   // estadual não cobre candidaturas nacionais) — busca pelo nome de exibição
   const achados = DB.votos.filter(v => v.candidato && v.turno==='1' && normalizarTexto(nomeExibicaoCandidato(v)).includes(termo));
-  if (achados.length === 0) { out.innerHTML = telaVazia('Nenhum candidato encontrado com esse nome.'); return; }
+  if (achados.length === 0) { out.innerHTML = telaVazia('Nenhuma candidatura encontrada com esse nome.'); return; }
 
   // agrupa por nome normalizado+partido+cargo+ano (blinda contra grafias
   // diferentes do mesmo candidato entre municípios do mesmo ano); turno='1'
@@ -3129,8 +3395,8 @@ function renderBuscaCandidato() {
       ${lista.map((v,i) => `
         <div class="linha-item">
           <div class="item-info">
-            <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-            <div class="item-detalhe">${v.partido} · ${CARGO_LABEL[v.cargo]||v.cargo} · ${v.ano} · ${formatarAbrangenciaCandidatura(v.municipiosNomes)}</div>
+            <div class="item-nome">${escaparHtml(nomeExibicaoCandidato(v))}</div>
+            <div class="item-detalhe">${escaparHtml(v.partido)} · ${escaparHtml(CARGO_LABEL[v.cargo]||v.cargo)} · ${escaparHtml(v.ano)} · ${escaparHtml(formatarAbrangenciaCandidatura(v.municipiosNomes))}</div>
             ${badgeResultado(v.resultado)}
             <div><button type="button" class="btn-ver-detalhes" data-candidato-detalhes="${i}">Ver detalhes</button></div>
           </div>
@@ -3277,18 +3543,18 @@ function abrirDetalhesCandidato(indice, botaoOrigem) {
   document.getElementById('candidatoDetalhesTitulo').textContent = nome;
   document.getElementById('candidatoDetalhesConteudo').innerHTML = `
     <div class="card" id="cardExportarCandidato">
-      <p class="card-titulo">${nome}</p>
-      <p class="card-sub">${registro.partido} · ${CARGO_LABEL[registro.cargo]||registro.cargo} · ${registro.ano} · 1º turno</p>
+      <p class="card-titulo">${escaparHtml(nome)}</p>
+      <p class="card-sub">${escaparHtml(registro.partido)} · ${escaparHtml(CARGO_LABEL[registro.cargo]||registro.cargo)} · ${escaparHtml(registro.ano)} · 1º turno</p>
       ${badgeResultado(registro.resultado)}
       <div class="candidato-detalhes-grid">
-        ${numeroPresidente ? `<div class="candidato-detalhes-stat"><span>Número</span><strong>${numeroPresidente}</strong></div>` : ''}
+        ${numeroPresidente ? `<div class="candidato-detalhes-stat"><span>Número</span><strong>${escaparHtml(numeroPresidente)}</strong></div>` : ''}
         <div class="candidato-detalhes-stat"><span>Votos — 1º turno</span><strong>${formatarNum(registro.votosTotal)}</strong></div>
         ${votosSegundoTurno.length ? `<div class="candidato-detalhes-stat"><span>Votos — 2º turno</span><strong>${formatarNum(votosTotalSegundoTurno)}</strong></div>` : ''}
         <div class="candidato-detalhes-stat"><span>Abrangência</span><strong>${formatarAbrangenciaCandidatura(municipios)}</strong></div>
         <div class="candidato-detalhes-stat"><span>Posição</span><strong>${posicao ? posicao.posicao + 'º de ' + posicao.universo : 'Não calculada'}</strong></div>
-        <div class="candidato-detalhes-stat"><span>Escopo do ranking</span><strong>${posicao?.escopo || '—'}</strong></div>
-        <div class="candidato-detalhes-stat"><span>Maior votação</span><strong>${melhor ? melhor.municipio + ' · ' + formatarNum(melhor.votos) : '—'}</strong></div>
-        <div class="candidato-detalhes-stat"><span>Menor votação registrada</span><strong>${pior ? pior.municipio + ' · ' + formatarNum(pior.votos) : '—'}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Escopo do ranking</span><strong>${escaparHtml(posicao?.escopo || '—')}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Maior votação</span><strong>${melhor ? escaparHtml(melhor.municipio) + ' · ' + formatarNum(melhor.votos) : '—'}</strong></div>
+        <div class="candidato-detalhes-stat"><span>Menor votação registrada</span><strong>${pior ? escaparHtml(pior.municipio) + ' · ' + formatarNum(pior.votos) : '—'}</strong></div>
       </div>
 
       <details class="candidato-detalhes-lista" open>
@@ -3325,7 +3591,7 @@ function abrirDetalhesCandidato(indice, botaoOrigem) {
         `).join('')}
       </details>
       <p class="card-sub" style="margin-top:12px;">O dataset contém resultados eleitorais; não inclui fotografia, biografia, profissão, bens ou data de nascimento.</p>
-      <div class="candidato-identidade-aviso"><b>Identificação histórica por nome:</b> o dataset não possui um identificador permanente do candidato. Em caso de homônimos, confirme cargo, partido e município.</div>
+      <div class="candidato-identidade-aviso"><b>Identificação histórica por nome:</b> o dataset não possui um identificador permanente da pessoa. Em caso de homônimos, confirme cargo, partido e município.</div>
     </div>
   `;
   document.getElementById('filtroMunicipiosCandidato').addEventListener('input', renderizarMunicipiosCandidatoDetalhes);
@@ -3357,7 +3623,7 @@ function renderizarMunicipiosCandidatoDetalhes() {
       });
     alvo.innerHTML = filtrada.length ? filtrada.map(v => `
       <div class="linha-item">
-        <div class="item-info"><div class="item-nome">${v.municipio}</div></div>
+        <div class="item-info"><div class="item-nome">${escaparHtml(v.municipio)}</div></div>
         <div class="item-valor">${formatarNum(v.votos)}<div class="item-percentual">${formatarPercentual(v.percentual)}</div></div>
       </div>
     `).join('') : '<p class="card-sub">Nenhum município encontrado.</p>';
@@ -3510,8 +3776,8 @@ function renderRanking() {
         <div class="linha-item">
           <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
           <div class="item-info">
-            <div class="item-nome">${v.candidato}</div>
-            <div class="item-detalhe">${v.partido}</div>
+            <div class="item-nome">${escaparHtml(v.candidato)}</div>
+            <div class="item-detalhe">${escaparHtml(v.partido)}</div>
             ${badgeResultado(v.resultado)}
           </div>
           <div class="item-valor">${formatarNum(v.votos)}<div class="item-percentual">${formatarPercentual(votosValidosRanking ? v.votos/votosValidosRanking*100 : NaN)}</div></div>
@@ -3612,7 +3878,7 @@ function renderMeuMunicipio() {
       `;
     })()}
 
-    ${vencedorPrefeito ? cardVencedor('Prefeito eleito', vencedorPrefeito) : ''}
+    ${vencedorPrefeito ? cardVencedor('Pessoa eleita para prefeito', vencedorPrefeito) : ''}
     ${vencedorGovernador ? cardVencedor('Governador mais votado', vencedorGovernador) : ''}
     ${vencedorPresidente ? cardVencedor('Presidente mais votado', vencedorPresidente) : ''}
 
@@ -3655,8 +3921,8 @@ function cardVencedor(titulo, v) {
       <p class="card-titulo">${titulo}</p>
       <div class="linha-item">
         <div class="item-info">
-          <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-          <div class="item-detalhe">${v.partido}</div>
+          <div class="item-nome">${escaparHtml(nomeExibicaoCandidato(v))}</div>
+          <div class="item-detalhe">${escaparHtml(v.partido)}</div>
           ${badgeResultado(v.resultado)}
         </div>
         <div class="item-valor">${formatarNum(v.votos)}</div>
@@ -3706,7 +3972,7 @@ function obterRankingMunicipio(votos, ano, cargo, municipio, turno='1', limite=5
 
 function renderRankingComparacao(lista, votosValidos) {
   if (lista.length === 0) {
-    return '<p class="card-sub">Sem candidatos para este turno.</p>';
+    return '<p class="card-sub">Sem candidaturas para este turno.</p>';
   }
 
   return `
@@ -3716,8 +3982,8 @@ function renderRankingComparacao(lista, votosValidos) {
         <div class="linha-item">
           <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
           <div class="item-info">
-            <div class="item-nome">${v.candidato}</div>
-            <div class="item-detalhe">${v.partido}</div>
+            <div class="item-nome">${escaparHtml(v.candidato)}</div>
+            <div class="item-detalhe">${escaparHtml(v.partido)}</div>
             ${badgeResultado(v.resultado)}
           </div>
           <div class="item-valor">${formatarNum(v.votos)}<div class="item-percentual">${formatarPercentual(votosValidos ? v.votos/votosValidos*100 : NaN)}</div></div>
@@ -3798,14 +4064,14 @@ function initEvolucao() {
     document.getElementById('evo_municipio').addEventListener('change', renderEvolucao);
     evolucaoInit = true;
   }
-  document.getElementById('resultadoEvolucao').innerHTML = telaVazia('Digite o nome de um candidato para ver sua evolução de votos ao longo dos anos.');
+  document.getElementById('resultadoEvolucao').innerHTML = telaVazia('Digite um nome para ver a evolução de votos ao longo dos anos.');
 }
 
 function renderEvolucao() {
   const termo = normalizarTexto(document.getElementById('evo_busca').value.trim());
   const municipio = document.getElementById('evo_municipio').value;
   const out = document.getElementById('resultadoEvolucao');
-  if (termo.length < 3) { out.innerHTML = telaVazia('Digite o nome de um candidato para ver sua evolução de votos ao longo dos anos.'); return; }
+  if (termo.length < 3) { out.innerHTML = telaVazia('Digite um nome para ver a evolução de votos ao longo dos anos.'); return; }
 
   // presidente: v.candidato é o número do candidato, não um nome — busca
   // pelo nome de exibição; turno='1' evita somar 1º+2º turno indevidamente
@@ -3832,7 +4098,7 @@ function renderEvolucao() {
       .slice(0, 30);
     out.innerHTML = `
       <div class="card">
-        <p class="card-titulo">Selecione o candidato</p>
+        <p class="card-titulo">Selecione a pessoa</p>
         <p class="card-sub">${opcoes.length} nome(s) compatível(is) com a busca</p>
         ${opcoes.map(([key, candidato], i) => `
           <button type="button" class="evo-candidato-opcao" data-evo-opcao="${i}">
@@ -3892,9 +4158,9 @@ function renderEvolucao() {
   out.innerHTML = `
     ${avisoHomonimos}
     <div class="card">
-      <p class="card-titulo">${nomeExemplo}</p>
-      <p class="card-sub">${municipio || 'Todos os municípios'} · resultados do 1º turno</p>
-      <canvas id="canvasEvolucao" role="img" aria-label="Evolução de votos de ${nomeExemplo}" style="width:100%;height:180px;"></canvas>
+      <p class="card-titulo">${escaparHtml(nomeExemplo)}</p>
+      <p class="card-sub">${escaparHtml(municipio || 'Todos os municípios')} · resultados do 1º turno</p>
+      <canvas id="canvasEvolucao" role="img" aria-label="Evolução de votos de ${escaparHtml(nomeExemplo)}" style="width:100%;height:180px;"></canvas>
     </div>
     <div class="card">
       <p class="card-titulo">Candidaturas por eleição</p>
@@ -4056,8 +4322,8 @@ function renderPrefVer() {
         <div class="linha-item">
           <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
           <div class="item-info">
-            <div class="item-nome">${v.candidato}</div>
-            <div class="item-detalhe">${v.partido}</div>
+            <div class="item-nome">${escaparHtml(v.candidato)}</div>
+            <div class="item-detalhe">${escaparHtml(v.partido)}</div>
             ${badgeResultado(v.resultado)}
           </div>
           <div class="item-valor">${formatarNum(v.votos)}<div class="item-percentual">${formatarPercentual(votosValidos ? v.votos/votosValidos*100 : NaN)}</div></div>
@@ -4131,8 +4397,8 @@ function renderPresGov() {
         <div class="linha-item">
           <div class="rank-num ${i===0?'top1':''}">${i+1}</div>
           <div class="item-info">
-            <div class="item-nome">${nomeExibicaoCandidato(v)}</div>
-            <div class="item-detalhe">${v.partido}</div>
+            <div class="item-nome">${escaparHtml(nomeExibicaoCandidato(v))}</div>
+            <div class="item-detalhe">${escaparHtml(v.partido)}</div>
             ${badgeResultado(v.resultado)}
           </div>
           <div class="item-valor">${formatarNum(v.votos)}<div class="item-percentual">${formatarPercentual(votosValidos ? v.votos/votosValidos*100 : NaN)}</div></div>
@@ -4344,6 +4610,757 @@ function renderMeuEstado() {
   }
 }
 
+// ---------- TELA 10: SIMULADOR DE VAGAS 2026 ----------
+const SIM_STORAGE_KEY = 'pe26_simulador_2026_v1';
+const SIM_CARGOS = Object.freeze({
+  'deputado estadual': { vagas: 24, limiteCandidatos: 25, minimoAutopreenchimento: 13, label: 'Deputado estadual' },
+  'deputado federal': { vagas: 8, limiteCandidatos: 9, minimoAutopreenchimento: 5, label: 'Deputado federal' }
+});
+const SIM_FEDERACOES = Object.freeze([
+  { nome:'Federação União Progressista', sigla:'União Progressista', partidos:['UNIÃO','PP'] },
+  { nome:'Federação Renovação Solidária', sigla:'Renovação Solidária', partidos:['PRD','SOLIDARIEDADE'] },
+  { nome:'Federação Brasil da Esperança', sigla:'Fe Brasil', partidos:['PT','PCdoB','PV'] },
+  { nome:'Federação PSDB Cidadania', sigla:'PSDB Cidadania', partidos:['PSDB','CIDADANIA'] },
+  { nome:'Federação PSOL REDE', sigla:'PSOL REDE', partidos:['PSOL','REDE'] }
+]);
+const SIM_PARTIDOS = Object.freeze([
+  ['MDB','Movimento Democrático Brasileiro'],['PDT','Partido Democrático Trabalhista'],['PT','Partido dos Trabalhadores'],
+  ['PCdoB','Partido Comunista do Brasil'],['PSB','Partido Socialista Brasileiro'],['PSDB','Partido da Social Democracia Brasileira'],
+  ['AGIR','Agir'],['MOBILIZA','Mobilização Nacional'],['CIDADANIA','Cidadania'],['PV','Partido Verde'],['AVANTE','Avante'],
+  ['PP','Progressistas'],['PSTU','Partido Socialista dos Trabalhadores Unificado'],['PCB','Partido Comunista Brasileiro'],
+  ['PRTB','Partido Renovador Trabalhista Brasileiro'],['DC','Democracia Cristã'],['PCO','Partido da Causa Operária'],
+  ['PODE','Podemos'],['REPUBLICANOS','Republicanos'],['PSOL','Partido Socialismo e Liberdade'],['PL','Partido Liberal'],
+  ['PSD','Partido Social Democrático'],['SOLIDARIEDADE','Solidariedade'],['NOVO','Partido Novo'],['REDE','Rede Sustentabilidade'],
+  ['DEMOCRATA','Democrata'],['UP','Unidade Popular'],['UNIÃO','União Brasil'],['PRD','Partido Renovação Democrática'],['MISSÃO','Partido Missão']
+].map(([sigla,nome]) => {
+  const federacao=SIM_FEDERACOES.find(item=>item.partidos.includes(sigla));
+  return Object.freeze({sigla,nome,federacao:federacao?.nome||null});
+}));
+let simInit = false;
+let simHistorico = [];
+let simSelecionado = null;
+let simOrganizacaoSelecionada = null;
+let simAutoPreview = null;
+let simEstado = carregarSimulador();
+
+function novoCenarioSimulador() {
+  return { votosValidos: 0, itens: [], desempates: {}, ultimoAutopreenchimento: null, atualizadoEm: null };
+}
+
+function carregarSimulador() {
+  const inicial = {
+    cargo: 'deputado estadual',
+    cenarios: {
+      'deputado estadual': novoCenarioSimulador(),
+      'deputado federal': novoCenarioSimulador()
+    }
+  };
+  try {
+    const salvo = JSON.parse(localStorage.getItem(SIM_STORAGE_KEY) || 'null');
+    if (!salvo || !SIM_CARGOS[salvo.cargo]) return inicial;
+    for (const cargo of Object.keys(SIM_CARGOS)) {
+      const cenario = salvo.cenarios?.[cargo];
+      if (!cenario || !Array.isArray(cenario.itens)) salvo.cenarios[cargo] = novoCenarioSimulador();
+      else {
+        if (!cenario.desempates) cenario.desempates = {};
+        if (!('ultimoAutopreenchimento' in cenario)) cenario.ultimoAutopreenchimento = null;
+        const preenchimentoAntigo = cenario.ultimoAutopreenchimento;
+        if (preenchimentoAntigo?.itens && !Array.isArray(preenchimentoAntigo.idsCriados)) {
+          const valoresAnteriores = new Map(preenchimentoAntigo.itens.map(item => [item.id,item]));
+          cenario.itens.forEach(item => {
+            const anterior = valoresAnteriores.get(item.id);
+            if (!anterior) return;
+            item.votos = simNumero(anterior.votos);
+            item.origemVotos = anterior.origemVotos || 'manual';
+          });
+          cenario.ultimoAutopreenchimento = null;
+        }
+        cenario.itens.forEach(item => {
+          if (item.origemVotos === 'automatico' && item.origem !== 'simulada') item.origemVotos = 'manual';
+        });
+      }
+    }
+    return salvo;
+  } catch {
+    return inicial;
+  }
+}
+
+function salvarSimulador() {
+  simEstado.cenarios[simEstado.cargo].atualizadoEm = new Date().toISOString();
+  localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(simEstado));
+}
+
+function simCenario() { return simEstado.cenarios[simEstado.cargo]; }
+function simNumero(valor) { return Math.max(0, Math.trunc(Number(valor) || 0)); }
+function simEscapar(valor) {
+  return escaparHtml(valor);
+}
+function simId() { return crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+
+function prepararHistoricoSimulador() {
+  if (simHistorico.length) return;
+  const unicos = new Map();
+  for (const voto of DB.votos) {
+    if (!SIM_CARGOS[voto.cargo] || voto.turno !== '1' || !voto.candidato) continue;
+    const nome = nomeExibicaoCandidato(voto);
+    const chave = normalizarTexto(nome);
+    const atual = unicos.get(chave);
+    if (!atual || Number(voto.ano) > Number(atual.ano)) {
+      unicos.set(chave, { nome, ano: voto.ano, partido: voto.partido, cargo: voto.cargo });
+    }
+  }
+  simHistorico = [...unicos.values()].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+}
+
+function initSimulador() {
+  prepararHistoricoSimulador();
+  if (!simInit) {
+    document.querySelectorAll('[data-sim-cargo]').forEach(botao => botao.addEventListener('click', () => simTrocarCargo(botao.dataset.simCargo)));
+    document.getElementById('simVotosValidos').addEventListener('input', evento => {
+      simCenario().votosValidos = simNumero(evento.target.value);
+      simCenario().ultimoAutopreenchimento = null;
+      simAutoPreview = null;
+      salvarSimulador();
+      renderSimulador();
+    });
+    const nome = document.getElementById('simNome');
+    nome.addEventListener('input', simPesquisarHistorico);
+    nome.addEventListener('keydown', evento => {
+      if (evento.key === 'Escape') simFecharSugestoes();
+      if (evento.key === 'ArrowDown') {
+        const primeira = document.querySelector('#simSugestoes [role="option"]');
+        if (primeira) { evento.preventDefault(); primeira.focus(); }
+      }
+    });
+    document.getElementById('simSugestoes').addEventListener('keydown', evento => {
+      const opcoes = [...evento.currentTarget.querySelectorAll('[role="option"]')];
+      const indice = opcoes.indexOf(document.activeElement);
+      if (evento.key === 'Escape') { simFecharSugestoes(); nome.focus(); }
+      if (evento.key === 'ArrowDown' && indice < opcoes.length - 1) { evento.preventDefault(); opcoes[indice + 1].focus(); }
+      if (evento.key === 'ArrowUp') {
+        evento.preventDefault();
+        if (indice > 0) opcoes[indice - 1].focus(); else nome.focus();
+      }
+    });
+    const partido = document.getElementById('simPartido');
+    partido.addEventListener('input', simPesquisarOrganizacoes);
+    partido.addEventListener('keydown', evento => {
+      if (evento.key === 'Escape') simFecharOrganizacoes();
+      if (evento.key === 'ArrowDown') {
+        const primeira = document.querySelector('#simPartidoSugestoes [role="option"]');
+        if (primeira) { evento.preventDefault(); primeira.focus(); }
+      }
+    });
+    document.getElementById('simPartidoSugestoes').addEventListener('keydown', evento => {
+      const opcoes = [...evento.currentTarget.querySelectorAll('[role="option"]')];
+      const indice = opcoes.indexOf(document.activeElement);
+      if (evento.key === 'Escape') { simFecharOrganizacoes(); partido.focus(); }
+      if (evento.key === 'ArrowDown' && indice < opcoes.length - 1) { evento.preventDefault(); opcoes[indice + 1].focus(); }
+      if (evento.key === 'ArrowUp') {
+        evento.preventDefault();
+        if (indice > 0) opcoes[indice - 1].focus(); else partido.focus();
+      }
+    });
+    document.getElementById('simAdicionarCandidato').addEventListener('click', () => simAdicionarItem('candidato'));
+    document.getElementById('simAdicionarLegenda').addEventListener('click', () => simAdicionarItem('legenda'));
+    document.getElementById('simAdicionarOutros').addEventListener('click', () => simAdicionarItem('agregado'));
+    document.getElementById('simAbrirAuto').addEventListener('click', simAbrirAutopreenchimento);
+    document.getElementById('simAutoProporcional').addEventListener('click', () => simPrepararAutopreenchimento('proporcional'));
+    document.getElementById('simAutoIgual').addEventListener('click', () => simPrepararAutopreenchimento('igual'));
+    document.getElementById('simAutoCancelar').addEventListener('click', simCancelarAutopreenchimento);
+    document.getElementById('simDesfazerAuto').addEventListener('click', simDesfazerAutopreenchimento);
+    document.getElementById('simCalcular').addEventListener('click', simCalcularResultado);
+    document.addEventListener('click', evento => {
+      if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
+      if (!evento.target.closest('#simPartido, #simPartidoSugestoes')) simFecharOrganizacoes();
+    });
+    simInit = true;
+  }
+  renderSimulador();
+}
+
+function simTrocarCargo(cargo) {
+  if (!SIM_CARGOS[cargo] || cargo === simEstado.cargo) return;
+  simEstado.cargo = cargo;
+  simAutoPreview = null;
+  simSelecionado = null;
+  simOrganizacaoSelecionada = null;
+  salvarSimulador();
+  simLimparFormulario();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderSimulador();
+}
+
+function simPesquisarOrganizacoes() {
+  simOrganizacaoSelecionada = null;
+  document.getElementById('simOrganizacaoSelecionada').classList.add('hidden');
+  const input = document.getElementById('simPartido');
+  const termoOriginal = input.value.trim();
+  const termo = normalizarTexto(termoOriginal);
+  const box = document.getElementById('simPartidoSugestoes');
+  if (termo.length < 2) return simFecharOrganizacoes();
+  const resultados = [];
+  for (const partido of SIM_PARTIDOS) {
+    const siglaPartido = normalizarTexto(partido.sigla);
+    const nomePartido = normalizarTexto(partido.nome);
+    const buscaFederacao = normalizarTexto(partido.federacao||'');
+    const correspondePartido = siglaPartido.includes(termo) || (termo.length >= 4 && nomePartido.includes(termo));
+    if (!correspondePartido && !buscaFederacao.includes(termo)) continue;
+    if (partido.federacao) {
+      const federacao=SIM_FEDERACOES.find(item=>item.nome===partido.federacao);
+      if (federacao) resultados.push({tipo:'federacao',...federacao,partidoOrigem:correspondePartido?partido.sigla:null});
+    } else {
+      resultados.push({tipo:'partido',...partido});
+    }
+  }
+  for (const federacao of SIM_FEDERACOES) {
+    const busca = normalizarTexto(`${federacao.nome} ${federacao.sigla} ${federacao.partidos.join(' ')}`);
+    if (busca.includes(termo)) resultados.push({tipo:'federacao',...federacao});
+  }
+  const unicos = resultados.filter((item,indice,todos) => todos.findIndex(outro => `${outro.tipo}:${outro.sigla}` === `${item.tipo}:${item.sigla}`) === indice).slice(0,8);
+  box.dataset.resultados = JSON.stringify(unicos);
+  box.innerHTML = unicos.map((item,indice) => item.tipo === 'partido'
+    ? `<button type="button" role="option" data-sim-organizacao-indice="${indice}"><strong>${simEscapar(item.sigla)} · ${simEscapar(item.nome)}</strong><small>${item.federacao ? `Integra ${simEscapar(item.federacao)}` : 'Partido sem federação cadastrada'}</small></button>`
+    : `<button type="button" role="option" data-sim-organizacao-indice="${indice}"><strong>${simEscapar(item.nome)}</strong><small>${simEscapar(item.partidos.join(' · '))}</small></button>`).join('')
+    + `<button type="button" role="option" data-sim-organizacao-nova><strong>Usar “${simEscapar(termoOriginal)}” neste cenário</strong><small>Organização não verificada; não altera a lista oficial.</small></button>`;
+  box.querySelectorAll('[data-sim-organizacao-indice]').forEach(botao => {
+    botao.addEventListener('click', () => simSelecionarOrganizacao(Number(botao.dataset.simOrganizacaoIndice)));
+  });
+  box.querySelector('[data-sim-organizacao-nova]')?.addEventListener('click', simUsarOrganizacaoNova);
+  box.classList.remove('hidden');
+  input.setAttribute('aria-expanded','true');
+}
+
+function simSelecionarOrganizacao(indice) {
+  const item = JSON.parse(document.getElementById('simPartidoSugestoes').dataset.resultados||'[]')[indice];
+  if (!item) return;
+  if (item.tipo === 'partido') {
+    simOrganizacaoSelecionada = { partido:item.sigla, partidoNome:item.nome, chapa:item.federacao||item.sigla, federacao:item.federacao||null, verificada:true };
+    document.getElementById('simPartido').value = item.sigla;
+  } else {
+    const partidoOrigem=item.partidoOrigem||null;
+    const partidoCadastro=partidoOrigem ? SIM_PARTIDOS.find(partido=>partido.sigla===partidoOrigem) : null;
+    simOrganizacaoSelecionada = { partido:partidoOrigem, partidoNome:partidoCadastro?.nome||null, chapa:item.nome, federacao:item.nome, partidos:item.partidos, verificada:true };
+    document.getElementById('simPartido').value = item.nome;
+  }
+  simMostrarOrganizacao();
+  simFecharOrganizacoes();
+  document.getElementById('simVotosCandidato').focus();
+}
+
+function simUsarOrganizacaoNova() {
+  const nome = document.getElementById('simPartido').value.trim();
+  if (!nome) return;
+  simOrganizacaoSelecionada = { partido:nome, partidoNome:nome, chapa:nome, federacao:null, verificada:false };
+  simMostrarOrganizacao();
+  simFecharOrganizacoes();
+  document.getElementById('simVotosCandidato').focus();
+}
+
+function simMostrarOrganizacao() {
+  const aviso = document.getElementById('simOrganizacaoSelecionada');
+  const org = simOrganizacaoSelecionada;
+  if (!org) return aviso.classList.add('hidden');
+  aviso.innerHTML = org.verificada
+    ? org.federacao
+      ? `<strong>Chapa de cálculo:</strong> ${simEscapar(org.federacao)}${org.partido ? `<br><strong>Partido:</strong> ${simEscapar(org.partido)}` : `<br>Escolha preferencialmente o partido integrante ao cadastrar uma candidatura.`}`
+      : `<strong>Partido selecionado:</strong> ${simEscapar(org.partido)}`
+    : `<strong>Organização não verificada:</strong> ${simEscapar(org.chapa)}. Será usada somente neste cenário.`;
+  aviso.classList.remove('hidden');
+}
+
+function simFecharOrganizacoes() {
+  document.getElementById('simPartidoSugestoes').classList.add('hidden');
+  document.getElementById('simPartido').setAttribute('aria-expanded','false');
+}
+
+function simResolverOrganizacaoDigitada(valor) {
+  const termo=normalizarTexto(valor);
+  const partido=SIM_PARTIDOS.find(item => normalizarTexto(item.sigla)===termo || normalizarTexto(item.nome)===termo);
+  if (partido) return { partido:partido.sigla, partidoNome:partido.nome, chapa:partido.federacao||partido.sigla, federacao:partido.federacao||null, verificada:true };
+  const federacao=SIM_FEDERACOES.find(item => normalizarTexto(item.nome)===termo || normalizarTexto(item.sigla)===termo);
+  if (federacao) return { partido:null, partidoNome:null, chapa:federacao.nome, federacao:federacao.nome, partidos:federacao.partidos, verificada:true };
+  return null;
+}
+
+function simPesquisarHistorico() {
+  simSelecionado = null;
+  document.getElementById('simCandidatoSelecionado').classList.add('hidden');
+  const input = document.getElementById('simNome');
+  const termoOriginal = input.value.trim();
+  const termo = normalizarTexto(termoOriginal);
+  const box = document.getElementById('simSugestoes');
+  if (termo.length < 3) return simFecharSugestoes();
+  const encontrados = simHistorico.filter(item => normalizarTexto(item.nome).includes(termo)).slice(0, 7);
+  const historico = encontrados.map((item, indice) => `<button type="button" role="option" data-sim-historico-indice="${indice}"><strong>${simEscapar(item.nome)}</strong><small>${simEscapar(CARGO_LABEL[item.cargo])} em ${simEscapar(item.ano)} · ${simEscapar(item.partido || 'partido não informado')}</small></button>`).join('');
+  box.innerHTML = historico + `<button type="button" role="option" data-sim-nome-novo><strong>Usar “${simEscapar(termoOriginal)}” como novo nome</strong><small>Será salvo somente neste cenário, fora da base histórica.</small></button>`;
+  box.querySelectorAll('[data-sim-historico-indice]').forEach(botao => {
+    botao.addEventListener('click', () => simSelecionarHistorico(Number(botao.dataset.simHistoricoIndice)));
+  });
+  box.querySelector('[data-sim-nome-novo]')?.addEventListener('click', simUsarNomeNovo);
+  box.dataset.resultados = JSON.stringify(encontrados);
+  box.classList.remove('hidden');
+  input.setAttribute('aria-expanded', 'true');
+}
+
+function simSelecionarHistorico(indice) {
+  const encontrados = JSON.parse(document.getElementById('simSugestoes').dataset.resultados || '[]');
+  const item = encontrados[indice];
+  if (!item) return;
+  simSelecionado = { origem: 'tse', ...item };
+  document.getElementById('simNome').value = item.nome;
+  const aviso = document.getElementById('simCandidatoSelecionado');
+  aviso.innerHTML = `<strong>Histórico selecionado:</strong> ${simEscapar(item.nome)} · ${simEscapar(CARGO_LABEL[item.cargo])} em ${simEscapar(item.ano)}. Informe abaixo o partido de 2026.`;
+  aviso.classList.remove('hidden');
+  simFecharSugestoes();
+  document.getElementById('simPartido').focus();
+}
+
+function simUsarNomeNovo() {
+  const nome = document.getElementById('simNome').value.trim();
+  if (!nome) return;
+  simSelecionado = { origem: 'cenario', nome };
+  const aviso = document.getElementById('simCandidatoSelecionado');
+  aviso.innerHTML = `<strong>Novo nome:</strong> ${simEscapar(nome)}. Ele ficará restrito a este cenário e não entrará na busca histórica.`;
+  aviso.classList.remove('hidden');
+  simFecharSugestoes();
+  document.getElementById('simPartido').focus();
+}
+
+function simFecharSugestoes() {
+  const box = document.getElementById('simSugestoes');
+  box.classList.add('hidden');
+  document.getElementById('simNome').setAttribute('aria-expanded', 'false');
+}
+
+function simAdicionarItem(tipo) {
+  const nomeDigitado = document.getElementById('simNome').value.trim();
+  const organizacaoDigitada = document.getElementById('simPartido').value.trim();
+  const votos = simNumero(document.getElementById('simVotosCandidato').value);
+  const status = document.getElementById('simFormularioStatus');
+  status.className = 'sim-status erro';
+  if (!organizacaoDigitada) { status.textContent = 'Informe o partido ou a federação.'; return; }
+  if (!votos) { status.textContent = 'Informe uma quantidade de votos maior que zero.'; return; }
+  if (tipo === 'candidato' && !nomeDigitado) { status.textContent = 'Pesquise ou digite o nome da pessoa.'; return; }
+  const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada)
+    || { partido:organizacaoDigitada, partidoNome:organizacaoDigitada, chapa:organizacaoDigitada, federacao:null, verificada:false };
+  if ((tipo === 'candidato' || tipo === 'legenda') && !org.partido) {
+    status.textContent = 'Selecione o partido integrante da federação. A busca mostrará automaticamente a chapa correta.';
+    return;
+  }
+  const partido = org.partido || org.chapa;
+  const chapa = org.chapa;
+  const nome = tipo === 'agregado' ? 'Votos de outras candidaturas' : tipo === 'legenda' ? `Votos de legenda · ${partido}` : (simSelecionado?.nome || nomeDigitado);
+  if (tipo === 'candidato') {
+    const repetido = simCenario().itens.some(item => item.tipo === 'candidato' && normalizarTexto(item.nome) === normalizarTexto(nome) && normalizarTexto(item.partido) === normalizarTexto(partido));
+    if (repetido) { status.textContent = 'Esta candidatura já foi adicionada a essa chapa.'; return; }
+    const quantidadeChapa = simCenario().itens.filter(item => item.tipo === 'candidato' && normalizarTexto(item.chapa||item.partido) === normalizarTexto(chapa)).length;
+    const limite = SIM_CARGOS[simEstado.cargo].limiteCandidatos;
+    if (quantidadeChapa >= limite) {
+      status.textContent = `Esta lista já atingiu o máximo de ${limite} candidaturas para ${SIM_CARGOS[simEstado.cargo].label.toLowerCase()}.`;
+      return;
+    }
+  }
+  simCenario().itens.push({
+    id: simId(), tipo, nome, partido, chapa, federacao:org.federacao||null, organizacaoVerificada:org.verificada, votos,
+    origem: tipo === 'candidato' ? (simSelecionado?.origem || 'cenario') : 'cenario', origemVotos: 'manual'
+  });
+  simCenario().ultimoAutopreenchimento = null;
+  simAutoPreview = null;
+  salvarSimulador();
+  simLimparFormulario();
+  status.className = 'sim-status ok';
+  status.textContent = tipo === 'agregado' ? 'Votos de outras candidaturas adicionados.' : tipo === 'legenda' ? 'Votos de legenda adicionados.' : 'Candidatura adicionada ao cenário.';
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderSimulador();
+}
+
+function simLimparFormulario() {
+  simSelecionado = null;
+  simOrganizacaoSelecionada = null;
+  for (const id of ['simNome','simPartido','simVotosCandidato']) document.getElementById(id).value = '';
+  document.getElementById('simCandidatoSelecionado').classList.add('hidden');
+  document.getElementById('simOrganizacaoSelecionada').classList.add('hidden');
+  simFecharSugestoes();
+  simFecharOrganizacoes();
+}
+
+function simRemoverItem(id) {
+  simCenario().itens = simCenario().itens.filter(item => item.id !== id);
+  simCenario().ultimoAutopreenchimento = null;
+  simAutoPreview = null;
+  salvarSimulador();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderSimulador();
+}
+
+function simQuociente(votosValidos, vagas) {
+  if (!votosValidos || !vagas) return 0;
+  const bruto = votosValidos / vagas;
+  const inteiro = Math.floor(bruto);
+  return bruto - inteiro > .5 ? inteiro + 1 : inteiro;
+}
+
+function simRatearVotos(candidaturas, total, metodo) {
+  if (!candidaturas.length) return [];
+  const pesosOriginais = candidaturas.map(item => simNumero(item.votos));
+  const somaPesos = pesosOriginais.reduce((soma, valor) => soma + valor, 0);
+  const usarIgual = metodo === 'igual' || somaPesos === 0;
+  const pesos = usarIgual ? candidaturas.map(() => 1) : pesosOriginais;
+  const soma = pesos.reduce((acumulado, valor) => acumulado + valor, 0);
+  const calculados = candidaturas.map((item, indice) => {
+    const exato = total * pesos[indice] / soma;
+    return { id:item.id, nome:item.nome, anterior:simNumero(item.votos), votos:Math.floor(exato), fracao:exato-Math.floor(exato), indice };
+  });
+  let restante = total - calculados.reduce((somaAtual, item) => somaAtual + item.votos, 0);
+  calculados.slice().sort((a,b) => b.fracao-a.fracao || a.indice-b.indice).forEach(item => {
+    if (restante > 0) { calculados[item.indice].votos += 1; restante -= 1; }
+  });
+  return { itens:calculados, metodoEfetivo:usarIgual ? 'igual' : 'proporcional' };
+}
+
+function simListasAutopreenchiveis(cenario = simCenario()) {
+  const config = SIM_CARGOS[simEstado.cargo];
+  const listas = new Map();
+  cenario.itens.filter(item => item.tipo === 'candidato').forEach(item => {
+    const chave = normalizarTexto(item.chapa || item.partido);
+    if (!listas.has(chave)) listas.set(chave, { chave, nome:item.chapa || item.partido, candidaturas:[] });
+    listas.get(chave).candidaturas.push(item);
+  });
+  return [...listas.values()].filter(lista =>
+    lista.candidaturas.length >= config.minimoAutopreenchimento &&
+    (lista.candidaturas.some(item => item.origemVotos === 'automatico') || lista.candidaturas.length < config.limiteCandidatos)
+  );
+}
+
+function simCriarPlanoAutopreenchimento(metodo) {
+  const cenario = simCenario();
+  const config = SIM_CARGOS[simEstado.cargo];
+  if (!cenario.votosValidos) throw new Error('Informe primeiro o total de votos válidos.');
+  const listas = simListasAutopreenchiveis(cenario);
+  if (!listas.length) throw new Error(`Adicione pelo menos ${config.minimoAutopreenchimento} candidaturas à mesma lista antes de usar o preenchimento rápido.`);
+
+  const automaticosExistentes = listas.flatMap(lista => lista.candidaturas.filter(item => item.origemVotos === 'automatico'));
+  const novos = [];
+  if (!automaticosExistentes.length) {
+    listas.forEach(lista => {
+      const faltantes = config.limiteCandidatos - lista.candidaturas.length;
+      const referencia = lista.candidaturas[0];
+      const mediaLista = Math.max(1, Math.round(lista.candidaturas.reduce((soma,item) => soma + simNumero(item.votos), 0) / lista.candidaturas.length));
+      for (let indice = 1; indice <= faltantes; indice += 1) {
+        novos.push({
+          id:simId(), tipo:'candidato', nome:`Outra candidatura simulada ${indice} · ${lista.nome}`,
+          partido:referencia.partido, chapa:referencia.chapa || referencia.partido,
+          federacao:referencia.federacao || null, organizacaoVerificada:referencia.organizacaoVerificada,
+          votos:mediaLista, origem:'simulada', origemVotos:'automatico', nova:true
+        });
+      }
+    });
+  }
+  const elegiveis = automaticosExistentes.length ? automaticosExistentes : novos;
+  if (!elegiveis.length) throw new Error('Todas as vagas das listas já estão preenchidas manualmente.');
+  const idsAutomaticos = new Set(automaticosExistentes.map(item => item.id));
+  const votosFixos = cenario.itens.filter(item => !idsAutomaticos.has(item.id)).reduce((soma,item) => soma + simNumero(item.votos), 0);
+  const totalDisponivel = simNumero(cenario.votosValidos) - votosFixos;
+  if (totalDisponivel <= 0) throw new Error(totalDisponivel < 0
+    ? 'Os valores manuais já ultrapassam o total de votos válidos. Corrija o placar antes de completar.'
+    : 'Todos os votos válidos já foram preenchidos; não há votos restantes para distribuir.');
+  const rateio = simRatearVotos(elegiveis, totalDisponivel, metodo);
+  const detalhes = rateio.itens.map(item => ({ ...item, nova:elegiveis.find(candidatura => candidatura.id === item.id)?.nova === true }));
+  return { metodoSolicitado:metodo, metodoEfetivo:rateio.metodoEfetivo, itens:detalhes, novos, votosFixos, totalDisponivel };
+}
+
+function simAbrirAutopreenchimento() {
+  simAutoPreview = null;
+  document.getElementById('simAutoOpcoes').classList.remove('hidden');
+  document.getElementById('simAutoPrevia').classList.add('hidden');
+  document.getElementById('simAutoProporcional').focus();
+}
+
+function simCancelarAutopreenchimento() {
+  simAutoPreview = null;
+  document.getElementById('simAutoOpcoes').classList.add('hidden');
+  document.getElementById('simAutoPrevia').classList.add('hidden');
+  document.getElementById('simAbrirAuto').focus();
+}
+
+function simPrepararAutopreenchimento(metodo) {
+  const previa = document.getElementById('simAutoPrevia');
+  try {
+    simAutoPreview = simCriarPlanoAutopreenchimento(metodo);
+    const fallback = metodo === 'proporcional' && simAutoPreview.metodoEfetivo === 'igual'
+      ? '<p class="sim-status aviso">Como não havia estimativas positivas para usar como referência, a prévia adotou a divisão igualitária.</p>' : '';
+    previa.innerHTML = `
+      <h3>Confira antes de aplicar</h3>
+      <p>Todos os nomes e votos preenchidos manualmente serão mantidos. As linhas abaixo correspondem apenas ao complemento automático.</p>
+      ${fallback}
+      <ul>${simAutoPreview.itens.map(item => `<li><strong>${simEscapar(item.nome)}</strong>: ${item.nova ? 'será criada com' : `${formatarNum(item.anterior)} →`} ${formatarNum(item.votos)} votos</li>`).join('')}</ul>
+      <div class="sim-form-acoes">
+        <button type="button" class="sim-btn-principal" id="simAutoConfirmar">Confirmar preenchimento</button>
+        <button type="button" class="sim-btn-secundario" id="simAutoVoltar">Voltar</button>
+      </div>`;
+    previa.classList.remove('hidden');
+    document.getElementById('simAutoOpcoes').classList.add('hidden');
+    document.getElementById('simAutoConfirmar').addEventListener('click', simConfirmarAutopreenchimento);
+    document.getElementById('simAutoVoltar').addEventListener('click', simAbrirAutopreenchimento);
+    document.getElementById('simAutoConfirmar').focus();
+  } catch (erro) {
+    simAutoPreview = null;
+    previa.innerHTML = `<p class="sim-status erro">${simEscapar(erro.message)}</p>`;
+    previa.classList.remove('hidden');
+  }
+}
+
+function simConfirmarAutopreenchimento() {
+  if (!simAutoPreview) return;
+  const cenario = simCenario();
+  cenario.ultimoAutopreenchimento = {
+    criadoEm:new Date().toISOString(),
+    itens:cenario.itens.map(item => ({ id:item.id, votos:item.votos, origemVotos:item.origemVotos || 'manual' })),
+    idsCriados:simAutoPreview.novos.map(item => item.id)
+  };
+  const porId = new Map(simAutoPreview.itens.map(item => [item.id,item.votos]));
+  cenario.itens.forEach(item => {
+    if (!porId.has(item.id)) return;
+    item.votos = porId.get(item.id);
+    item.origemVotos = 'automatico';
+  });
+  simAutoPreview.novos.forEach(item => {
+    cenario.itens.push({ ...item, votos:porId.get(item.id) || 0 });
+  });
+  simAutoPreview = null;
+  salvarSimulador();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderSimulador();
+  document.getElementById('simFormularioStatus').className = 'sim-status ok';
+  document.getElementById('simFormularioStatus').textContent = 'Preenchimento automático aplicado. Revise ou ajuste qualquer valor individualmente.';
+}
+
+function simDesfazerAutopreenchimento() {
+  const cenario = simCenario();
+  const anterior = cenario.ultimoAutopreenchimento;
+  if (!anterior?.itens) return;
+  const criados = new Set(anterior.idsCriados || []);
+  cenario.itens = cenario.itens.filter(item => !criados.has(item.id));
+  const porId = new Map(anterior.itens.map(item => [item.id,item]));
+  cenario.itens.forEach(item => {
+    const salvo = porId.get(item.id);
+    if (!salvo) return;
+    item.votos = simNumero(salvo.votos);
+    item.origemVotos = salvo.origemVotos || 'manual';
+  });
+  cenario.ultimoAutopreenchimento = null;
+  simAutoPreview = null;
+  salvarSimulador();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderSimulador();
+  document.getElementById('simFormularioStatus').className = 'sim-status ok';
+  document.getElementById('simFormularioStatus').textContent = 'Autopreenchimento desfeito. Os valores anteriores foram restaurados.';
+}
+
+function simEditarVotos(id, valor, input) {
+  const item = simCenario().itens.find(registro => registro.id === id && registro.tipo === 'candidato');
+  if (!item) return;
+  item.votos = simNumero(valor);
+  item.origemVotos = 'manual';
+  simAutoPreview = null;
+  salvarSimulador();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  const origem = input?.closest('.sim-item')?.querySelector('.sim-origem-votos');
+  if (origem) origem.textContent = item.origem === 'simulada' ? 'Candidatura simulada ajustada manualmente' : simCenario().ultimoAutopreenchimento ? 'Ajustado manualmente' : 'Informado manualmente';
+  renderPlacarSimulador();
+}
+
+function renderSimulador() {
+  const cenario = simCenario();
+  const config = SIM_CARGOS[simEstado.cargo];
+  document.querySelectorAll('[data-sim-cargo]').forEach(botao => {
+    const ativo = botao.dataset.simCargo === simEstado.cargo;
+    botao.classList.toggle('ativo', ativo);
+    botao.setAttribute('aria-pressed', String(ativo));
+  });
+  document.getElementById('simVotosValidos').value = cenario.votosValidos || '';
+  const qe = simQuociente(cenario.votosValidos, config.vagas);
+  document.getElementById('simQuociente').innerHTML = qe
+    ? `<strong>Quociente eleitoral estimado:</strong> ${formatarNum(qe)} votos para ${config.vagas} vagas.`
+    : 'Informe os votos válidos para ver o quociente estimado.';
+  const lista = document.getElementById('simLista');
+  const contagemChapas = new Map();
+  cenario.itens.filter(item=>item.tipo==='candidato').forEach(item => {
+    const chave=normalizarTexto(item.chapa||item.partido);
+    contagemChapas.set(chave,(contagemChapas.get(chave)||0)+1);
+  });
+  lista.innerHTML = cenario.itens.length ? cenario.itens.map(item => `
+    <article class="sim-item">
+      <div><div class="sim-item-nome">${simEscapar(item.nome)}</div><div class="sim-item-meta">${simEscapar(item.partido)}${normalizarTexto(item.chapa||item.partido)!==normalizarTexto(item.partido)?` → ${simEscapar(item.chapa)}`:''} · ${item.tipo === 'agregado' ? 'outras candidaturas não individualizadas' : item.tipo === 'legenda' ? 'votos de legenda' : item.origem === 'tse' ? 'selecionada do histórico' : item.origem === 'simulada' ? 'outra candidatura simulada' : 'nova neste cenário'}${item.tipo==='candidato'?` · ${contagemChapas.get(normalizarTexto(item.chapa||item.partido))} de ${config.limiteCandidatos} nomes na lista`:''}${item.tipo==='candidato'?`<br><span class="sim-origem-votos">${item.origemVotos === 'automatico' ? 'Estimativa automática' : item.origem === 'simulada' ? 'Candidatura simulada ajustada manualmente' : item.origemVotos === 'manual' && cenario.ultimoAutopreenchimento ? 'Ajustado manualmente' : 'Informado manualmente'}</span>`:''}${item.tipo==='candidato'?`<div class="sim-item-edicao"><label>Votos estimados<input type="number" min="0" step="1" inputmode="numeric" value="${simNumero(item.votos)}" data-sim-editar-votos="${simEscapar(item.id)}" aria-label="Editar votos de ${simEscapar(item.nome)}"></label></div>`:`<br><span class="sim-item-votos">${formatarNum(item.votos)} votos</span>`}</div></div>
+      <button type="button" class="sim-btn-remover" data-sim-remover-id="${simEscapar(item.id)}" aria-label="Remover ${simEscapar(item.nome)}">×</button>
+    </article>`).join('') : '<p class="sim-card-sub">Nenhum voto distribuído ainda.</p>';
+  lista.querySelectorAll('[data-sim-remover-id]').forEach(botao => {
+    botao.addEventListener('click', () => simRemoverItem(botao.dataset.simRemoverId));
+  });
+  lista.querySelectorAll('[data-sim-editar-votos]').forEach(input => {
+    input.addEventListener('input', () => simEditarVotos(input.dataset.simEditarVotos, input.value, input));
+  });
+  renderAutopreenchimento();
+  renderPlacarSimulador();
+}
+
+function renderAutopreenchimento() {
+  const cenario = simCenario();
+  const config = SIM_CARGOS[simEstado.cargo];
+  const candidaturas = cenario.itens.filter(item => item.tipo === 'candidato');
+  const listas = simListasAutopreenchiveis(cenario);
+  const liberado = listas.length > 0;
+  const area = document.getElementById('simAutoArea');
+  area.classList.toggle('hidden', !liberado);
+  if (!liberado) return;
+  const possuiAutomaticos = candidaturas.some(item => item.origemVotos === 'automatico');
+  document.getElementById('simAutoResumo').textContent = possuiAutomaticos
+    ? 'Seus dados manuais permanecem fixos. Você pode ajustar as candidaturas simuladas e redistribuir somente o complemento automático.'
+    : `${listas.length === 1 ? 'Uma lista atingiu' : `${listas.length} listas atingiram`} o mínimo de ${config.minimoAutopreenchimento} candidaturas. O preenchimento rápido criará apenas os nomes simulados que faltam até o limite legal da lista.`;
+  const abrir = document.getElementById('simAbrirAuto');
+  abrir.textContent = possuiAutomaticos ? 'Redistribuir votos restantes' : 'Completar votos automaticamente';
+  abrir.disabled = !simNumero(cenario.votosValidos);
+  document.getElementById('simDesfazerAuto').classList.toggle('hidden', !cenario.ultimoAutopreenchimento);
+  document.getElementById('simAutoOpcoes').classList.add('hidden');
+  document.getElementById('simAutoPrevia').classList.add('hidden');
+}
+
+function renderPlacarSimulador() {
+  const cenario = simCenario();
+  const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
+  const validos = simNumero(cenario.votosValidos);
+  const diferenca = validos - distribuido;
+  const percentual = validos ? Math.min(100, distribuido / validos * 100) : 0;
+  document.getElementById('simProgresso').style.width = `${percentual}%`;
+  document.getElementById('simPlacarNumeros').textContent = `${formatarNum(distribuido)} de ${formatarNum(validos)} votos`;
+  const titulo = document.getElementById('simPlacarTitulo');
+  const status = document.getElementById('simPlacarStatus');
+  const calcular = document.getElementById('simCalcular');
+  calcular.disabled = true;
+  if (!validos) {
+    titulo.textContent = 'Comece pelos votos válidos';
+    status.className = 'sim-status aviso';
+    status.textContent = 'Informe o total de votos válidos.';
+  } else if (diferenca > 0) {
+    titulo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
+    status.className = 'sim-status aviso';
+    status.textContent = 'Associe os votos restantes a candidaturas, partidos ou federações. Sem isso, as vagas não podem ser calculadas corretamente.';
+  } else if (diferenca < 0) {
+    titulo.textContent = `${formatarNum(Math.abs(diferenca))} votos a mais`;
+    status.className = 'sim-status erro';
+    status.textContent = 'A soma ultrapassou os votos válidos. Reduza as estimativas ou corrija o total de votos válidos.';
+  } else {
+    titulo.textContent = 'Cenário completo';
+    status.className = 'sim-status ok';
+    status.textContent = 'Todos os votos foram distribuídos. O cálculo está liberado.';
+    calcular.disabled = cenario.itens.length === 0;
+  }
+}
+
+function calcularVagasSimulador(cenario, cargo) {
+  const config = SIM_CARGOS[cargo];
+  const qe = simQuociente(cenario.votosValidos, config.vagas);
+  const mapa = new Map();
+  for (const item of cenario.itens) {
+    const nomeChapa = item.chapa || item.partido;
+    const chave = normalizarTexto(nomeChapa);
+    if (!mapa.has(chave)) mapa.set(chave, { nome: nomeChapa, votos: 0, vagas: [], candidatos: [], agregados: 0, legenda: 0 });
+    const partido = mapa.get(chave);
+    partido.votos += item.votos;
+    if (item.tipo === 'candidato') partido.candidatos.push({ ...item, eleito: false });
+    else if (item.tipo === 'legenda') partido.legenda += item.votos;
+    else partido.agregados += item.votos;
+  }
+  const partidos = [...mapa.values()];
+  partidos.forEach(partido => partido.candidatos.sort((a,b) => {
+    if (b.votos !== a.votos) return b.votos - a.votos;
+    const chave = `${normalizarTexto(partido.nome)}|${a.votos}`;
+    const maisVelho = cenario.desempates?.[chave];
+    if (maisVelho === a.nome) return -1;
+    if (maisVelho === b.nome) return 1;
+    return a.nome.localeCompare(b.nome, 'pt-BR');
+  }));
+  let preenchidas = 0;
+  for (const partido of partidos) {
+    const qp = Math.floor(partido.votos / qe);
+    const elegiveis = partido.candidatos.filter(candidato => candidato.votos >= qe * .10);
+    for (const candidato of elegiveis.slice(0, qp)) {
+      candidato.eleito = true;
+      partido.vagas.push({ candidato, fase: 'quociente partidário' });
+      preenchidas += 1;
+    }
+  }
+  function distribuir(fase, filtrar) {
+    while (preenchidas < config.vagas) {
+      const concorrentes = partidos.map(partido => {
+        const candidato = partido.candidatos.find(item => !item.eleito && filtrar(partido, item));
+        return candidato ? { partido, candidato, media: partido.votos / (partido.vagas.length + 1) } : null;
+      }).filter(Boolean).sort((a,b) => b.media - a.media || b.partido.votos - a.partido.votos);
+      if (!concorrentes.length) break;
+      const vencedor = concorrentes[0];
+      vencedor.candidato.eleito = true;
+      vencedor.partido.vagas.push({ candidato: vencedor.candidato, fase, media: vencedor.media });
+      preenchidas += 1;
+    }
+  }
+  distribuir('sobra 80/20', (partido, candidato) => partido.votos >= qe * .80 && candidato.votos >= qe * .20);
+  distribuir('sobra geral', () => true);
+  const eleitos = partidos.flatMap(partido => partido.vagas.map(vaga => ({ ...vaga, partido: partido.nome })));
+  const suplentes = partidos.flatMap(partido => partido.candidatos.filter(candidato => !candidato.eleito).map(candidato => ({ ...candidato, partido: partido.nome })));
+  const empates = partidos.flatMap(partido => partido.candidatos.slice(1).flatMap((candidato, indice) => {
+    const anterior = partido.candidatos[indice];
+    if (candidato.votos !== anterior.votos) return [];
+    const chave = `${normalizarTexto(partido.nome)}|${candidato.votos}`;
+    if (cenario.desempates?.[chave]) return [];
+    return [{ chave, partido: partido.nome, votos: candidato.votos, nomes: [anterior.nome, candidato.nome] }];
+  }));
+  return { qe, partidos, eleitos, suplentes, empates, vagasNaoPreenchidas: config.vagas - preenchidas };
+}
+
+function simCalcularResultado() {
+  const cenario = simCenario();
+  const total = cenario.itens.reduce((soma,item) => soma + item.votos, 0);
+  if (!cenario.votosValidos || total !== cenario.votosValidos) return;
+  const resultado = calcularVagasSimulador(cenario, simEstado.cargo);
+  const agregados = resultado.partidos.reduce((soma, partido) => soma + partido.agregados, 0);
+  const legendas = resultado.partidos.reduce((soma, partido) => soma + partido.legenda, 0);
+  const card = document.getElementById('simResultadoCard');
+  const out = document.getElementById('simResultado');
+  const resumoPartidos = resultado.partidos.sort((a,b)=>b.vagas.length-a.vagas.length || b.votos-a.votos).map(partido => `<li><strong>${simEscapar(partido.nome)}</strong>: ${formatarNum(partido.votos)} votos · ${partido.vagas.length} vaga${partido.vagas.length===1?'':'s'}</li>`).join('');
+  const eleitos = resultado.eleitos.map(item => `<li><strong>${simEscapar(item.candidato.nome)}</strong> · ${simEscapar(item.partido)}<br><span class="sim-item-meta">${formatarNum(item.candidato.votos)} votos · ${simEscapar(item.fase)}</span></li>`).join('');
+  const suplentes = resultado.suplentes.sort((a,b)=>a.partido.localeCompare(b.partido,'pt-BR') || b.votos-a.votos).map(item => `<li><strong>${simEscapar(item.nome)}</strong> · ${simEscapar(item.partido)} · ${formatarNum(item.votos)} votos</li>`).join('');
+  out.innerHTML = `
+    <p><strong>Quociente eleitoral:</strong> ${formatarNum(resultado.qe)} votos</p>
+    ${legendas ? `<p><strong>Votos de legenda:</strong> ${formatarNum(legendas)} votos, somados somente ao total das respectivas chapas.</p>` : ''}
+    ${agregados ? `<div class="sim-aviso"><strong>Resultado nominal parcial.</strong> Existem ${formatarNum(agregados)} votos sem nome. Eles entram no total das chapas, mas podem pertencer a candidaturas capazes de alterar as pessoas eleitas ou suplentes. Para confirmar nomes, individualize as candidaturas competitivas.</div>` : ''}
+    ${resultado.empates.map((empate, empateIndice) => `<div class="sim-aviso"><strong>Empate a resolver.</strong> ${simEscapar(empate.nomes.join(' e '))} receberam ${formatarNum(empate.votos)} votos no ${simEscapar(empate.partido)}. Quem é mais velho?<div class="sim-form-acoes">${empate.nomes.map((nome, nomeIndice) => `<button type="button" class="sim-btn-secundario" data-sim-empate="${empateIndice}" data-sim-nome="${nomeIndice}">${simEscapar(nome)}</button>`).join('')}</div></div>`).join('')}
+    ${resultado.vagasNaoPreenchidas ? `<div class="sim-aviso"><strong>Faltam nomes competitivos.</strong> ${resultado.vagasNaoPreenchidas} vaga(s) não puderam ser atribuídas nominalmente. Cadastre as candidaturas que podem ocupar essas posições.</div>` : ''}
+    <h3>Vagas por partido ou federação</h3><ul>${resumoPartidos || '<li>Nenhuma vaga calculada.</li>'}</ul>
+    <h3>Pessoas eleitas — projeção</h3><ol>${eleitos || '<li>Nenhum nome pôde ser confirmado.</li>'}</ol>
+    <h3>Pessoas suplentes — projeção</h3><ul>${suplentes || '<li>Nenhuma pessoa suplente individualizada.</li>'}</ul>
+    <details class="sim-ajuda"><summary>❔ Como o resultado foi calculado?</summary><p>O simulador aplicou o quociente eleitoral, as vagas diretas, a etapa de sobras 80/20 e, depois, as sobras gerais por maiores médias. Esta é uma projeção baseada nos números informados, não um resultado oficial.</p></details>`;
+  out.querySelectorAll('[data-sim-empate]').forEach(botao => {
+    botao.addEventListener('click', () => {
+      const empate = resultado.empates[Number(botao.dataset.simEmpate)];
+      const nome = empate?.nomes[Number(botao.dataset.simNome)];
+      if (empate && nome) simResolverEmpate(empate.chave, nome);
+    });
+  });
+  card.classList.remove('hidden');
+  card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  document.getElementById('anuncioResultados').textContent = `Simulação concluída: ${resultado.eleitos.length} nomes projetados para eleição.`;
+}
+
+function simResolverEmpate(chave, nome) {
+  simCenario().desempates[chave] = nome;
+  salvarSimulador();
+  simCalcularResultado();
+}
+
+Object.assign(window, { simSelecionarHistorico, simUsarNomeNovo, simRemoverItem, simResolverEmpate });
+
 // ---------- TELA SOBRE ----------
 function abrirTelaSobre() {
   fecharBuscaUniversal();
@@ -4364,7 +5381,10 @@ function abrirTelaSobre() {
 }
 
 function initSobre() {
-  document.getElementById('sobreDataGeracao').textContent = 'Dados gerados em: ' + DB.meta.gerado_em;
+  document.getElementById('sobreAppVersion').textContent = `v ${CONFIG.appVersion}`;
+  document.getElementById('sobreDatasetVersion').textContent = CONFIG.datasetVersion;
+  document.getElementById('sobreUltimaEleicao').textContent = Math.max(...DB.meta.anos.map(Number));
+  document.getElementById('sobreDataGeracao').textContent = DB.meta.gerado_em || 'Não informada';
 }
 
 // ---------- UTILS ----------
@@ -4743,24 +5763,12 @@ function limparSessaoLocal() {
   removerCredencialSegura('tester_token').catch(() => undefined);
   localStorage.removeItem('pe26_sessao_token');
   localStorage.removeItem('pe26_device_id');
-  localStorage.removeItem('pe26_sessao_validada_em');
   localStorage.removeItem('pe26_acesso_liberado');
 }
 
 async function limparPersistenciaLegada() {
   localStorage.removeItem('pe26_sessao_token');
   localStorage.removeItem('pe26_device_id');
-  if ('caches' in window) await caches.delete(PRIVATE_DATASET_CACHE);
-}
-
-function sessaoOfflineValida() {
-  return false;
-}
-
-function validacaoOfflineRecente() {
-  const validadaEm = Number(localStorage.getItem('pe26_sessao_validada_em'));
-  const limiteMs = Number(CONFIG.offlineSessionGraceHours || 0) * 60 * 60 * 1000;
-  return Boolean(validadaEm && limiteMs > 0 && Date.now() - validadaEm <= limiteMs);
 }
 
 async function redefinirAcesso() {
@@ -4773,7 +5781,6 @@ async function redefinirAcesso() {
     }));
   }
   limparSessaoLocal();
-  if ('caches' in window) tarefas.push(caches.delete(PRIVATE_DATASET_CACHE));
   if (AUTH_CLIENT) tarefas.push(AUTH_CLIENT.auth.signOut());
   await Promise.allSettled(tarefas);
   SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
@@ -4814,16 +5821,14 @@ async function chamarRpc(nome, body) {
 async function validarSessaoAtual() {
   const token = obterSessaoToken();
   const authSession = await obterAuthSession();
-  if (authSession && !navigator.onLine) return validacaoOfflineRecente();
   if (authSession && navigator.onLine) {
     const { data: possuiLicenca } = await AUTH_CLIENT.rpc('possui_licenca');
     if (possuiLicenca === true) {
-      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
       return true;
     }
   }
   if (!token) return false;
-  if (!navigator.onLine) return sessaoOfflineValida();
+  if (!navigator.onLine) return false;
 
   try {
     const resultado = await chamarRpc('validar_sessao', {
@@ -4831,7 +5836,6 @@ async function validarSessaoAtual() {
       p_device_id: obterDeviceId()
     });
     if (resultado && resultado.valida === true) {
-      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
       return true;
     }
   } catch (erro) {
@@ -4901,7 +5905,6 @@ async function ativarAcessoTester() {
     const resultado = await resp.json();
     testerSessionToken = resultado.sessao_token;
     await gravarCredencialSegura('tester_token', testerSessionToken);
-    localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
     SESSION_CHANNEL?.postMessage({ type: 'session-changed' });
     await iniciarApp();
     esconderTelaAtivacao();
@@ -4943,7 +5946,6 @@ async function ativarAcesso() {
     if (rpcError) throw rpcError;
 
     if (resultado && resultado.sucesso === true) {
-      localStorage.setItem('pe26_sessao_validada_em', String(Date.now()));
       localStorage.removeItem('pe26_acesso_liberado');
       await iniciarApp();
       esconderTelaAtivacao();
@@ -4965,9 +5967,7 @@ async function ativarAcesso() {
 let adminResumoAtual = null;
 
 function escaparAdmin(valor) {
-  return String(valor ?? '').replace(/[&<>"']/g, caractere => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  })[caractere]);
+  return escaparHtml(valor);
 }
 
 async function chamarAdmin(action, payload = {}) {
@@ -5014,17 +6014,23 @@ function renderizarAdmin(resumo) {
   );
   document.getElementById('adminTabelaLicencas').innerHTML = tabelaAdmin(
     ['E-mail','Código','Status','Último acesso','Ação'],
-    resumo.licenses.map(item=>`<tr><td>${escaparAdmin(item.email||item.user_id)}</td><td>${escaparAdmin(item.codigos_acesso?.codigo||'—')}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${item.status==='ativa'?`<button onclick="adminRevogarLicenca('${escaparAdmin(item.id)}')">Revogar</button>`:'—'}</td></tr>`)
+    resumo.licenses.map(item=>`<tr><td>${escaparAdmin(item.email||item.user_id)}</td><td>${escaparAdmin(item.codigos_acesso?.codigo||'—')}</td><td>${escaparAdmin(item.status)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${item.status==='ativa'?`<button type="button" data-admin-revogar-licenca="${escaparAdmin(item.id)}">Revogar</button>`:'—'}</td></tr>`)
   );
   document.getElementById('adminTabelaSessoes').innerHTML = tabelaAdmin(
     ['Dispositivo','Último acesso','Expira','Estado','Ação'],
-    resumo.sessions.map(item=>`<tr><td>${escaparAdmin(item.device_id)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${escaparAdmin(item.expira_em)}</td><td>${item.revogado_em?'Revogada':'Ativa'}</td><td>${item.revogado_em?'—':`<button onclick="adminRevogarTester('${escaparAdmin(item.id)}')">Revogar</button>`}</td></tr>`)
+    resumo.sessions.map(item=>`<tr><td>${escaparAdmin(item.device_id)}</td><td>${escaparAdmin(item.ultimo_acesso_em)}</td><td>${escaparAdmin(item.expira_em)}</td><td>${item.revogado_em?'Revogada':'Ativa'}</td><td>${item.revogado_em?'—':`<button type="button" data-admin-revogar-tester="${escaparAdmin(item.id)}">Revogar</button>`}</td></tr>`)
   );
   document.getElementById('adminTabelaAuditoria').innerHTML = tabelaAdmin(
     ['Data','Administrador','Ação','Alvo'],
     resumo.logs.map(item=>`<tr><td>${escaparAdmin(item.criado_em)}</td><td>${escaparAdmin(item.administrador_email)}</td><td>${escaparAdmin(item.acao)}</td><td>${escaparAdmin(item.alvo_tipo)} ${escaparAdmin(item.alvo_id||'')}</td></tr>`)
   );
   prepararTabelasAdminResponsivas();
+  document.querySelectorAll('[data-admin-revogar-licenca]').forEach(botao => {
+    botao.addEventListener('click', () => adminRevogarLicenca(botao.dataset.adminRevogarLicenca));
+  });
+  document.querySelectorAll('[data-admin-revogar-tester]').forEach(botao => {
+    botao.addEventListener('click', () => adminRevogarTester(botao.dataset.adminRevogarTester));
+  });
 }
 
 async function carregarPainelAdmin() {
@@ -5158,7 +6164,37 @@ async function iniciarApp() {
   }
 }
 
+function vincularAcoesEstaticas() {
+  const acoes = {
+    btnAplicarAtualizacao: aplicarAtualizacao,
+    btnEnviarLink: enviarLinkMagico,
+    btnAtivar: ativarAcesso,
+    btnTester: ativarAcessoTester,
+    btnAdminAtivacao: abrirPainelAdmin,
+    btnAdminRodape: abrirPainelAdmin,
+    btnFecharAdmin: fecharPainelAdmin,
+    btnAdminCriarCodigos: adminCriarCodigos,
+    btnAdminGerarMaster: adminGerarMaster,
+    btnAdminRotacionarMaster: adminRotacionarMaster,
+    btnVoltar: voltarHome,
+    btnFonteMenor: diminuirTamanhoFonte,
+    btnFonteGrande: aumentarTamanhoFonte,
+    btnEstilo: alternarEstilo,
+    btnSobre: abrirTelaSobre
+  };
+  Object.entries(acoes).forEach(([id, acao]) => document.getElementById(id)?.addEventListener('click', acao));
+  document.getElementById('btnMicrofoneUniversal')?.addEventListener('click', () => iniciarBuscaPorVoz('buscaUniversalInput'));
+  document.getElementById('btnMicrofoneCandidato')?.addEventListener('click', () => iniciarBuscaPorVoz('buscaCandidatoInput'));
+  document.querySelectorAll('[data-exportar-alvo]').forEach(botao => {
+    botao.addEventListener('click', () => exportarComoImagem(botao.dataset.exportarAlvo, botao.dataset.exportarNome));
+  });
+  document.querySelectorAll('[data-tipo-eleicao]').forEach(botao => {
+    botao.addEventListener('click', () => abrirTipoEleicao(Number(botao.dataset.tipoEleicao)));
+  });
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+  vincularAcoesEstaticas();
   iniciarAnunciosDeResultados();
   atualizarConectividade();
   definirCarregamento(true, 'Verificando sua sessão...');
@@ -5225,8 +6261,7 @@ window.diagnosticoPEIA = () => Object.freeze({
   supabaseProjectRef: new URL(SUPABASE_URL).hostname.split('.')[0],
   online: navigator.onLine,
   serviceWorkerControlled: Boolean(navigator.serviceWorker?.controller),
-  hasSession: Boolean(obterSessaoToken()),
-  sessionLastValidatedAt: localStorage.getItem('pe26_sessao_validada_em')
+  hasSession: Boolean(obterSessaoToken())
 });
 
 // Insere um hífen a cada 4 caracteres enquanto o usuário digita, sem impor

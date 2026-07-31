@@ -103,6 +103,15 @@ for (const selector of ['.topbar .voltar', '.btn-exportar-fixo', '.candidato-det
 }
 assert(/select,\s*input\[type="text"\],\s*input\[type="search"\][\s\S]*?min-height:\s*44px/.test(html),
   'Campos não mantêm altura mínima de 44 px.');
+assert(html.includes('Desenvolvido por Girassol Inteligência'), 'Assinatura completa da Girassol Inteligência ausente.');
+assert(/html:not\(\[data-estilo="aeroporto"\]\)\s+\.home-hero h1\s*\{[\s\S]*?color:\s*var\(--text-light\)[\s\S]*?background:\s*none/.test(html),
+  'Título principal do modo padrão ainda não possui cor sólida compatível com o layout.');
+assert(/\.rodape-marca\s*\{[\s\S]*?order:\s*2/.test(html) && /\.rodape-acoes\s*\{[\s\S]*?order:\s*1/.test(html),
+  'Assinatura institucional não está abaixo dos controles do rodapé.');
+assert(!/@media\s*\(min-width:\s*480px\)[\s\S]*?\.rodape-fixo\s*\{[^}]*flex-direction:\s*row/.test(html),
+  'Assinatura institucional não pode voltar para a mesma linha dos controles em telas largas.');
+assert(/\.rodape-texto\s*\{[\s\S]*?white-space:\s*nowrap[\s\S]*?text-overflow:\s*clip/.test(html),
+  'Assinatura institucional pode ser truncada ou quebrada.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');

@@ -1,4 +1,6 @@
-# Homologação da release 2.12.1
+# Registro histórico de homologação — versão interna 2.12.1
+
+> Este documento registra a homologação anterior à adoção da linha pública `1.x`. Não representa a versão atual do localhost.
 
 Data: 30/07/2026  
 Produção: `https://plataformaeleitoral.ia.br`

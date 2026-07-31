@@ -1,6 +1,8 @@
 # Transição de autenticação e proteção dos dados
 
-## Estado desta entrega
+## Registro histórico e estado atual
+
+As referências `2.7`, `2.8` e `2.9` abaixo pertencem à numeração interna anterior. A linha pública atual usa versionamento semântico iniciado em `1.0.0`.
 
 O frontend 2.7.0 substitui a flag booleana por um token opaco. A migration
 `20260730120000_criar_sessoes_acesso.sql`:
@@ -11,8 +13,7 @@ O frontend 2.7.0 substitui a flag booleana por um token opaco. A migration
 - permite revogação;
 - remove códigos de origem `admin`, considerados comprometidos.
 
-O cliente revalida a sessão no boot quando está online. Para preservar o PWA,
-existe uma tolerância offline de 168 horas após a última validação.
+O cliente revalida a sessão no boot. Não existe tolerância de autorização offline: autenticação e download do dataset protegido exigem conexão. O PWA armazena apenas a estrutura pública e os recursos estáticos.
 
 Na versão 2.8.0, o dataset deixa o HTML e passa para o bucket privado
 `private-datasets`. A Edge Function `dataset` valida token + device ID antes de
@@ -66,8 +67,8 @@ Implementado:
 1. shell público sem dataset;
 2. bucket privado sem policies para `anon` ou `authenticated`;
 3. entrega mediada por função com sessão revogável;
-4. cache offline separado por `datasetVersion`;
-5. exclusão do cache durante logout.
+4. resposta do dataset marcada como privada e `no-store`;
+5. ausência de persistência do dataset no Cache Storage.
 
 ## Critérios de conclusão
 

@@ -38,7 +38,7 @@ assert(index.includes('resultado.sessao_token'), 'ativação deve exigir token d
 assert(!index.includes('id="dataset-b64"'), 'dataset protegido não pode permanecer embutido no HTML');
 assert(Buffer.byteLength(index, 'utf8') < 500_000, 'index.html voltou a carregar um payload incompatível com o shell público');
 assert(index.includes('CONFIG.datasetFunctionUrl'), 'frontend deve obter o dataset pela Edge Function');
-assert(index.includes("caches.delete(PRIVATE_DATASET_CACHE)"), 'frontend deve remover caches privados legados');
+assert(!index.includes('PRIVATE_DATASET_CACHE'), 'frontend não deve manter código residual de cache privado');
 assert(!index.includes('privateCache.put('), 'dataset privado não pode ser persistido para uso offline');
 assert(!index.includes("localStorage.setItem('pe26_sessao_token'"), 'token tester não pode ser persistido em localStorage');
 assert(!index.includes("localStorage.setItem('pe26_device_id'"), 'device id tester não pode ser persistido em localStorage');
@@ -59,7 +59,7 @@ assert(!index.includes("evento === 'SIGNED_IN' || evento === 'SIGNED_OUT'"),
   'eventos automáticos de Auth não devem provocar recarga cruzada entre abas');
 assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
-assert(configSource.includes('offlineSessionGraceHours: 0'), 'dataset privado não deve aceitar autorização offline');
+assert(!configSource.includes('offlineSessionGraceHours'), 'configuração não deve sugerir autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
 assert(
   /<details class="acesso-secundario" id="acessoPorCodigo">\s*<summary>Tenho um código de acesso<\/summary>/.test(index),

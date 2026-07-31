@@ -2,10 +2,11 @@
 // Navegações usam network-first para não prender HTML/dataset antigo.
 // Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v38';
+const CACHE_VERSION = 'eleicoes-ms-v49';
 const ASSETS = [
   '/index.html',
   '/runtime-config.js',
+  '/security.js',
   '/version.json',
   '/manifest.json',
   '/icons/icon-192.png',
@@ -17,8 +18,8 @@ const ASSETS = [
 
 // html2canvas (CDN externo, usado só na exportação de imagem) é cacheado
 // à parte, sem bloquear a instalação: cache.addAll() é atômico e uma falha
-// de CORS/rede nesse recurso cross-origin não pode derrubar o offline-first
-// do resto do app.
+// de CORS/rede nesse recurso cross-origin não pode impedir o carregamento
+// da estrutura pública do app. Autenticação e dataset continuam online.
 const ASSET_HTML2CANVAS = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
 
 // Instala e pré-cacheia todos os assets essenciais
@@ -28,7 +29,7 @@ self.addEventListener('install', (event) => {
       return cache.addAll(ASSETS).then(() =>
         cache.add(ASSET_HTML2CANVAS).catch(() => {
           // sem internet na primeira instalação ou CDN indisponível:
-          // exportação de imagem fica indisponível offline, resto do app segue normal
+          // exportação de imagem fica indisponível; a estrutura pública segue disponível
         })
       );
     })
