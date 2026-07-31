@@ -2,6 +2,14 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.8.1 — 31/07/2026
+
+- Login passa a distinguir compradores e contas já ativadas do fluxo de código-convite.
+- Código-convite apresentado como caminho secundário e habilitado somente após a confirmação do e-mail.
+- Tela “Sobre” recebe chamada comercial para compartilhamento do acesso.
+- Assinatura da Girassol Inteligência reposicionada com link institucional.
+- Saída segura da conta adicionada como controle circular discreto ao final da tela “Sobre”.
+
 ## 1.8.0 — 31/07/2026
 
 - Login reorganizado em duas etapas explícitas: confirmação do e-mail e vinculação do código.

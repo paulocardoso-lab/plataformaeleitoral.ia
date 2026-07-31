@@ -742,6 +742,13 @@ summary:focus-visible {
 }
 .login-etapa-bloqueada { opacity: .72; }
 .login-etapa-bloqueada #ativacaoInput { cursor: not-allowed; }
+.convite-detalhes { margin-top: 16px; }
+.convite-detalhes > summary {
+  color: var(--neon-cyan);
+  font-size: .82rem;
+  font-weight: 700;
+}
+.convite-detalhes > .login-etapa { margin-top: 6px; }
 
 #ativacaoInput, #ativacaoEmail, #testerPassword {
   width: 100%;
@@ -1599,6 +1606,7 @@ canvas {
   font-size: .8125rem;
   font-weight: 500;
   text-decoration: none;
+  margin-top: 38px;
 }
 .sobre-girassol-link:hover,
 .sobre-girassol-link:focus-visible { text-decoration: underline; }
@@ -1607,12 +1615,15 @@ canvas {
   height: 34px;
   object-fit: contain;
 }
-.sobre-girassol-descricao {
-  margin: 10px 0 14px;
+.sobre-chamada-comercial {
+  margin: 4px 0 16px;
   color: var(--text-light);
-  font-size: .8125rem;
-  line-height: 1.5;
+  font-size: clamp(1rem, 3.8vw, 1.18rem);
+  font-weight: 700;
+  line-height: 1.45;
+  text-wrap: balance;
 }
+.sobre-chamada-comercial strong { color: var(--neon-yellow); }
 .sobre-compartilhar {
   width: 100%;
   min-height: 48px;
@@ -1632,6 +1643,27 @@ canvas {
   color: var(--text-light);
   font-size: .75rem;
 }
+.sobre-sair {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: 14px auto 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.sobre-sair svg { width: 16px; height: 16px; }
+.sobre-sair:hover,
+.sobre-sair:focus-visible {
+  color: var(--text-light);
+  border-color: var(--text-muted);
+  background: rgba(255,255,255,.035);
+}
+.sobre-sair:disabled { opacity: .55; cursor: default; }
 
 .btn-ver-detalhes {
   min-height: 44px;
@@ -2089,15 +2121,14 @@ canvas {
       <header class="login-header">
         <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
         <h2>Acesse sua conta</h2>
-        <p class="login-subtitulo">Receba um link seguro no seu e-mail para acessar a plataforma.</p>
+        <p class="login-subtitulo">Entre com o e-mail usado na compra ou em uma ativação anterior.</p>
       </header>
 
       <section class="login-etapa" aria-labelledby="loginEmailTitulo">
         <div class="login-etapa-cabecalho">
-          <span class="login-etapa-numero" aria-hidden="true">1</span>
           <div>
-            <h3 class="login-etapa-titulo" id="loginEmailTitulo">Confirme seu e-mail</h3>
-            <p class="login-etapa-descricao">Enviaremos um link seguro para identificar sua conta.</p>
+            <h3 class="login-etapa-titulo" id="loginEmailTitulo">Acesse com seu e-mail</h3>
+            <p class="login-etapa-descricao">Comprou a plataforma ou já ativou seu acesso? Use o mesmo e-mail cadastrado. Você não precisa de código.</p>
           </div>
         </div>
         <div class="login-grupo">
@@ -2109,26 +2140,29 @@ canvas {
         <button id="btnEnviarLink">Enviar link para meu e-mail</button>
       </section>
 
-      <section class="login-etapa login-etapa-bloqueada" id="acessoPorCodigo" aria-labelledby="loginCodigoTitulo">
-        <div class="login-etapa-cabecalho">
-          <span class="login-etapa-numero" aria-hidden="true">2</span>
-          <div>
-            <h3 class="login-etapa-titulo" id="loginCodigoTitulo">Vincule seu código</h3>
-            <p class="login-etapa-descricao" id="loginCodigoDescricao">O código não substitui o login. Confirme primeiro seu e-mail pelo link acima.</p>
+      <details class="acesso-secundario convite-detalhes" id="acessoPorCodigo">
+        <summary>Recebi um código-convite</summary>
+        <section class="login-etapa login-etapa-bloqueada" id="conviteCodigoEtapa" aria-labelledby="loginCodigoTitulo">
+          <div class="login-etapa-cabecalho">
+            <span class="login-etapa-numero" aria-hidden="true">2</span>
+            <div>
+              <h3 class="login-etapa-titulo" id="loginCodigoTitulo">Vincule o convite à sua conta</h3>
+              <p class="login-etapa-descricao" id="loginCodigoDescricao">Primeiro confirme seu e-mail pelo link acima. Depois informe o código-convite recebido.</p>
+            </div>
           </div>
-        </div>
-        <p class="login-conta-confirmada hidden" id="loginContaConfirmada"></p>
-        <div class="acesso-secundario-conteudo">
-          <div class="login-grupo">
-            <label class="login-label" for="ativacaoInput">Código fornecido pelo administrador</label>
-            <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
-                   inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-                   autocapitalize="characters" autocomplete="off" spellcheck="false" disabled>
-            <small class="login-ajuda" id="loginCodigoAjuda">Aguardando a confirmação do e-mail.</small>
+          <p class="login-conta-confirmada hidden" id="loginContaConfirmada"></p>
+          <div class="acesso-secundario-conteudo">
+            <div class="login-grupo">
+              <label class="login-label" for="ativacaoInput">Código-convite</label>
+              <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
+                     inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                     autocapitalize="characters" autocomplete="off" spellcheck="false" disabled>
+              <small class="login-ajuda" id="loginCodigoAjuda">Aguardando a confirmação do e-mail.</small>
+            </div>
+            <button id="btnAtivar" disabled>Vincular convite à minha conta</button>
           </div>
-          <button id="btnAtivar" disabled>Vincular código à minha conta</button>
-        </div>
-      </section>
+        </section>
+      </details>
 
       <button id="btnAdminAtivacao" class="login-admin admin-icon-button admin-only hidden"
               aria-label="Abrir administração" title="Administração">
@@ -2575,15 +2609,20 @@ canvas {
         </div>
       </div>
 
-      <div class="sec-titulo">Desenvolvido por</div>
       <section class="sobre-girassol" aria-label="Girassol Inteligência">
+        <p class="sobre-chamada-comercial">Conhece alguém que quer transformar dados eleitorais em decisões mais estratégicas? <strong>Compartilhe a PE.IA</strong> e apresente uma nova forma de analisar cenários, comparar resultados e planejar as Eleições 2026.</p>
+        <button type="button" class="sobre-compartilhar" id="btnCompartilharPlataforma">Compartilhar link de acesso à plataforma</button>
+        <p class="sobre-compartilhar-status" id="statusCompartilharPlataforma" role="status" aria-live="polite"></p>
         <a class="sobre-girassol-link" href="https://girassolinteligencia.com.br" target="_blank" rel="noopener noreferrer">
           <img src="/icons/girassol-inteligencia.png" alt="" class="sobre-girassol-logo" aria-hidden="true">
           <span>Desenvolvido por Girassol Inteligência</span>
         </a>
-        <p class="sobre-girassol-descricao">Inteligência de dados e tecnologia aplicada à análise eleitoral.</p>
-        <button type="button" class="sobre-compartilhar" id="btnCompartilharPlataforma">Compartilhar link de acesso à plataforma</button>
-        <p class="sobre-compartilhar-status" id="statusCompartilharPlataforma" role="status" aria-live="polite"></p>
+        <button type="button" class="sobre-sair" id="btnSairConta" aria-label="Sair da conta" title="Sair da conta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/>
+            <path d="M14 8l4 4-4 4M9 12h9"/>
+          </svg>
+        </button>
       </section>
     </div>
   </div>
@@ -6190,6 +6229,15 @@ async function redefinirAcesso() {
 }
 window.redefinirAcesso = redefinirAcesso;
 
+async function solicitarSaidaConta() {
+  const confirmado = confirm('Deseja sair desta conta? Para entrar novamente, será necessário receber um novo link no e-mail.');
+  if (!confirmado) return;
+  const btn = document.getElementById('btnSairConta');
+  btn.disabled = true;
+  btn.setAttribute('aria-label', 'Saindo da conta');
+  await redefinirAcesso();
+}
+
 function mostrarTelaAtivacao() {
   document.getElementById('telaAtivacao').classList.remove('hidden');
   document.getElementById('app').style.display = 'none';
@@ -6210,7 +6258,8 @@ function mascararEmailLogin(email) {
 async function atualizarEtapasLogin() {
   const session = await obterAuthSession();
   const autenticado = Boolean(session?.user);
-  const etapaCodigo = document.getElementById('acessoPorCodigo');
+  const detalhesCodigo = document.getElementById('acessoPorCodigo');
+  const etapaCodigo = document.getElementById('conviteCodigoEtapa');
   const inputCodigo = document.getElementById('ativacaoInput');
   const btnAtivar = document.getElementById('btnAtivar');
   const descricao = document.getElementById('loginCodigoDescricao');
@@ -6218,11 +6267,12 @@ async function atualizarEtapasLogin() {
   const conta = document.getElementById('loginContaConfirmada');
 
   etapaCodigo.classList.toggle('login-etapa-bloqueada', !autenticado);
+  if (autenticado) detalhesCodigo.open = true;
   inputCodigo.disabled = !autenticado;
   btnAtivar.disabled = !autenticado;
   descricao.textContent = autenticado
-    ? 'Seu e-mail foi confirmado. Agora vincule o código recebido à sua conta.'
-    : 'O código não substitui o login. Confirme primeiro seu e-mail pelo link acima.';
+    ? 'Seu e-mail foi confirmado. Agora vincule o código-convite recebido à sua conta.'
+    : 'Primeiro confirme seu e-mail pelo link acima. Depois informe o código-convite recebido.';
   ajuda.textContent = autenticado
     ? 'Este código será associado à conta confirmada e não precisará ser informado novamente.'
     : 'Aguardando a confirmação do e-mail.';
@@ -6393,7 +6443,7 @@ async function ativarAcesso() {
     erro.textContent = e.message || 'Não foi possível verificar o código agora.';
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Vincular código à minha conta';
+    btn.textContent = 'Vincular convite à minha conta';
   }
 }
 
@@ -6616,7 +6666,8 @@ function vincularAcoesEstaticas() {
     btnFonteGrande: aumentarTamanhoFonte,
     btnEstilo: alternarEstilo,
     btnSobre: abrirTelaSobre,
-    btnCompartilharPlataforma: compartilharLinkComercializacao
+    btnCompartilharPlataforma: compartilharLinkComercializacao,
+    btnSairConta: solicitarSaidaConta
   };
   Object.entries(acoes).forEach(([id, acao]) => document.getElementById(id)?.addEventListener('click', acao));
   document.getElementById('btnMicrofoneUniversal')?.addEventListener('click', () => iniciarBuscaPorVoz('buscaUniversalInput'));

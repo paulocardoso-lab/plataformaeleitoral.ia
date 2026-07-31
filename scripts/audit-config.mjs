@@ -66,12 +66,16 @@ assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(!configSource.includes('offlineSessionGraceHours'), 'configuração não deve sugerir autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
-assert(index.includes('id="acessoPorCodigo"') && index.includes('Vincule seu código'),
-  'ativação manual deve permanecer identificada como segunda etapa');
+assert(index.includes('id="acessoPorCodigo"') && index.includes('Recebi um código-convite'),
+  'ativação manual deve permanecer separada como fluxo de código-convite');
 assert(index.includes('id="ativacaoInput"') && index.includes('spellcheck="false" disabled'),
   'código manual deve iniciar bloqueado até a confirmação do e-mail');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(index.includes('CONFIG.adminFunctionUrl'), 'painel administrativo não foi encontrado');
+assert(index.includes('id="btnSairConta"') && index.includes('btnSairConta: solicitarSaidaConta'),
+  'saída segura da conta não foi encontrada na tela Sobre');
+assert(index.includes("await redefinirAcesso();"),
+  'saída da tela Sobre deve reutilizar o encerramento seguro da sessão');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
 assert(index.includes('@supabase/supabase-js@2.111.0'), 'Supabase JS deve estar fixado em versão auditada');
 assert(index.includes('function formatarEmail'), 'máscara de e-mail não encontrada');
