@@ -2,6 +2,14 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.8.2 — 31/07/2026
+
+- Painel administrativo aprimorado para uso em celulares sem alterações na identidade visual.
+- Tabelas administrativas apresentadas como cartões em telas pequenas.
+- Cabeçalho, formulários, ações e áreas de toque adaptados à navegação mobile.
+- Tipografia e espaçamentos compactados para ampliar a quantidade de informações visíveis.
+- Campos preservados em tamanho seguro contra ampliação automática do navegador.
+
 ## 1.8.1 — 31/07/2026
 
 - Login passa a distinguir compradores e contas já ativadas do fluxo de código-convite.
