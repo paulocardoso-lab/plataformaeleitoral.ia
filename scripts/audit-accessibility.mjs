@@ -121,6 +121,12 @@ assert(/\.rodape-versao\s*\{[\s\S]*?grid-column:\s*3[\s\S]*?justify-self:\s*end[
   'Número da versão deve repetir a formatação da assinatura e ficar independente à direita.');
 assert(/<span class="rodape-texto">Desenvolvido por Girassol Inteligência<\/span>\s*<span class="rodape-versao" id="appVersion">/.test(html),
   'Número da versão deve compartilhar a grade da assinatura sem deslocar a frase.');
+assert(/\.tester-detalhes\s*>\s*\.tester-assinatura\s*\{[\s\S]*?min-height:\s*auto[\s\S]*?cursor:\s*default/.test(html)
+  && /\.tester-detalhes\s*>\s*\.tester-assinatura::after,[\s\S]*?content:\s*none/.test(html),
+  'Assinatura tester não deve apresentar aparência ou marcador de botão.');
+assert(/\.tester-assinatura-conteudo\s*\{[\s\S]*?grid-template-columns:\s*1fr auto 1fr/.test(html)
+  && /\.tester-assinatura-texto\s*\{[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\s\S]*?font-size:\s*clamp\(7px,\s*2vw,\s*9px\)/.test(html),
+  'Assinatura tester deve repetir a formatação institucional da aplicação.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');

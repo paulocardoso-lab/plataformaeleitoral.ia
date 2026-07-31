@@ -2,6 +2,12 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.4.7 — 31/07/2026
+
+- Acesso tester reposicionado como assinatura institucional discreta no fim do cartão de login.
+- Removidos borda, marcador de expansão e aparência visual de botão da assinatura Girassol.
+- Tipografia, tamanho e centralização igualados à assinatura usada dentro da aplicação.
+
 ## 1.4.6 — 31/07/2026
 
 - Número da versão padronizado com a tipografia e o tamanho da assinatura institucional.
