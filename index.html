@@ -784,6 +784,7 @@ summary:focus-visible {
   text-align: center;
 }
 .login-compra .login-label { font-weight: 600; }
+.login-compra .login-grupo { margin-bottom: 18px; }
 .login-info-list {
   display: grid;
   gap: 8px;
@@ -806,14 +807,19 @@ summary:focus-visible {
   margin-top: 1px;
   color: var(--neon-cyan);
 }
+.login-info-num {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 50%;
+  color: var(--neon-cyan);
+  font-size: .62rem;
+  font-weight: 700;
+}
 .login-info-item span { min-width: 0; }
 .login-compra .btn-enviar-link { font-weight: 600; }
-.login-ajuda-compra {
-  margin-top: 8px;
-  font-size: .66rem;
-  line-height: 1.4;
-  text-align: center;
-}
 .login-email-compra::placeholder {
   font-size: .78rem;
   text-align: center;
@@ -2300,21 +2306,28 @@ canvas {
           <label class="sr-only" for="ativacaoEmailCompra">E-mail</label>
           <input type="email" class="ativacao-email login-email-compra" id="ativacaoEmailCompra" placeholder="Digite aqui seu e-mail" autocomplete="email"
                  inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
-          <small class="login-ajuda login-ajuda-compra">Depois de digitar seus dados acima, clique no botão abaixo e acesse a plataforma através do link enviado para o e-mail cadastrado.</small>
         </div>
         <button class="btn-enviar-link" id="btnEnviarLinkCompra">Enviar meu link de acesso</button>
         <div class="login-info-list" aria-label="Passo a passo para acessar">
           <div class="login-info-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
-            <span>Informe o e-mail usado na compra ou na ativação anterior.</span>
+            <span class="login-info-num" aria-hidden="true">1</span>
+            <span>Acesse seu e-mail cadastrado.</span>
           </div>
           <div class="login-info-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v9l4 2"/><circle cx="12" cy="12" r="9"/></svg>
-            <span>Clique no botão acima e abra o link recebido por e-mail.</span>
+            <span class="login-info-num" aria-hidden="true">2</span>
+            <span>Procure a mensagem da plataforma.</span>
           </div>
           <div class="login-info-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg>
-            <span>Após a confirmação, o acesso será liberado automaticamente.</span>
+            <span class="login-info-num" aria-hidden="true">3</span>
+            <span>Clique no link para entrar.</span>
+          </div>
+          <div class="login-info-item">
+            <span class="login-info-num" aria-hidden="true">4</span>
+            <span>Guarde a mensagem para os próximos acessos.</span>
+          </div>
+          <div class="login-info-item">
+            <span class="login-info-num" aria-hidden="true">5</span>
+            <span>Não é necessário cadastrar o e-mail novamente.</span>
           </div>
         </div>
       </section>
