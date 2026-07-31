@@ -117,6 +117,10 @@ assert(/\.rodape-texto\s*\{[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\
 assert(/\.rodape-marca\s*\{[\s\S]*?display:\s*grid[\s\S]*?grid-template-columns:\s*1fr auto 1fr/.test(html)
   && /\.rodape-texto\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?font-size:\s*clamp\(7px,\s*2vw,\s*9px\)/.test(html),
   'A frase deve definir sozinha o centro do rodapé e usar o tamanho compacto previsto.');
+assert(/\.rodape-versao\s*\{[\s\S]*?grid-column:\s*3[\s\S]*?justify-self:\s*end[\s\S]*?font-size:\s*clamp\(7px,\s*2vw,\s*9px\)[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\s\S]*?font-weight:\s*400/.test(html),
+  'Número da versão deve repetir a formatação da assinatura e ficar independente à direita.');
+assert(/<span class="rodape-texto">Desenvolvido por Girassol Inteligência<\/span>\s*<span class="rodape-versao" id="appVersion">/.test(html),
+  'Número da versão deve compartilhar a grade da assinatura sem deslocar a frase.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');
