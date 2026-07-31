@@ -7,10 +7,12 @@
 - **Vanilla JavaScript** (zero deps no app, apenas pako inflate + chartmini)
 - **SVG icons** (stroke, neon colors)
 
-### Assets embutidos
+### Bibliotecas do shell
 - `pako_inflate.min.js` (21 KB) — descompressão gzip no navegador
 - `chartmini.js` — gráficos canvas puro (barras, linhas)
-- `dataset.b64` — 1.87 MB (gzip) → 15.6 MB (raw JSON)
+
+O dataset eleitoral não é embutido no frontend. Ele fica no bucket privado
+`private-datasets` e é entregue pela Edge Function `dataset` após autorização.
 
 ### PWA
 - `manifest.json` — installável em iOS/Android
@@ -46,7 +48,19 @@ A lista original de nove telas foi ampliada. A navegação atual também inclui 
 6. **Ranking de Partidos** — gráfico barras por partido
 7. **Prefeito & Vereador** — municipais com ranking local
 8. **Presidente & Governador** — estaduais/federais
-9. **Sobre** — metodologia, fonte TSE, data geração
+9. **Panorama de MS** — indicadores socioeconômicos e fontes identificadas
+10. **Simulador de Vagas 2026** — cenários proporcionais editáveis
+11. **Sobre** — metodologia, fontes, versão, compartilhamento e saída da conta
+
+## Acesso atual
+
+- Compra ou licença existente: link mágico no mesmo e-mail cadastrado; nenhum código é solicitado.
+- Convite administrativo: confirmação do e-mail seguida da vinculação do código-convite.
+- Modo admin: senha master ou conta administrativa autorizada.
+
+O painel administrativo usa tabelas no desktop e cartões rotulados abaixo de
+600 px. Campos permanecem com 16 px no mobile para evitar zoom automático;
+cabeçalho, ações e rolagem respeitam áreas seguras do dispositivo.
 
 ## Atualizar dados eleitorais
 
@@ -132,10 +146,9 @@ o hash no repositório.
 
 ## Performance
 
-- **Tamanho final**: 1.94 MB (single-file HTML)
-- **Descompressão**: <200ms em iPhone SE 2020
-- **First paint**: ~500ms (dataset parse + render)
-- **Scroll 60fps**: sim, canvas é nativo
+- **Shell**: frontend estático em arquivo principal, sem dataset privado embutido
+- **Dataset**: baixado e descompactado somente após autorização online
+- **Gráficos**: canvas nativo
 - **Cache**: navegação tenta a rede e usa o HTML em cache somente quando offline
 
 ## Testes recomendados

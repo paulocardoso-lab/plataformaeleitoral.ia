@@ -28,9 +28,18 @@ node scripts/healthcheck-production.mjs
 
 1. Entre com o e-mail administrador por link mágico.
 2. Abra **Administração**.
-3. Emita códigos somente na quantidade necessária.
+3. Emita códigos-convite somente na quantidade necessária.
 4. Revogue licenças ou sessões individualmente quando possível.
 5. Confira a ação na tabela de auditoria.
+
+No celular, as tabelas são apresentadas como cartões. Confirme e-mail, código,
+estado e data dentro do mesmo cartão antes de tocar em **Revogar**.
+
+## Fluxos de entrada
+
+- Comprador ou licença já ativada: solicitar o link usando o mesmo e-mail cadastrado; não informar código.
+- Código-convite: confirmar primeiro o e-mail e, no retorno, abrir **Recebi um código-convite**.
+- Modo admin: usar somente a senha master guardada em gerenciador seguro ou a conta administrativa autorizada.
 
 ## Rotação da senha master
 
@@ -66,7 +75,8 @@ A senha não deve ser enviada por e-mail comum nem incluída no repositório.
 2. Verifique o limite de e-mails em **Authentication > Rate Limits**.
 3. Evite múltiplos reenvios; o SMTP padrão permite apenas dois e-mails por
    hora.
-4. Para operação em escala, configure SMTP transacional próprio.
+4. Para operação em escala, configure SMTP transacional próprio. A adoção do
+   Resend foi avaliada, mas não está configurada no estado atual.
 
 ## Rollback
 

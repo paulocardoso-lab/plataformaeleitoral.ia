@@ -65,17 +65,19 @@ cada 30 minutos.
 
 Estado atual: autenticação e carregamento do dataset protegido exigem internet. O Service Worker mantém somente a estrutura pública e os recursos estáticos da aplicação; o dataset não é persistido para autorização offline.
 
-A partir da versão 2.7, a ativação retorna um token opaco. O Supabase armazena
-somente o hash do token e revalida a sessão no boot. As migrations devem ser
-aplicadas antes do deploy do frontend; veja `SECURITY_TRANSITION.md`.
+Na linha pública atual existem três situações claramente separadas:
 
-Na versão 2.8+, o dataset não está mais no HTML público. A Edge Function
-`dataset` valida a sessão antes de cada download e nenhuma cópia privada é
-mantida para autorização offline.
+- compradores e contas já ativadas entram pelo link mágico enviado ao e-mail cadastrado, sem código;
+- pessoas convidadas confirmam primeiro o e-mail e depois vinculam um código-convite à conta;
+- o Modo admin usa senha master e emite uma sessão administrativa revogável, com validade máxima de 90 dias.
 
-Na versão 2.9 há somente dois acessos: link mágico por e-mail para clientes e
-Modo admin por senha master. A senha master emite sessão administrativa revogável de 90 dias; seu
-hash fica em configuração privada e a rotação ocorre pelo painel administrativo.
+O dataset não está no HTML público. A Edge Function `dataset` valida uma licença
+ou sessão administrativa antes de cada download, e nenhuma cópia privada é
+mantida para autorização offline. O histórico da transição de segurança está em
+`SECURITY_TRANSITION.md`.
+
+O painel administrativo preserva as tabelas no desktop e apresenta os registros
+como cartões em telas pequenas, com ações adaptadas ao toque.
 
 Procedimentos de operação, incidente e rollback estão em
 [`RUNBOOK_OPERACIONAL.md`](RUNBOOK_OPERACIONAL.md).

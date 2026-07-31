@@ -32,10 +32,20 @@ tecnologias assistivas e particularidades de navegadores reais.
 ### Login e acesso
 
 - Link mágico: preencher e-mail, enviar, validar mensagens e retornar.
-- Código de acesso: preencher máscara completa e validar erros.
+- Compra/licença existente: confirmar que a tela informa que nenhum código é necessário.
+- Código-convite: abrir o fluxo secundário, confirmar o bloqueio antes do e-mail, preencher a máscara completa e validar erros.
 - Tester: autenticar, fechar e reabrir o app, confirmando persistência.
 - Abrir e fechar o painel administrativo por teclado e por toque.
 - Confirmar que o teclado virtual não cobre campo, erro ou botão principal.
+
+### Painel administrativo mobile
+
+- Confirmar cabeçalho e botão **Fechar** acessíveis durante a rolagem.
+- Validar formulários em uma coluna e campos sem zoom automático.
+- Conferir códigos, licenças, sessões e auditoria como cartões abaixo de 600 px.
+- Verificar e-mails, IDs e datas longas sem rolagem horizontal da página.
+- Confirmar que cada ação **Revogar** pertence visualmente ao cartão correto.
+- Testar o painel com teclado virtual aberto e nas áreas seguras de iOS e Android.
 
 ### Navegação
 
