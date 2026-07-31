@@ -114,6 +114,9 @@ assert(/\.rodape-texto\s*\{[\s\S]*?white-space:\s*nowrap[\s\S]*?text-overflow:\s
   'Assinatura institucional pode ser truncada ou quebrada.');
 assert(/\.rodape-texto\s*\{[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\s\S]*?text-align:\s*center/.test(html),
   'Assinatura institucional deve usar IBM Plex Mono e permanecer centralizada.');
+assert(/\.rodape-marca\s*\{[\s\S]*?display:\s*grid[\s\S]*?grid-template-columns:\s*1fr auto 1fr/.test(html)
+  && /\.rodape-texto\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?font-size:\s*clamp\(7px,\s*2vw,\s*9px\)/.test(html),
+  'A frase deve definir sozinha o centro do rodapé e usar o tamanho compacto previsto.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');

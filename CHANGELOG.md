@@ -2,6 +2,11 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.4.4 — 31/07/2026
+
+- Fonte da assinatura institucional reduzida para a faixa de 7 a 9 px.
+- Centralização calculada exclusivamente pela frase; a logomarca permanece em coluna lateral independente.
+
 ## 1.4.3 — 31/07/2026
 
 - Assinatura “Desenvolvido por Girassol Inteligência” padronizada em IBM Plex Mono.
