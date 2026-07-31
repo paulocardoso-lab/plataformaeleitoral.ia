@@ -2,6 +2,12 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.5.1 — 31/07/2026
+
+- Reconhecimento de voz encerrado imediatamente após a transcrição final ou a seleção de um resultado.
+- Segundo toque no microfone passa a interromper a gravação em andamento.
+- Estado visual e acessível do botão sincronizado no mobile e no desktop.
+
 ## 1.5.0 — 31/07/2026
 
 - Acesso por senha master renomeado para “Modo admin” em toda a interface.

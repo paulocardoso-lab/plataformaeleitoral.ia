@@ -58,6 +58,17 @@ assert(index.includes('formatarPercentual(votosValidosRanking ?'),
   'percentual de votos válidos no ranking não encontrado');
 assert(index.includes('variacaoPosicao'),
   'variação histórica de posição não encontrada');
+assert(index.includes('let reconhecimentoVozAtivo = null') &&
+  /function encerrarBuscaPorVoz\(\)[\s\S]*?recognition\.abort\(\)/.test(index),
+  'controle centralizado para encerrar o reconhecimento de voz não encontrado');
+assert(/function selecionarBuscaUniversal\([^)]*\)\s*\{\s*encerrarBuscaPorVoz\(\)/.test(index) &&
+  /function selecionarSugestao\([^)]*\)\s*\{\s*encerrarBuscaPorVoz\(\)/.test(index),
+  'seleção de resultado não encerra o microfone');
+assert(/recognition\.onresult\s*=\s*\([^)]*\)\s*=>\s*\{[\s\S]*?encerrarBuscaPorVoz\(\)/.test(index),
+  'transcrição final não encerra o microfone');
+assert(index.includes("btn.setAttribute('aria-pressed', 'true')") &&
+  index.includes("btn.setAttribute('aria-pressed', 'false')"),
+  'estado acessível do botão de voz não é sincronizado');
 
 if (failures.length) {
   console.error('Testes eleitorais falharam:\n');
@@ -65,4 +76,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Testes eleitorais aprovados: 12 verificações.');
+console.log('Testes eleitorais aprovados: 16 verificações.');
