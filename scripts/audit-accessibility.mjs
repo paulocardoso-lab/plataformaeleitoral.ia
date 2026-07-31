@@ -112,6 +112,8 @@ assert(!/@media\s*\(min-width:\s*480px\)[\s\S]*?\.rodape-fixo\s*\{[^}]*flex-dire
   'Assinatura institucional não pode voltar para a mesma linha dos controles em telas largas.');
 assert(/\.rodape-texto\s*\{[\s\S]*?white-space:\s*nowrap[\s\S]*?text-overflow:\s*clip/.test(html),
   'Assinatura institucional pode ser truncada ou quebrada.');
+assert(/\.rodape-texto\s*\{[\s\S]*?font-family:\s*'IBM Plex Mono',\s*monospace[\s\S]*?text-align:\s*center/.test(html),
+  'Assinatura institucional deve usar IBM Plex Mono e permanecer centralizada.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');
