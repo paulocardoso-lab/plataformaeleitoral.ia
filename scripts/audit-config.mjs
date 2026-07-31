@@ -50,9 +50,12 @@ assert(index.includes('id="appLoading"'), 'estado global de carregamento não en
 assert(index.includes('aria-live="polite"'), 'regiões de status acessíveis não encontradas');
 assert(index.includes('class="login-shell"'), 'estrutura mobile-first do login não encontrada');
 assert(
-  /<details class="acesso-secundario tester-detalhes">\s*<summary>Acesso temporário para testers<\/summary>/.test(index),
-  'acesso tester deve permanecer recolhido'
+  /<details class="acesso-secundario tester-detalhes">\s*<summary class="tester-assinatura"[^>]*>[\s\S]*?Desenvolvido por Girassol Inteligência[\s\S]*?<\/summary>/.test(index),
+  'assinatura da Girassol deve abrir o acesso tester recolhido'
 );
+assert(!index.includes('<summary>Acesso temporário para testers</summary>'), 'rótulo tester antigo não deve permanecer visível');
+assert(index.includes('/icons/logo-plataforma-eleitoral.webp'), 'nova logomarca WebP da plataforma não encontrada');
+assert(index.includes('/icons/girassol-inteligencia.png'), 'logomarca da Girassol no acesso tester não encontrada');
 assert(index.includes('id="btnMostrarMaster"'), 'controle de visibilidade da master não encontrado');
 assert(index.includes("new BroadcastChannel('peia-session-v1')"), 'sincronização de sessão entre abas não encontrada');
 assert(!index.includes("evento === 'SIGNED_IN' || evento === 'SIGNED_OUT'"),

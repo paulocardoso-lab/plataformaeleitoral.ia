@@ -776,6 +776,23 @@ summary:focus-visible {
 .acesso-secundario summary::-webkit-details-marker { display:none; }
 .acesso-secundario summary::after { content:"＋"; color:var(--neon-cyan); font-size:1.1rem; }
 .acesso-secundario[open] summary::after { content:"−"; }
+.tester-assinatura-conteudo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.tester-assinatura-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.tester-assinatura-texto {
+  font-size: clamp(9px, 2.8vw, 12px);
+  font-weight: 400;
+  white-space: nowrap;
+}
 .acesso-secundario-conteudo { padding: 8px 0 2px; }
 .senha-wrap { position:relative; }
 .senha-wrap #testerPassword { padding-right:72px; }
@@ -1831,7 +1848,7 @@ canvas {
   <div class="login-shell">
     <main class="login-card">
       <header class="login-header">
-        <img src="/icons/logopeia.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
+        <img src="/icons/logo-plataforma-eleitoral.webp" alt="Plataforma Eleitoral Inteligente" class="marca-logo-ativacao">
         <h2>Acesse sua conta</h2>
         <p class="login-subtitulo">Receba um link seguro no seu e-mail para acessar a plataforma.</p>
       </header>
@@ -1861,7 +1878,12 @@ canvas {
       </details>
 
       <details class="acesso-secundario tester-detalhes">
-        <summary>Acesso temporário para testers</summary>
+        <summary class="tester-assinatura" aria-label="Desenvolvido por Girassol Inteligência. Abrir acesso tester">
+          <span class="tester-assinatura-conteudo">
+            <img src="/icons/girassol-inteligencia.png" alt="" class="tester-assinatura-logo" aria-hidden="true">
+            <span class="tester-assinatura-texto">Desenvolvido por Girassol Inteligência</span>
+          </span>
+        </summary>
         <div class="acesso-secundario-conteudo">
           <label class="login-label" for="testerPassword">Senha master</label>
           <div class="senha-wrap">
@@ -1886,7 +1908,7 @@ canvas {
       </button>
       <div id="ativacaoErro" role="status" aria-live="polite"></div>
     </main>
-    <footer class="login-rodape">Girassol Inteligência · <span data-app-version>v 1.4.1</span></footer>
+    <footer class="login-rodape"><span data-app-version>v 1.4.2</span></footer>
   </div>
 </div>
 
@@ -1943,7 +1965,7 @@ canvas {
   <header class="topbar">
     <button type="button" class="voltar hidden" id="btnVoltar" aria-label="Voltar à tela inicial">‹</button>
     <div class="marca-topbar" id="marcaTopbar">
-      <img src="/icons/logopeia-topbar.png" alt="PE.IA — Plataforma Eleitoral Inteligente" class="marca-logo-completa">
+      <img src="/icons/logo-plataforma-eleitoral.webp" alt="Plataforma Eleitoral Inteligente" class="marca-logo-completa">
       <div class="marca-texto">
         <h1 class="marca-nome" id="tituloTela">PE.IA</h1>
       </div>
@@ -2327,7 +2349,7 @@ canvas {
     <button class="rodape-btn-sobre" id="btnSobre" aria-label="Sobre o aplicativo" title="Sobre">
       <svg width="20" height="20" viewBox="0 0 24 24"><use href="#icon-sobre"/></svg>
     </button>
-    <span class="rodape-versao" id="appVersion">v 1.4.1</span>
+    <span class="rodape-versao" id="appVersion">v 1.4.2</span>
     </div>
   </footer>
 

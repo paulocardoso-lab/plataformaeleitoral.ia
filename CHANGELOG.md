@@ -2,6 +2,12 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.4.2 — 31/07/2026
+
+- Nova logomarca da Plataforma Eleitoral Inteligente aplicada no login e no cabeçalho em formato WebP.
+- A assinatura “Desenvolvido por Girassol Inteligência”, acompanhada da marca oficial, passa a abrir o acesso tester por senha master.
+- Rótulo “Acesso temporário para testers” removido da interface, sem alteração das regras de autenticação.
+
 ## 1.4.1 — 31/07/2026
 
 - Autopreenchimento corrigido para preservar integralmente nomes e votos manuais.

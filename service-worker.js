@@ -2,13 +2,15 @@
 // Navegações usam network-first para não prender HTML/dataset antigo.
 // Assets estáticos usam cache-first e o manifest usa stale-while-revalidate.
 
-const CACHE_VERSION = 'eleicoes-ms-v49';
+const CACHE_VERSION = 'eleicoes-ms-v50';
 const ASSETS = [
   '/index.html',
   '/runtime-config.js',
   '/security.js',
   '/version.json',
   '/manifest.json',
+  '/icons/logo-plataforma-eleitoral.webp',
+  '/icons/girassol-inteligencia.png',
   '/icons/icon-192.png',
   '/icons/icon-192-maskable.png',
   '/icons/icon-512.png',
