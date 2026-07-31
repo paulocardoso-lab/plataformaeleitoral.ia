@@ -702,6 +702,46 @@ summary:focus-visible {
   line-height: 1.4;
   text-align: left;
 }
+.login-etapa {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255,255,255,.018);
+}
+.login-etapa + .login-etapa { margin-top: 14px; }
+.login-etapa-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.login-etapa-numero {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 50%;
+  color: var(--neon-cyan);
+  font-size: .75rem;
+  font-weight: 800;
+}
+.login-etapa-titulo { margin: 1px 0 3px; color: var(--text-light); font-size: .88rem; }
+.login-etapa-descricao { margin: 0; color: var(--text-muted); font-size: .72rem; line-height: 1.45; }
+.login-conta-confirmada {
+  margin: 0 0 12px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: rgba(0,217,255,.08);
+  color: var(--neon-cyan);
+  font-size: .72rem;
+  line-height: 1.4;
+  text-align: left;
+}
+.login-etapa-bloqueada { opacity: .72; }
+.login-etapa-bloqueada #ativacaoInput { cursor: not-allowed; }
 
 #ativacaoInput, #ativacaoEmail, #testerPassword {
   width: 100%;
@@ -2052,29 +2092,43 @@ canvas {
         <p class="login-subtitulo">Receba um link seguro no seu e-mail para acessar a plataforma.</p>
       </header>
 
-      <section aria-labelledby="loginEmailTitulo">
+      <section class="login-etapa" aria-labelledby="loginEmailTitulo">
+        <div class="login-etapa-cabecalho">
+          <span class="login-etapa-numero" aria-hidden="true">1</span>
+          <div>
+            <h3 class="login-etapa-titulo" id="loginEmailTitulo">Confirme seu e-mail</h3>
+            <p class="login-etapa-descricao">Enviaremos um link seguro para identificar sua conta.</p>
+          </div>
+        </div>
         <div class="login-grupo">
-          <label class="login-label" id="loginEmailTitulo" for="ativacaoEmail">E-mail</label>
+          <label class="login-label" for="ativacaoEmail">E-mail</label>
           <input type="email" id="ativacaoEmail" placeholder="nome@exemplo.com" autocomplete="email"
                  inputmode="email" maxlength="254" spellcheck="false" autocapitalize="none">
           <small class="login-ajuda">Use o mesmo e-mail informado na aquisição do acesso.</small>
         </div>
-        <button id="btnEnviarLink">Enviar link de acesso</button>
+        <button id="btnEnviarLink">Enviar link para meu e-mail</button>
       </section>
 
-      <details class="acesso-secundario" id="acessoPorCodigo">
-        <summary>Tenho um código de acesso</summary>
-        <section class="acesso-secundario-conteudo" aria-labelledby="loginCodigoTitulo">
+      <section class="login-etapa login-etapa-bloqueada" id="acessoPorCodigo" aria-labelledby="loginCodigoTitulo">
+        <div class="login-etapa-cabecalho">
+          <span class="login-etapa-numero" aria-hidden="true">2</span>
+          <div>
+            <h3 class="login-etapa-titulo" id="loginCodigoTitulo">Vincule seu código</h3>
+            <p class="login-etapa-descricao" id="loginCodigoDescricao">O código não substitui o login. Confirme primeiro seu e-mail pelo link acima.</p>
+          </div>
+        </div>
+        <p class="login-conta-confirmada hidden" id="loginContaConfirmada"></p>
+        <div class="acesso-secundario-conteudo">
           <div class="login-grupo">
-            <label class="login-label" id="loginCodigoTitulo" for="ativacaoInput">Código de acesso</label>
+            <label class="login-label" for="ativacaoInput">Código fornecido pelo administrador</label>
             <input type="text" id="ativacaoInput" placeholder="XXXX-XXXX-XXXX"
                    inputmode="text" maxlength="14" pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
-                   autocapitalize="characters" autocomplete="off" spellcheck="false">
-            <small class="login-ajuda">Abra primeiro o link enviado ao seu e-mail e depois informe o código.</small>
+                   autocapitalize="characters" autocomplete="off" spellcheck="false" disabled>
+            <small class="login-ajuda" id="loginCodigoAjuda">Aguardando a confirmação do e-mail.</small>
           </div>
-          <button id="btnAtivar">Ativar acesso</button>
-        </section>
-      </details>
+          <button id="btnAtivar" disabled>Vincular código à minha conta</button>
+        </div>
+      </section>
 
       <button id="btnAdminAtivacao" class="login-admin admin-icon-button admin-only hidden"
               aria-label="Abrir administração" title="Administração">
@@ -6146,6 +6200,36 @@ function esconderTelaAtivacao() {
   document.getElementById('app').style.display = '';
 }
 
+function mascararEmailLogin(email) {
+  const [usuario = '', dominio = ''] = String(email || '').split('@');
+  if (!usuario || !dominio) return 'conta confirmada';
+  const inicio = usuario.slice(0, Math.min(2, usuario.length));
+  return `${inicio}${'•'.repeat(Math.max(3, Math.min(6, usuario.length - inicio.length)))}@${dominio}`;
+}
+
+async function atualizarEtapasLogin() {
+  const session = await obterAuthSession();
+  const autenticado = Boolean(session?.user);
+  const etapaCodigo = document.getElementById('acessoPorCodigo');
+  const inputCodigo = document.getElementById('ativacaoInput');
+  const btnAtivar = document.getElementById('btnAtivar');
+  const descricao = document.getElementById('loginCodigoDescricao');
+  const ajuda = document.getElementById('loginCodigoAjuda');
+  const conta = document.getElementById('loginContaConfirmada');
+
+  etapaCodigo.classList.toggle('login-etapa-bloqueada', !autenticado);
+  inputCodigo.disabled = !autenticado;
+  btnAtivar.disabled = !autenticado;
+  descricao.textContent = autenticado
+    ? 'Seu e-mail foi confirmado. Agora vincule o código recebido à sua conta.'
+    : 'O código não substitui o login. Confirme primeiro seu e-mail pelo link acima.';
+  ajuda.textContent = autenticado
+    ? 'Este código será associado à conta confirmada e não precisará ser informado novamente.'
+    : 'Aguardando a confirmação do e-mail.';
+  conta.textContent = autenticado ? `Conta confirmada: ${mascararEmailLogin(session.user.email)}` : '';
+  conta.classList.toggle('hidden', !autenticado);
+}
+
 async function chamarRpc(nome, body) {
   const resp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
     method: 'POST',
@@ -6221,7 +6305,7 @@ async function enviarLinkMagico() {
     }
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Enviar link de acesso';
+    btn.textContent = 'Enviar link para meu e-mail';
   }
 }
 window.enviarLinkMagico = enviarLinkMagico;
@@ -6309,7 +6393,7 @@ async function ativarAcesso() {
     erro.textContent = e.message || 'Não foi possível verificar o código agora.';
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Ativar';
+    btn.textContent = 'Vincular código à minha conta';
   }
 }
 
@@ -6586,6 +6670,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       erro.textContent = 'Conecte-se à internet para renovar sua sessão.';
     }
   }
+
+  await atualizarEtapasLogin();
 
   const inputAtivacao = document.getElementById('ativacaoInput');
   const inputEmail = document.getElementById('ativacaoEmail');

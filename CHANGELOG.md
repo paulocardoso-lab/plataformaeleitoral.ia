@@ -2,6 +2,13 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.8.0 — 31/07/2026
+
+- Login reorganizado em duas etapas explícitas: confirmação do e-mail e vinculação do código.
+- Campo de código mantido bloqueado até a autenticação da conta.
+- Conta confirmada identificada de forma mascarada antes da vinculação da licença.
+- Textos revisados para esclarecer que o código administrativo não substitui o login por e-mail.
+
 ## 1.7.1 — 31/07/2026
 
 - Simulador avança automaticamente para o próximo campo após cada seleção ou preenchimento concluído.

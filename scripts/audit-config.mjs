@@ -66,10 +66,10 @@ assert(index.indexOf('id="bannerAtualizacao"') < index.indexOf('id="app"'),
   'banner de atualização deve permanecer visível fora da área autenticada');
 assert(!configSource.includes('offlineSessionGraceHours'), 'configuração não deve sugerir autorização offline');
 assert(index.includes("AUTH_CLIENT.auth.signInWithOtp"), 'login por link mágico não foi encontrado');
-assert(
-  /<details class="acesso-secundario" id="acessoPorCodigo">\s*<summary>Tenho um código de acesso<\/summary>/.test(index),
-  'código manual deve permanecer recolhido como acesso secundário'
-);
+assert(index.includes('id="acessoPorCodigo"') && index.includes('Vincule seu código'),
+  'ativação manual deve permanecer identificada como segunda etapa');
+assert(index.includes('id="ativacaoInput"') && index.includes('spellcheck="false" disabled'),
+  'código manual deve iniciar bloqueado até a confirmação do e-mail');
 assert(index.includes('CONFIG.testerFunctionUrl'), 'acesso tester não foi encontrado');
 assert(index.includes('CONFIG.adminFunctionUrl'), 'painel administrativo não foi encontrado');
 assert(!index.includes('migrar_sessao_usuario'), 'compatibilidade com sessão legada não deve voltar');
