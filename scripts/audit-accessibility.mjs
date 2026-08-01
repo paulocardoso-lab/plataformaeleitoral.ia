@@ -177,6 +177,9 @@ assert(/id="btnCompartilharPlataforma"/.test(html) && html.includes('https://pay
   'Compartilhamento do link comercial não está configurado na tela Sobre.');
 assert(html.includes('navigator.share(dados)') && html.includes('navigator.clipboard.writeText(url)'),
   'Compartilhamento deve oferecer API nativa e cópia como alternativa.');
+assert(!html.includes('exportação e compartilhamento de análises')
+  && html.includes('compartilhamento de links de acesso e consultas'),
+  'Tela Sobre deve comunicar somente o compartilhamento de links enquanto a exportação estiver desabilitada.');
 
 // Texto, contraste e conteúdo equivalente.
 assert(/html\[data-fonte="g1"\]\s*\{\s*font-size:\s*14px/.test(html), 'Grau mínimo de fonte abaixo de 14 px.');

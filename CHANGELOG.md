@@ -2,6 +2,11 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.12.1 — 01/08/2026
+
+- Tela “Sobre” deixa de mencionar exportação de análises e passa a comunicar somente o compartilhamento de links de acesso e consultas.
+- Auditoria automatizada passa a impedir o retorno da comunicação incompatível com a exportação desabilitada.
+
 ## 1.12.0 — 01/08/2026
 
 - Etapa 3 recebe navegação interna entre a montagem do cenário e o novo Painel das Listas.
