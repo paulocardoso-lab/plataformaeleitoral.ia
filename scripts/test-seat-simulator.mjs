@@ -45,7 +45,7 @@ const context = vm.createContext({
   normalizarTexto: value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(),
   simId: (() => { let id=0; return () => `auto-${++id}`; })()
 });
-vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('simIdentificarLista')}\n${extractFunction('simContarCandidaturasLista')}\n${extractFunction('simSituacaoLimiteLista')}\n${extractFunction('simResumoCotaGenero')}\n${extractFunction('simAvaliarCotasGenero')}\n${extractFunction('simComposicaoGeneroPossivel')}\n${extractFunction('simValidarInclusaoGenero')}\n${extractFunction('simEscolherGeneroAutomatico')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
+vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('simIdentificarLista')}\n${extractFunction('simContarCandidaturasLista')}\n${extractFunction('simSituacaoLimiteLista')}\n${extractFunction('simResumoCotaGenero')}\n${extractFunction('simAvaliarCotasGenero')}\n${extractFunction('simComposicaoGeneroPossivel')}\n${extractFunction('simValidarInclusaoGenero')}\n${extractFunction('simEscolherGeneroAutomatico')}\n${extractFunction('simResumirListas')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
 
 assert(context.simQuociente(1_000, 4) === 250, 'Quociente exato incorreto.');
 assert(context.simQuociente(1_002, 4) === 250, 'Fração igual a 0,5 deveria ser desprezada.');
@@ -136,6 +136,26 @@ assert(context.simResumoCotaGenero([
 ], 'Lista', 'lista').regular, 'Uma lista federal 3/6 deveria atender aos percentuais de 30% e 70%.');
 assert(html.includes('id="simGenero"') && html.includes('id="simCotaGeneroAlertas"'),
   'Campo de gênero e alertas da etapa 3 devem existir.');
+
+context.simEstado = { cargo:'deputado federal' };
+const painelCenario = {
+  votosValidos:1_000,
+  listasConcluidas:[],
+  itens:[
+    { tipo:'candidato', nome:'PT F', partido:'PT', genero:'feminino', votos:300 },
+    { tipo:'candidato', nome:'PV M', partido:'PV', genero:'masculino', votos:200 },
+    { tipo:'legenda', nome:'Legenda PT', partido:'PT', votos:100 },
+    { tipo:'candidato', nome:'PSDB F', partido:'PSDB', genero:'feminino', votos:250 },
+    { tipo:'candidato', nome:'Cidadania M', partido:'CIDADANIA', genero:'masculino', votos:150 }
+  ]
+};
+const resumoPainel = context.simResumirListas(painelCenario);
+assert(resumoPainel.length === 2, 'Painel deveria criar um card independente para cada federação.');
+assert(resumoPainel[0].votos === 600 && resumoPainel[0].candidaturas.length === 2,
+  'Card da federação deveria totalizar votos e candidaturas da lista em tempo real.');
+assert(resumoPainel[0].percentualVotos === 60, 'Participação da federação nos votos válidos foi calculada incorretamente.');
+assert(html.includes('id="simVerPainel"') && html.includes('id="simListasCards"') && html.includes('data-sim-concluir-lista'),
+  'Navegação, cards e controle de conclusão do painel das listas devem existir.');
 assert(html.includes('id="simAdicionarLegenda"'), 'Botão de votos de legenda ausente.');
 assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutopreenchimento: 13'), 'Limites de liberação do autopreenchimento incorretos.');
 assert(html.includes('id="simAutoPrevia"') && html.includes('id="simAutoConfirmar"'), 'Prévia e confirmação do autopreenchimento ausentes.');

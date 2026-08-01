@@ -2049,6 +2049,37 @@ canvas {
 .sim-campo input[type="number"]::-webkit-inner-spin-button { appearance: none; }
 .sim-cotas-genero { display: grid; gap: 8px; margin: 12px 0; }
 .sim-cotas-genero .sim-revisao-alerta { margin: 0; }
+.sim-cenario-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 14px; }
+.sim-cenario-nav button { min-height: 44px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-1); color: var(--text-muted); font: inherit; font-size: .8125rem; font-weight: 700; cursor: pointer; }
+.sim-cenario-nav button.ativo { border-color: var(--neon-cyan); background: rgba(0,217,255,.07); color: var(--text-light); }
+.sim-painel-listas-cabecalho { margin-bottom: 12px; }
+.sim-painel-listas-cabecalho h3 { margin: 0 0 4px; color: var(--text-light); font-size: 1rem; }
+.sim-painel-listas-cabecalho p { margin: 0; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
+.sim-listas-cards { display: grid; gap: 10px; }
+.sim-lista-card { padding: 12px; border: 1px solid var(--border); border-left: 4px solid var(--text-muted); border-radius: 10px; background: var(--bg-1); }
+.sim-lista-card.atencao { border-left-color: var(--neon-yellow); }
+.sim-lista-card.pronta { border-left-color: var(--neon-cyan); }
+.sim-lista-card.concluida { border-left-color: var(--neon-green); }
+.sim-lista-card.erro { border-left-color: #ff8b8b; }
+.sim-lista-card-topo { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.sim-lista-card h4 { margin: 0; color: var(--text-light); font-size: .9375rem; line-height: 1.35; }
+.sim-lista-partidos { margin: 3px 0 0; color: var(--text-muted); font-size: .75rem; }
+.sim-lista-status { flex: 0 0 auto; padding: 4px 7px; border-radius: 999px; background: rgba(255,255,255,.06); color: var(--text-muted); font-size: .6875rem; font-weight: 800; }
+.sim-lista-card.atencao .sim-lista-status { color: var(--neon-yellow); }
+.sim-lista-card.pronta .sim-lista-status { color: var(--neon-cyan); }
+.sim-lista-card.concluida .sim-lista-status { color: var(--neon-green); }
+.sim-lista-card.erro .sim-lista-status { color: #ffb0b0; }
+.sim-lista-metricas { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 11px; }
+.sim-lista-metrica { padding: 8px; border-radius: 8px; background: rgba(255,255,255,.035); }
+.sim-lista-metrica small, .sim-lista-metrica strong { display: block; }
+.sim-lista-metrica small { color: var(--text-muted); font-size: .6875rem; }
+.sim-lista-metrica strong { margin-top: 2px; color: var(--text-light); font-size: .875rem; }
+.sim-lista-card-aviso { margin: 9px 0 0; color: var(--text-muted); font-size: .75rem; line-height: 1.45; }
+.sim-lista-card details { margin-top: 9px; border-top: 1px solid var(--border); }
+.sim-lista-card summary { min-height: 40px; display: flex; align-items: center; color: var(--neon-cyan); font-size: .75rem; font-weight: 700; cursor: pointer; }
+.sim-lista-card ul { margin: 0 0 8px; padding-left: 19px; color: var(--text-light); }
+.sim-lista-card li { margin-bottom: 5px; font-size: .75rem; line-height: 1.4; }
+.sim-lista-card .sim-btn-secundario { width: 100%; min-height: 42px; margin-top: 8px; font-size: .75rem; }
 .sim-form-acoes { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 14px; }
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
@@ -2056,6 +2087,7 @@ canvas {
 .sim-continuar { width: 100%; margin-top: 12px; }
 .sim-btn-secundario { border: 1px solid var(--border); background: transparent; color: var(--text-light); padding: 10px 14px; }
 .sim-btn-secundario:hover, .sim-btn-secundario:focus-visible { border-color: var(--text-muted); }
+.sim-btn-secundario:disabled { cursor: not-allowed; opacity: .5; }
 .sim-acoes-inclusao .sim-btn-secundario { min-height: 42px; font-size: .8125rem; font-weight: 600; }
 .sim-btn-remover { width: 44px; min-width: 44px; border: 1px solid var(--border); background: transparent; color: var(--text-light); }
 .sim-sugestoes { margin-top: 5px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
@@ -2706,8 +2738,13 @@ canvas {
         </section>
 
         <section class="sim-card camada-oculta" id="simEtapa3Card" aria-labelledby="simEtapa3Titulo">
-          <h2 id="simEtapa3Titulo">3. Adicione candidaturas e votos</h2>
-          <p class="sim-card-sub">Pesquise alguém do histórico ou digite um nome novo.</p>
+          <h2 id="simEtapa3Titulo">3. Monte e acompanhe o cenário</h2>
+          <p class="sim-card-sub">Cadastre candidaturas ou consulte as listas em tempo real.</p>
+          <div class="sim-cenario-nav" role="group" aria-label="Visualização do cenário">
+            <button type="button" class="ativo" id="simVerMontagem" aria-pressed="true">Montar cenário</button>
+            <button type="button" id="simVerPainel" aria-pressed="false">Painel das listas (0)</button>
+          </div>
+          <div id="simMontagemView">
           <div class="sim-campo">
             <label for="simNome">Nome da pessoa</label>
             <input type="search" id="simNome" placeholder="Digite pelo menos 3 letras" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="simSugestoes" autocomplete="off">
@@ -2751,6 +2788,14 @@ canvas {
               </div>
             </div>
             <div class="sim-auto-previa hidden" id="simAutoPrevia" role="region" aria-live="polite" aria-label="Prévia do preenchimento automático"></div>
+          </section>
+          </div>
+          <section id="simPainelListasView" class="hidden" aria-labelledby="simPainelListasTitulo">
+            <div class="sim-painel-listas-cabecalho">
+              <h3 id="simPainelListasTitulo" tabindex="-1">Painel das listas</h3>
+              <p>Acompanhe partidos e federações em tempo real. Uma lista só fica verde depois de revisada e marcada como concluída.</p>
+            </div>
+            <div class="sim-listas-cards" id="simListasCards"></div>
           </section>
         </section>
 
@@ -5199,10 +5244,11 @@ let simAutoPreview = null;
 let simRevisaoSolicitada = false;
 let simEtapaAtiva = 1;
 let simEtapa1Confirmada = false;
+let simVisualizacaoCenario = 'montagem';
 let simEstado = carregarSimulador();
 
 function novoCenarioSimulador() {
-  return { votosValidos: 0, itens: [], desempates: {}, ultimoAutopreenchimento: null, atualizadoEm: null };
+  return { votosValidos: 0, itens: [], desempates: {}, listasConcluidas: [], ultimoAutopreenchimento: null, atualizadoEm: null };
 }
 
 function carregarSimulador() {
@@ -5221,6 +5267,7 @@ function carregarSimulador() {
       if (!cenario || !Array.isArray(cenario.itens)) salvo.cenarios[cargo] = novoCenarioSimulador();
       else {
         if (!cenario.desempates) cenario.desempates = {};
+        if (!Array.isArray(cenario.listasConcluidas)) cenario.listasConcluidas = [];
         if (!('ultimoAutopreenchimento' in cenario)) cenario.ultimoAutopreenchimento = null;
         const preenchimentoAntigo = cenario.ultimoAutopreenchimento;
         if (preenchimentoAntigo?.itens && !Array.isArray(preenchimentoAntigo.idsCriados)) {
@@ -5282,6 +5329,11 @@ function simSituacaoLimiteLista(cenario, cargo, registro) {
   const limite = SIM_CARGOS[cargo].limiteCandidatosPorLista;
   const quantidade = simContarCandidaturasLista(cenario, registro);
   return { lista, limite, quantidade, permitido:quantidade < limite };
+}
+
+function simInvalidarConclusaoLista(registro, cenario = simCenario()) {
+  const chave = simIdentificarLista(registro).chave;
+  cenario.listasConcluidas = (cenario.listasConcluidas || []).filter(item => item !== chave);
 }
 
 function simResumoCotaGenero(candidaturas, nome, escopo) {
@@ -5383,6 +5435,8 @@ function initSimulador() {
   if (!simInit) {
     document.querySelectorAll('[data-sim-cargo]').forEach(botao => botao.addEventListener('click', () => simTrocarCargo(botao.dataset.simCargo)));
     document.querySelectorAll('[data-sim-etapa]').forEach(botao => botao.addEventListener('click', () => simAbrirEtapa(Number(botao.dataset.simEtapa))));
+    document.getElementById('simVerMontagem').addEventListener('click', () => simAlternarVisualizacaoCenario('montagem'));
+    document.getElementById('simVerPainel').addEventListener('click', () => simAlternarVisualizacaoCenario('painel'));
     document.getElementById('simVotosValidos').addEventListener('input', evento => {
       simCenario().votosValidos = simNumero(evento.target.value);
       simCenario().ultimoAutopreenchimento = null;
@@ -5483,6 +5537,7 @@ function simTrocarCargo(cargo) {
     return;
   }
   simEstado.cargo = cargo;
+  simVisualizacaoCenario = 'montagem';
   simAutoPreview = null;
   simRevisaoSolicitada = false;
   simSelecionado = null;
@@ -5513,6 +5568,114 @@ function simAbrirEtapa(etapa, focoId = null) {
     card?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (focoId) document.getElementById(focoId)?.focus({ preventScroll: true });
   });
+}
+
+function simAlternarVisualizacaoCenario(visualizacao) {
+  if (!['montagem','painel'].includes(visualizacao)) return;
+  simVisualizacaoCenario = visualizacao;
+  renderVisualizacaoCenario();
+  if (visualizacao === 'painel') requestAnimationFrame(() => document.getElementById('simPainelListasTitulo')?.focus({ preventScroll:true }));
+}
+
+function simResumirListas(cenario = simCenario()) {
+  const config = SIM_CARGOS[simEstado.cargo];
+  const grupos = new Map();
+  cenario.itens.forEach(item => {
+    const lista = simIdentificarLista(item);
+    if (!grupos.has(lista.chave)) grupos.set(lista.chave, { ...lista, itens:[], candidaturas:[], partidos:new Set(), votos:0, legenda:0, agregados:0 });
+    const grupo = grupos.get(lista.chave);
+    grupo.itens.push(item);
+    grupo.votos += simNumero(item.votos);
+    if (item.tipo === 'candidato') grupo.candidaturas.push(item);
+    if (item.tipo === 'legenda') grupo.legenda += simNumero(item.votos);
+    if (item.tipo === 'agregado') grupo.agregados += simNumero(item.votos);
+    const partidoCadastrado = SIM_PARTIDOS.find(partido => normalizarTexto(partido.sigla) === normalizarTexto(item.partido));
+    if (partidoCadastrado) grupo.partidos.add(partidoCadastrado.sigla);
+  });
+  const concluidas = new Set(cenario.listasConcluidas || []);
+  return [...grupos.values()].map(grupo => {
+    const cotas = simAvaliarCotasGenero({ itens:grupo.itens });
+    const marcadaConcluida = concluidas.has(grupo.chave);
+    const concluida = marcadaConcluida && cotas.regular;
+    const restante = Math.max(0, config.limiteCandidatosPorLista - grupo.candidaturas.length);
+    const percentualVotos = simNumero(cenario.votosValidos) ? grupo.votos / simNumero(cenario.votosValidos) * 100 : 0;
+    const femininas = grupo.candidaturas.filter(item => item.genero === 'feminino').length;
+    const masculinas = grupo.candidaturas.filter(item => item.genero === 'masculino').length;
+    const semGenero = grupo.candidaturas.filter(item => !['feminino','masculino'].includes(item.genero)).length;
+    const estado = grupo.candidaturas.length > config.limiteCandidatosPorLista
+      ? 'erro'
+      : !cotas.regular
+        ? 'atencao'
+        : concluida ? 'concluida' : 'pronta';
+    const rotuloEstado = estado === 'erro' ? 'Limite excedido' : estado === 'atencao' ? 'Requer atenção' : estado === 'concluida' ? 'Concluída' : 'Pronta para revisar';
+    return { ...grupo, partidos:[...grupo.partidos], cotas, marcadaConcluida, concluida, restante, percentualVotos, femininas, masculinas, semGenero, estado, rotuloEstado };
+  }).sort((a,b) => b.votos - a.votos || a.nome.localeCompare(b.nome, 'pt-BR'));
+}
+
+function simAlternarListaConcluida(chave) {
+  const cenario = simCenario();
+  const lista = simResumirListas(cenario).find(item => item.chave === chave);
+  if (!lista) return;
+  const concluidas = new Set(cenario.listasConcluidas || []);
+  if (concluidas.has(chave)) concluidas.delete(chave);
+  else {
+    if (!lista.cotas.regular) return;
+    concluidas.add(chave);
+  }
+  cenario.listasConcluidas = [...concluidas];
+  salvarSimulador();
+  renderPainelListas();
+  renderNavegacaoEtapas();
+}
+
+function renderVisualizacaoCenario() {
+  const montagem = simVisualizacaoCenario === 'montagem';
+  document.getElementById('simMontagemView').classList.toggle('hidden', !montagem);
+  document.getElementById('simPainelListasView').classList.toggle('hidden', montagem);
+  const botaoMontagem = document.getElementById('simVerMontagem');
+  const botaoPainel = document.getElementById('simVerPainel');
+  botaoMontagem.classList.toggle('ativo', montagem);
+  botaoPainel.classList.toggle('ativo', !montagem);
+  botaoMontagem.setAttribute('aria-pressed', String(montagem));
+  botaoPainel.setAttribute('aria-pressed', String(!montagem));
+}
+
+function renderPainelListas() {
+  const cenario = simCenario();
+  const listas = simResumirListas(cenario);
+  const config = SIM_CARGOS[simEstado.cargo];
+  document.getElementById('simVerPainel').textContent = `Painel das listas (${listas.length})`;
+  const cards = document.getElementById('simListasCards');
+  cards.innerHTML = listas.length ? listas.map(lista => {
+    const aviso = lista.estado === 'erro'
+      ? `A lista ultrapassou o limite de ${config.limiteCandidatosPorLista} candidaturas.`
+      : lista.semGenero
+        ? `${lista.semGenero} candidatura${lista.semGenero === 1 ? '' : 's'} sem gênero informado.`
+        : !lista.cotas.regular
+          ? 'A composição de gênero precisa ser ajustada na lista e/ou nas indicações partidárias.'
+          : lista.concluida
+            ? 'Lista revisada, regular e marcada como concluída.'
+            : `${lista.restante} ${lista.restante === 1 ? 'posição ainda disponível' : 'posições ainda disponíveis'}; preencher o limite máximo não é obrigatório.`;
+    const nomes = lista.candidaturas.map(item => `<li><strong>${simEscapar(item.nome)}</strong> · ${simEscapar(item.partido)} · ${item.genero === 'feminino' ? 'Feminino' : item.genero === 'masculino' ? 'Masculino' : 'Gênero pendente'} · ${formatarNum(item.votos)} votos</li>`).join('');
+    return `<article class="sim-lista-card ${lista.estado}">
+      <div class="sim-lista-card-topo"><div><h4>${simEscapar(lista.nome)}</h4><p class="sim-lista-partidos">${simEscapar(config.label)} · ${simEscapar(lista.partidos.join(' · ') || 'Organização eleitoral')}</p></div><span class="sim-lista-status">${simEscapar(lista.rotuloEstado)}</span></div>
+      <div class="sim-lista-metricas">
+        <div class="sim-lista-metrica"><small>Candidaturas</small><strong>${lista.candidaturas.length} de ${config.limiteCandidatosPorLista}</strong></div>
+        <div class="sim-lista-metrica"><small>Votos da lista</small><strong>${formatarNum(lista.votos)}</strong></div>
+        <div class="sim-lista-metrica"><small>Participação</small><strong>${lista.percentualVotos.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%</strong></div>
+        <div class="sim-lista-metrica"><small>Composição</small><strong>${lista.femininas} F · ${lista.masculinas} M</strong></div>
+        <div class="sim-lista-metrica"><small>Posições disponíveis</small><strong>${lista.restante}</strong></div>
+        <div class="sim-lista-metrica"><small>Legenda / outros</small><strong>${formatarNum(lista.legenda)} / ${formatarNum(lista.agregados)}</strong></div>
+      </div>
+      <p class="sim-lista-card-aviso">${simEscapar(aviso)}</p>
+      <details><summary>Ver nomes (${lista.candidaturas.length})</summary><ul>${nomes || '<li>Nenhuma candidatura individualizada.</li>'}</ul></details>
+      <button type="button" class="sim-btn-secundario" data-sim-concluir-lista="${simEscapar(lista.chave)}"${!lista.marcadaConcluida && !lista.cotas.regular ? ' disabled' : ''}>${lista.marcadaConcluida ? 'Retirar marcação de concluída' : 'Marcar lista como concluída'}</button>
+    </article>`;
+  }).join('') : '<p class="sim-card-sub">Adicione candidaturas ou votos para criar os cards das listas.</p>';
+  cards.querySelectorAll('[data-sim-concluir-lista]').forEach(botao => {
+    botao.addEventListener('click', () => simAlternarListaConcluida(botao.dataset.simConcluirLista));
+  });
+  renderVisualizacaoCenario();
 }
 
 function simPesquisarOrganizacoes() {
@@ -5702,6 +5865,7 @@ function simAdicionarItem(tipo) {
     id: simId(), tipo, nome, partido, chapa, federacao:listaEleitoral.federacao, genero:tipo === 'candidato' ? genero : null, organizacaoVerificada:org.verificada, votos,
     origem: tipo === 'candidato' ? (simSelecionado?.origem || 'cenario') : 'cenario', origemVotos: 'manual'
   });
+  simInvalidarConclusaoLista({ partido, chapa, federacao:listaEleitoral.federacao });
   simCenario().ultimoAutopreenchimento = null;
   simAutoPreview = null;
   salvarSimulador();
@@ -5745,6 +5909,8 @@ function simLimparFormulario() {
 }
 
 function simRemoverItem(id) {
+  const removido = simCenario().itens.find(item => item.id === id);
+  if (removido) simInvalidarConclusaoLista(removido);
   simCenario().itens = simCenario().itens.filter(item => item.id !== id);
   simCenario().ultimoAutopreenchimento = null;
   simAutoPreview = null;
@@ -5890,6 +6056,7 @@ function simConfirmarAutopreenchimento() {
   simAutoPreview.novos.forEach(item => {
     cenario.itens.push({ ...item, votos:porId.get(item.id) || 0 });
   });
+  cenario.listasConcluidas = [];
   simAutoPreview = null;
   salvarSimulador();
   document.getElementById('simResultadoCard').classList.add('hidden');
@@ -5912,6 +6079,7 @@ function simDesfazerAutopreenchimento() {
     item.origemVotos = salvo.origemVotos || 'manual';
   });
   cenario.ultimoAutopreenchimento = null;
+  cenario.listasConcluidas = [];
   simAutoPreview = null;
   salvarSimulador();
   document.getElementById('simResultadoCard').classList.add('hidden');
@@ -5925,6 +6093,7 @@ function simEditarVotos(id, valor, input) {
   if (!item) return;
   item.votos = simNumero(valor);
   item.origemVotos = 'manual';
+  simInvalidarConclusaoLista(item);
   simAutoPreview = null;
   salvarSimulador();
   document.getElementById('simResultadoCard').classList.add('hidden');
@@ -5938,6 +6107,7 @@ function simEditarGenero(id, genero) {
   const item = simCenario().itens.find(registro => registro.id === id && registro.tipo === 'candidato');
   if (!item || !['','feminino','masculino'].includes(genero)) return;
   item.genero = genero || null;
+  simInvalidarConclusaoLista(item);
   salvarSimulador();
   document.getElementById('simResultadoCard').classList.add('hidden');
   renderCotasGenero();
@@ -6046,6 +6216,7 @@ function renderSimulador() {
   renderCotasGenero();
   renderAutopreenchimento();
   renderRevisaoSimulador();
+  renderPainelListas();
 }
 
 function renderAutopreenchimento() {

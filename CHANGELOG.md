@@ -2,6 +2,14 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.12.0 — 01/08/2026
+
+- Etapa 3 recebe navegação interna entre a montagem do cenário e o novo Painel das Listas.
+- Cada partido isolado ou federação passa a ter um card atualizado em tempo real com candidaturas, votos, participação, composição por gênero, legenda, outros votos e posições disponíveis.
+- Cards distinguem listas em atenção, prontas para revisão e concluídas sem tratar o preenchimento do limite máximo como obrigatório.
+- Painel permite consultar os nomes de cada lista e marcá-la como concluída quando estiver regular.
+- Alterações posteriores em candidaturas, votos ou gênero retiram automaticamente a marcação de conclusão para exigir nova revisão.
+
 ## 1.11.0 — 01/08/2026
 
 - Limites de candidaturas passam a ser aplicados separadamente a cada partido isolado ou federação: 9 para deputado federal e 25 para deputado estadual em Mato Grosso do Sul.

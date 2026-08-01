@@ -1,8 +1,8 @@
-# Status de liberação — versão pública 1.11.0
+# Status de liberação — versão pública 1.12.0
 
 - Data: 01/08/2026
 - Produção: `https://plataformaeleitoral.ia.br`
-- Cache: `v72`
+- Cache: `v73`
 - Dataset: `tse-ms-2010-2024-v1`
 
 ## Estado atual
@@ -18,6 +18,7 @@
 - Dataset privado exige licença ou sessão administrativa válida.
 - Login orientado ao comprador, com primeira ativação por convite em fluxo secundário próprio.
 - Simulador aplica limites independentes por partido ou federação e valida cotas de gênero na lista global e por partido federado.
+- Etapa 3 oferece Painel das Listas com cards em tempo real, revisão visual e marcação explícita de conclusão.
 - Repositório de produção sincronizado com a branch `main`.
 
 ## Ressalva operacional
