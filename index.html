@@ -2008,16 +2008,24 @@ canvas {
   .card,
   .stat-grid,
   .compare-cols { max-width: 760px; }
-  .simulador-wrap,
-  .sim-placar-inner { max-width: 760px; }
+  .simulador-wrap { max-width: 760px; }
 }
 
 /* ===== SIMULADOR DE VAGAS 2026 ===== */
 .simulador-wrap .hidden,
-.sim-placar.hidden,
-.sim-placar .hidden { display: none !important; }
+.sim-revisao.hidden { display: none !important; }
 .simulador-wrap { max-width: 680px; margin: 0 auto; padding: 12px 10px 24px; }
 .simulador-intro { margin: 0 0 12px; color: var(--text-muted); font-size: .875rem; line-height: 1.5; }
+.sim-etapas-nav { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin: 0 0 12px; }
+.sim-etapa-nav { min-width: 0; min-height: 52px; padding: 7px 8px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-1); color: var(--text-muted); font: inherit; text-align: left; cursor: pointer; }
+.sim-etapa-nav strong, .sim-etapa-nav small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sim-etapa-nav strong { color: var(--text-light); font-size: .75rem; }
+.sim-etapa-nav small { margin-top: 3px; font-size: .65rem; }
+.sim-etapa-nav.ativa { border-color: var(--neon-cyan); background: rgba(0,217,255,.06); }
+.sim-etapa-nav.concluida strong::after { content: " ✓"; color: var(--neon-green); }
+.sim-etapa-nav.alerta { border-color: rgba(255,214,10,.55); }
+.sim-etapa-nav.erro { border-color: rgba(255,139,139,.65); }
+.sim-card.camada-oculta { display: none; }
 .sim-card { position: relative; margin: 0 0 12px; padding: 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; transition: border-color .2s ease, opacity .2s ease; }
 .sim-card.etapa-ativa { border-color: rgba(0,217,255,.7); }
 .sim-card.etapa-concluida { border-color: rgba(0,255,65,.4); }
@@ -2043,6 +2051,7 @@ canvas {
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
 .sim-btn-principal:disabled { cursor: not-allowed; opacity: .5; }
+.sim-continuar { width: 100%; margin-top: 12px; }
 .sim-btn-secundario { border: 1px solid var(--border); background: transparent; color: var(--text-light); padding: 10px 14px; }
 .sim-btn-secundario:hover, .sim-btn-secundario:focus-visible { border-color: var(--text-muted); }
 .sim-acoes-inclusao .sim-btn-secundario { min-height: 42px; font-size: .8125rem; font-weight: 600; }
@@ -2051,6 +2060,7 @@ canvas {
 .sim-sugestoes button { display: block; width: 100%; min-height: 48px; padding: 9px 11px; border: 0; border-bottom: 1px solid var(--border); background: var(--bg-1); color: var(--text-light); text-align: left; font-family: inherit; font-size: .875rem; line-height: 1.35; cursor: pointer; }
 .sim-sugestoes button:last-child { border-bottom: 0; }
 .sim-sugestoes small { display: block; color: var(--text-muted); margin-top: 2px; font-size: .8125rem; }
+.sim-sugestoes-vazio { padding: 11px; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
 .sim-selecionado { margin-top: 8px; padding: 9px 11px; border-left: 3px solid var(--border); background: rgba(255,255,255,.025); color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
 .sim-selecionado.ok { border-left-color: var(--neon-green); background: rgba(0,255,65,.05); color: var(--text-light); }
 .sim-lista { margin-top: 14px; }
@@ -2068,20 +2078,12 @@ canvas {
 .sim-auto-opcoes p { margin: 0; color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
 .sim-auto-previa ul { margin: 8px 0 0; padding-left: 20px; }
 .sim-auto-previa li { margin-bottom: 5px; font-size: .8125rem; line-height: 1.4; }
-.sim-placar { flex-shrink: 0; padding: 8px 12px; border-top: 1px solid var(--border); background: var(--bg-1); box-shadow: 0 -4px 14px rgba(0,0,0,.2); }
-.sim-placar-inner { max-width: 680px; margin: 0 auto; }
-.sim-placar-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-2); color: var(--text-light); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
-.sim-placar-toggle:hover, .sim-placar-toggle:focus-visible { border-color: var(--text-muted); }
-.sim-placar-toggle.completo { border-color: transparent; background: var(--neon-cyan); color: #06101b; }
-.sim-placar-toggle.erro { border-color: #ff8b8b; color: #ffb0b0; }
-.sim-placar-toggle-icone { flex: 0 0 auto; font-size: 1.25rem; line-height: 1; transition: transform .2s ease; }
-.sim-placar-toggle[aria-expanded="true"] .sim-placar-toggle-icone { transform: rotate(90deg); }
-.sim-placar-painel { padding: 10px 4px 2px; }
-.sim-placar-linha { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-.sim-placar-linha strong { font-size: 1rem; }
-.sim-placar-linha span { color: var(--text-muted); font-size: .8125rem; text-align: right; }
-.sim-progresso { height: 9px; margin: 8px 0; overflow: hidden; border-radius: 99px; background: var(--border); }
-.sim-progresso > span { display: block; height: 100%; max-width: 100%; background: var(--neon-cyan); transition: width .2s ease; }
+.sim-revisao { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.sim-revisao .sim-btn-principal { width: 100%; }
+.sim-revisao-alerta { margin: 0 0 10px; padding: 10px 12px; border-radius: 8px; font-size: .8125rem; line-height: 1.45; }
+.sim-revisao-alerta.aviso { border: 1px solid rgba(255,214,10,.4); background: rgba(255,214,10,.07); color: var(--text-light); }
+.sim-revisao-alerta.erro { border: 1px solid rgba(255,139,139,.5); background: rgba(255,139,139,.07); color: #ffb0b0; }
+.sim-revisao-alerta.ok { border: 1px solid rgba(0,255,65,.35); background: rgba(0,255,65,.05); color: var(--text-light); }
 .sim-status { margin: 0 0 8px; font-size: .8125rem; line-height: 1.4; }
 .sim-status.neutro { color: var(--text-muted); }
 .sim-status.ok { color: var(--neon-green); }
@@ -2676,6 +2678,12 @@ canvas {
       <div class="simulador-wrap">
         <p class="simulador-intro">Monte uma projeção simples para Mato Grosso do Sul. O cenário é salvo automaticamente somente neste navegador.</p>
 
+        <nav class="sim-etapas-nav" aria-label="Etapas do simulador">
+          <button type="button" class="sim-etapa-nav ativa" data-sim-etapa="1" aria-controls="simEtapa1Card" aria-current="step"><strong>1 · Cargo</strong><small id="simNavCargo">Escolher</small></button>
+          <button type="button" class="sim-etapa-nav" data-sim-etapa="2" aria-controls="simEtapa2Card"><strong>2 · Votos</strong><small id="simNavVotos">Pendente</small></button>
+          <button type="button" class="sim-etapa-nav" data-sim-etapa="3" aria-controls="simEtapa3Card"><strong>3 · Cenário</strong><small id="simNavCenario">Pendente</small></button>
+        </nav>
+
         <section class="sim-card" id="simEtapa1Card" aria-labelledby="simEtapa1Titulo">
           <h2 id="simEtapa1Titulo">1. Escolha o cargo</h2>
           <p class="sim-card-sub">Eleições 2026 · Mato Grosso do Sul</p>
@@ -2686,15 +2694,16 @@ canvas {
           <details class="sim-ajuda"><summary>Como escolher o cargo?</summary><p>Escolha qual cargo deseja simular. O estado e a quantidade de vagas já estão preenchidos e não precisam ser alterados.</p></details>
         </section>
 
-        <section class="sim-card" id="simEtapa2Card" aria-labelledby="simEtapa2Titulo">
+        <section class="sim-card camada-oculta" id="simEtapa2Card" aria-labelledby="simEtapa2Titulo">
           <h2 id="simEtapa2Titulo">2. Informe os votos válidos</h2>
           <p class="sim-card-sub">Não inclua votos brancos e nulos.</p>
           <div class="sim-campo"><label for="simVotosValidos">Votos válidos estimados</label><input type="number" id="simVotosValidos" min="1" step="1" inputmode="numeric" placeholder="Ex.: 1.500.000"></div>
           <div class="sim-selecionado" id="simQuociente" role="status" aria-live="polite">Digite a estimativa de votos válidos para continuar.</div>
+          <button type="button" class="sim-btn-principal sim-continuar" id="simContinuarVotos">Continuar</button>
           <details class="sim-ajuda"><summary>O que preencher aqui?</summary><p>Informe o total de votos que você estima para este cargo em todo o estado. Esse número serve para calcular quantos votos serão necessários para a distribuição das vagas.</p></details>
         </section>
 
-        <section class="sim-card" id="simEtapa3Card" aria-labelledby="simEtapa3Titulo">
+        <section class="sim-card camada-oculta" id="simEtapa3Card" aria-labelledby="simEtapa3Titulo">
           <h2 id="simEtapa3Titulo">3. Adicione candidaturas e votos</h2>
           <p class="sim-card-sub">Pesquise alguém do histórico ou digite um nome novo.</p>
           <div class="sim-campo">
@@ -2718,6 +2727,10 @@ canvas {
           <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
           <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
           <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
+          <div class="sim-revisao hidden" id="simRevisao">
+            <p class="sim-revisao-alerta hidden" id="simRevisaoStatus" role="status" aria-live="polite"></p>
+            <button type="button" class="sim-btn-principal" id="simCalcular">Revisar e calcular</button>
+          </div>
           <section class="sim-auto hidden" id="simAutoArea" aria-labelledby="simAutoTitulo">
             <h3 id="simAutoTitulo">Preenchimento rápido</h3>
             <p class="sim-card-sub" id="simAutoResumo"></p>
@@ -2743,20 +2756,6 @@ canvas {
         </section>
       </div>
     </div>
-    <aside class="sim-placar hidden" aria-label="Resumo do cenário">
-      <div class="sim-placar-inner">
-        <button type="button" class="sim-placar-toggle" id="simPlacarToggle" aria-expanded="false" aria-controls="simPlacarPainel">
-          <span id="simPlacarResumo">Acompanhar cenário</span>
-          <span class="sim-placar-toggle-icone" aria-hidden="true">›</span>
-        </button>
-        <div class="sim-placar-painel hidden" id="simPlacarPainel">
-          <div class="sim-placar-linha"><strong id="simPlacarTitulo">Resumo do cenário</strong><span id="simPlacarNumeros">0 de 0 votos</span></div>
-          <div class="sim-progresso" id="simProgressoTrilha" aria-hidden="true"><span id="simProgresso" style="width:0%"></span></div>
-          <p class="sim-status neutro" id="simPlacarStatus" role="status" aria-live="polite"></p>
-          <button type="button" class="sim-btn-principal hidden" id="simCalcular" disabled>Calcular resultado</button>
-        </div>
-      </div>
-    </aside>
   </div>
 
   <!-- TELA SOBRE -->
@@ -5193,6 +5192,9 @@ let simHistorico = [];
 let simSelecionado = null;
 let simOrganizacaoSelecionada = null;
 let simAutoPreview = null;
+let simRevisaoSolicitada = false;
+let simEtapaAtiva = 1;
+let simEtapa1Confirmada = false;
 let simEstado = carregarSimulador();
 
 function novoCenarioSimulador() {
@@ -5269,22 +5271,25 @@ function initSimulador() {
   prepararHistoricoSimulador();
   if (!simInit) {
     document.querySelectorAll('[data-sim-cargo]').forEach(botao => botao.addEventListener('click', () => simTrocarCargo(botao.dataset.simCargo)));
+    document.querySelectorAll('[data-sim-etapa]').forEach(botao => botao.addEventListener('click', () => simAbrirEtapa(Number(botao.dataset.simEtapa))));
     document.getElementById('simVotosValidos').addEventListener('input', evento => {
       simCenario().votosValidos = simNumero(evento.target.value);
       simCenario().ultimoAutopreenchimento = null;
       simAutoPreview = null;
+      simRevisaoSolicitada = false;
       salvarSimulador();
       renderSimulador();
     });
     document.getElementById('simVotosValidos').addEventListener('change', evento => {
-      if (simNumero(evento.target.value)) simAvancarPara('simNome');
+      if (simNumero(evento.target.value)) simConfirmarVotosValidos();
     });
     document.getElementById('simVotosValidos').addEventListener('keydown', evento => {
       if (evento.key === 'Enter' && simNumero(evento.currentTarget.value)) {
         evento.preventDefault();
-        simAvancarPara('simNome');
+        simConfirmarVotosValidos();
       }
     });
+    document.getElementById('simContinuarVotos').addEventListener('click', simConfirmarVotosValidos);
     const nome = document.getElementById('simNome');
     nome.addEventListener('input', simPesquisarHistorico);
     nome.addEventListener('keydown', evento => {
@@ -5322,13 +5327,10 @@ function initSimulador() {
       }
     });
     const votosCandidato = document.getElementById('simVotosCandidato');
-    votosCandidato.addEventListener('change', evento => {
-      if (simNumero(evento.target.value)) simAvancarPara('simAdicionarCandidato');
-    });
     votosCandidato.addEventListener('keydown', evento => {
       if (evento.key === 'Enter' && simNumero(evento.currentTarget.value)) {
         evento.preventDefault();
-        simAvancarPara('simAdicionarCandidato');
+        simAdicionarItem('candidato');
       }
     });
     document.getElementById('simPartidoSugestoes').addEventListener('keydown', evento => {
@@ -5349,8 +5351,7 @@ function initSimulador() {
     document.getElementById('simAutoIgual').addEventListener('click', () => simPrepararAutopreenchimento('igual'));
     document.getElementById('simAutoCancelar').addEventListener('click', simCancelarAutopreenchimento);
     document.getElementById('simDesfazerAuto').addEventListener('click', simDesfazerAutopreenchimento);
-    document.getElementById('simCalcular').addEventListener('click', simCalcularResultado);
-    document.getElementById('simPlacarToggle').addEventListener('click', simAlternarPlacar);
+    document.getElementById('simCalcular').addEventListener('click', simRevisarCalculo);
     document.addEventListener('click', evento => {
       if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
       if (!evento.target.closest('#simPartido, #simPartidoSugestoes')) simFecharOrganizacoes();
@@ -5362,27 +5363,49 @@ function initSimulador() {
 
 function simTrocarCargo(cargo) {
   if (!SIM_CARGOS[cargo]) return;
+  simEtapa1Confirmada = true;
   if (cargo === simEstado.cargo) {
-    simAvancarPara('simVotosValidos');
+    simAbrirEtapa(2, 'simVotosValidos');
     return;
   }
   simEstado.cargo = cargo;
   simAutoPreview = null;
+  simRevisaoSolicitada = false;
   simSelecionado = null;
   simOrganizacaoSelecionada = null;
   salvarSimulador();
   simLimparFormulario();
   document.getElementById('simResultadoCard').classList.add('hidden');
   renderSimulador();
-  simAvancarPara('simVotosValidos');
+  simAbrirEtapa(2, 'simVotosValidos');
+}
+
+function simConfirmarVotosValidos() {
+  if (!simNumero(document.getElementById('simVotosValidos').value)) {
+    const quociente = document.getElementById('simQuociente');
+    quociente.classList.remove('ok');
+    quociente.textContent = 'Informe uma estimativa de votos válidos maior que zero.';
+    return;
+  }
+  simAbrirEtapa(3, 'simNome');
+}
+
+function simAbrirEtapa(etapa, focoId = null) {
+  if (![1, 2, 3].includes(etapa)) return;
+  simEtapaAtiva = etapa;
+  renderNavegacaoEtapas();
+  const card = document.getElementById(`simEtapa${etapa}Card`);
+  requestAnimationFrame(() => {
+    card?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (focoId) document.getElementById(focoId)?.focus({ preventScroll: true });
+  });
 }
 
 function simPesquisarOrganizacoes() {
   simOrganizacaoSelecionada = null;
   document.getElementById('simOrganizacaoSelecionada').classList.add('hidden');
   const input = document.getElementById('simPartido');
-  const termoOriginal = input.value.trim();
-  const termo = normalizarTexto(termoOriginal);
+  const termo = normalizarTexto(input.value.trim());
   const box = document.getElementById('simPartidoSugestoes');
   if (termo.length < 2) return simFecharOrganizacoes();
   const resultados = [];
@@ -5405,14 +5428,13 @@ function simPesquisarOrganizacoes() {
   }
   const unicos = resultados.filter((item,indice,todos) => todos.findIndex(outro => `${outro.tipo}:${outro.sigla}` === `${item.tipo}:${item.sigla}`) === indice).slice(0,8);
   box.dataset.resultados = JSON.stringify(unicos);
-  box.innerHTML = unicos.map((item,indice) => item.tipo === 'partido'
+  box.innerHTML = unicos.length ? unicos.map((item,indice) => item.tipo === 'partido'
     ? `<button type="button" role="option" data-sim-organizacao-indice="${indice}"><strong>${simEscapar(item.sigla)} · ${simEscapar(item.nome)}</strong><small>${item.federacao ? `Integra ${simEscapar(item.federacao)}` : 'Partido sem federação cadastrada'}</small></button>`
     : `<button type="button" role="option" data-sim-organizacao-indice="${indice}"><strong>${simEscapar(item.nome)}</strong><small>${simEscapar(item.partidos.join(' · '))}</small></button>`).join('')
-    + `<button type="button" role="option" data-sim-organizacao-nova><strong>Usar “${simEscapar(termoOriginal)}” neste cenário</strong><small>Organização não verificada; não altera a lista oficial.</small></button>`;
+    : '<div class="sim-sugestoes-vazio" role="status">Partido ou federação não encontrado. Verifique o nome informado.</div>';
   box.querySelectorAll('[data-sim-organizacao-indice]').forEach(botao => {
     botao.addEventListener('click', () => simSelecionarOrganizacao(Number(botao.dataset.simOrganizacaoIndice)));
   });
-  box.querySelector('[data-sim-organizacao-nova]')?.addEventListener('click', simUsarOrganizacaoNova);
   box.classList.remove('hidden');
   input.setAttribute('aria-expanded','true');
 }
@@ -5434,20 +5456,19 @@ function simSelecionarOrganizacao(indice) {
   simAvancarPara('simVotosCandidato');
 }
 
-function simUsarOrganizacaoNova() {
-  const nome = document.getElementById('simPartido').value.trim();
-  if (!nome) return;
-  simOrganizacaoSelecionada = { partido:nome, partidoNome:nome, chapa:nome, federacao:null, verificada:false };
-  simMostrarOrganizacao();
-  simFecharOrganizacoes();
-  simAvancarPara('simVotosCandidato');
-}
-
 function simFinalizarOrganizacaoDigitada() {
   const valor = document.getElementById('simPartido').value.trim();
   if (!valor) return;
-  simOrganizacaoSelecionada = simResolverOrganizacaoDigitada(valor)
-    || { partido:valor, partidoNome:valor, chapa:valor, federacao:null, verificada:false };
+  const organizacao = simResolverOrganizacaoDigitada(valor);
+  if (!organizacao) {
+    const status = document.getElementById('simFormularioStatus');
+    status.className = 'sim-status erro';
+    status.textContent = 'Selecione um partido ou uma federação da lista oficial.';
+    simPesquisarOrganizacoes();
+    return;
+  }
+  simOrganizacaoSelecionada = organizacao;
+  document.getElementById('simPartido').value = organizacao.partido || organizacao.federacao;
   simMostrarOrganizacao();
   simFecharOrganizacoes();
   simAvancarPara('simVotosCandidato');
@@ -5457,11 +5478,9 @@ function simMostrarOrganizacao() {
   const aviso = document.getElementById('simOrganizacaoSelecionada');
   const org = simOrganizacaoSelecionada;
   if (!org) return aviso.classList.add('hidden');
-  aviso.innerHTML = org.verificada
-    ? org.federacao
-      ? `<strong>Chapa de cálculo:</strong> ${simEscapar(org.federacao)}${org.partido ? `<br><strong>Partido:</strong> ${simEscapar(org.partido)}` : `<br>Escolha preferencialmente o partido integrante ao cadastrar uma candidatura.`}`
-      : `<strong>Partido selecionado:</strong> ${simEscapar(org.partido)}`
-    : `<strong>Organização não verificada:</strong> ${simEscapar(org.chapa)}. Será usada somente neste cenário.`;
+  aviso.innerHTML = org.federacao
+    ? `<strong>Chapa de cálculo:</strong> ${simEscapar(org.federacao)}${org.partido ? `<br><strong>Partido:</strong> ${simEscapar(org.partido)}` : `<br>Escolha preferencialmente o partido integrante ao cadastrar uma candidatura.`}`
+    : `<strong>Partido selecionado:</strong> ${simEscapar(org.partido)}`;
   aviso.classList.remove('hidden');
 }
 
@@ -5538,8 +5557,12 @@ function simAdicionarItem(tipo) {
   if (!organizacaoDigitada) { status.textContent = 'Informe o partido ou a federação.'; return; }
   if (!votos) { status.textContent = 'Informe uma quantidade de votos maior que zero.'; return; }
   if (tipo === 'candidato' && !nomeDigitado) { status.textContent = 'Pesquise ou digite o nome da pessoa.'; return; }
-  const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada)
-    || { partido:organizacaoDigitada, partidoNome:organizacaoDigitada, chapa:organizacaoDigitada, federacao:null, verificada:false };
+  const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada);
+  if (!org) {
+    status.textContent = 'Selecione um partido ou uma federação da lista oficial.';
+    simPesquisarOrganizacoes();
+    return;
+  }
   if ((tipo === 'candidato' || tipo === 'legenda') && !org.partido) {
     status.textContent = 'Selecione o partido integrante da federação. A busca mostrará automaticamente a chapa correta.';
     return;
@@ -5786,7 +5809,45 @@ function simEditarVotos(id, valor, input) {
   document.getElementById('simResultadoCard').classList.add('hidden');
   const origem = input?.closest('.sim-item')?.querySelector('.sim-origem-votos');
   if (origem) origem.textContent = item.origem === 'simulada' ? 'Candidatura simulada ajustada manualmente' : simCenario().ultimoAutopreenchimento ? 'Ajustado manualmente' : 'Informado manualmente';
-  renderPlacarSimulador();
+  renderRevisaoSimulador();
+  renderNavegacaoEtapas();
+}
+
+function renderNavegacaoEtapas() {
+  const cenario = simCenario();
+  const validos = simNumero(cenario.votosValidos);
+  const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
+  const diferenca = validos - distribuido;
+  const etapaConcluida = {
+    1: simEtapa1Confirmada,
+    2: validos > 0,
+    3: validos > 0 && cenario.itens.length > 0 && diferenca === 0
+  };
+  document.getElementById('simNavCargo').textContent = SIM_CARGOS[simEstado.cargo].label;
+  document.getElementById('simNavVotos').textContent = validos ? formatarNum(validos) : 'Pendente';
+  document.getElementById('simNavCenario').textContent = etapaConcluida[3]
+    ? 'Completo'
+    : diferenca < 0
+      ? `Excede ${formatarNum(Math.abs(diferenca))}`
+      : simRevisaoSolicitada && cenario.itens.length && diferenca > 0
+        ? `Faltam ${formatarNum(diferenca)}`
+        : cenario.itens.length ? 'Em montagem' : 'Pendente';
+  document.querySelectorAll('[data-sim-etapa]').forEach(botao => {
+    const etapa = Number(botao.dataset.simEtapa);
+    botao.classList.toggle('ativa', etapa === simEtapaAtiva);
+    botao.classList.toggle('concluida', etapaConcluida[etapa]);
+    botao.classList.toggle('alerta', etapa === 3 && simRevisaoSolicitada && diferenca > 0 && cenario.itens.length > 0);
+    botao.classList.toggle('erro', etapa === 3 && diferenca < 0);
+    if (etapa === simEtapaAtiva) botao.setAttribute('aria-current', 'step');
+    else botao.removeAttribute('aria-current');
+  });
+  [1, 2, 3].forEach(etapa => {
+    const card = document.getElementById(`simEtapa${etapa}Card`);
+    card.classList.toggle('camada-oculta', etapa !== simEtapaAtiva);
+    card.classList.toggle('etapa-ativa', etapa === simEtapaAtiva);
+    card.classList.toggle('etapa-concluida', etapa !== simEtapaAtiva && etapaConcluida[etapa]);
+    card.classList.toggle('etapa-pendente', etapa !== simEtapaAtiva && !etapaConcluida[etapa]);
+  });
 }
 
 function renderSimulador() {
@@ -5804,11 +5865,7 @@ function renderSimulador() {
     ? `<strong>Quociente eleitoral estimado:</strong> ${formatarNum(qe)} votos para ${config.vagas} vagas.`
     : 'Digite a estimativa de votos válidos para continuar.';
   quociente.classList.toggle('ok', Boolean(qe));
-  const temVotosValidos = simNumero(cenario.votosValidos) > 0;
-  const temParticipantes = cenario.itens.length > 0;
-  document.getElementById('simEtapa1Card').className = 'sim-card etapa-concluida';
-  document.getElementById('simEtapa2Card').className = `sim-card ${temVotosValidos ? 'etapa-concluida' : 'etapa-ativa'}`;
-  document.getElementById('simEtapa3Card').className = `sim-card ${temVotosValidos ? (temParticipantes ? 'etapa-concluida' : 'etapa-ativa') : 'etapa-pendente'}`;
+  renderNavegacaoEtapas();
   const lista = document.getElementById('simLista');
   const contagemChapas = new Map();
   cenario.itens.filter(item=>item.tipo==='candidato').forEach(item => {
@@ -5827,7 +5884,7 @@ function renderSimulador() {
     input.addEventListener('input', () => simEditarVotos(input.dataset.simEditarVotos, input.value, input));
   });
   renderAutopreenchimento();
-  renderPlacarSimulador();
+  renderRevisaoSimulador();
 }
 
 function renderAutopreenchimento() {
@@ -5851,66 +5908,48 @@ function renderAutopreenchimento() {
   document.getElementById('simAutoPrevia').classList.add('hidden');
 }
 
-function renderPlacarSimulador() {
+function renderRevisaoSimulador() {
   const cenario = simCenario();
   const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
   const validos = simNumero(cenario.votosValidos);
   const diferenca = validos - distribuido;
-  const percentual = validos ? Math.min(100, distribuido / validos * 100) : 0;
-  document.getElementById('simProgresso').style.width = `${percentual}%`;
-  document.getElementById('simPlacarNumeros').textContent = `${formatarNum(distribuido)} de ${formatarNum(validos)} votos`;
-  const titulo = document.getElementById('simPlacarTitulo');
-  const status = document.getElementById('simPlacarStatus');
+  const revisao = document.getElementById('simRevisao');
+  const status = document.getElementById('simRevisaoStatus');
   const calcular = document.getElementById('simCalcular');
-  const placar = document.querySelector('.sim-placar');
-  const toggle = document.getElementById('simPlacarToggle');
-  const resumo = document.getElementById('simPlacarResumo');
-  const painel = document.getElementById('simPlacarPainel');
-  placar.classList.toggle('hidden', !validos);
-  calcular.disabled = true;
-  calcular.classList.add('hidden');
-  toggle.className = 'sim-placar-toggle';
-  if (!validos) {
-    resumo.textContent = 'Acompanhar cenário';
-    titulo.textContent = 'Resumo do cenário';
-    status.className = 'sim-status neutro hidden';
+  const possuiItens = cenario.itens.length > 0;
+  revisao.classList.toggle('hidden', !possuiItens);
+  if (!possuiItens) {
+    status.className = 'sim-revisao-alerta hidden';
     status.textContent = '';
-    painel.classList.add('hidden');
-    toggle.setAttribute('aria-expanded', 'false');
-  } else if (diferenca > 0) {
-    resumo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
-    titulo.textContent = `Faltam ${formatarNum(diferenca)} votos`;
-    status.className = 'sim-status aviso';
-    status.textContent = 'Distribua os votos restantes entre candidaturas, partidos ou federações.';
-  } else if (diferenca < 0) {
-    resumo.textContent = `${formatarNum(Math.abs(diferenca))} votos acima do total — Corrigir`;
-    toggle.classList.add('erro');
-    titulo.textContent = `${formatarNum(Math.abs(diferenca))} votos a mais`;
-    status.className = 'sim-status erro';
-    status.textContent = 'A soma ultrapassou os votos válidos. Reduza as estimativas ou corrija o total de votos válidos.';
+    return;
+  }
+  calcular.textContent = diferenca === 0 && validos ? 'Calcular resultado' : 'Revisar e calcular';
+  if (diferenca < 0) {
+    status.className = 'sim-revisao-alerta erro';
+    status.textContent = `O cenário excede o total estimado em ${formatarNum(Math.abs(diferenca))} votos. Corrija os valores antes de calcular.`;
+  } else if (simRevisaoSolicitada && (!validos || diferenca > 0)) {
+    status.className = 'sim-revisao-alerta aviso';
+    status.textContent = !validos
+      ? 'Informe os votos válidos estimados antes de calcular.'
+      : `Ainda faltam ${formatarNum(diferenca)} votos para completar a estimativa.`;
+  } else if (diferenca === 0 && validos) {
+    status.className = 'sim-revisao-alerta ok';
+    status.textContent = 'Todos os votos foram distribuídos. O cenário está pronto para o cálculo.';
   } else {
-    resumo.textContent = 'Cenário completo — Calcular resultado';
-    toggle.classList.add('completo');
-    titulo.textContent = 'Cenário completo';
-    status.className = 'sim-status ok';
-    status.textContent = 'Todos os votos foram distribuídos. O cálculo está liberado.';
-    calcular.disabled = cenario.itens.length === 0;
-    painel.classList.add('hidden');
-    toggle.setAttribute('aria-expanded', 'false');
+    status.className = 'sim-revisao-alerta hidden';
+    status.textContent = '';
   }
 }
 
-function simAlternarPlacar() {
-  const calcular = document.getElementById('simCalcular');
-  if (!calcular.disabled) {
+function simRevisarCalculo() {
+  const cenario = simCenario();
+  const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
+  simRevisaoSolicitada = true;
+  renderRevisaoSimulador();
+  renderNavegacaoEtapas();
+  if (simNumero(cenario.votosValidos) > 0 && distribuido === simNumero(cenario.votosValidos)) {
     simCalcularResultado();
-    return;
   }
-  const toggle = document.getElementById('simPlacarToggle');
-  const painel = document.getElementById('simPlacarPainel');
-  const abrir = painel.classList.contains('hidden');
-  painel.classList.toggle('hidden', !abrir);
-  toggle.setAttribute('aria-expanded', String(abrir));
 }
 
 function calcularVagasSimulador(cenario, cargo) {
