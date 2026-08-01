@@ -1,7 +1,7 @@
 # Relatório completo — Plataforma Eleitoral Inteligente
 
 **Data do levantamento:** 01/08/2026  
-**Versão publicada verificada:** 1.13.0 · cache v75 · dataset `tse-ms-2010-2024-v1`  
+**Versão publicada verificada:** 1.13.1 · cache v76 · dataset `tse-ms-2010-2024-v1`
 **Produção:** https://plataformaeleitoral.ia.br  
 **Desenvolvimento:** Girassol Inteligência
 
@@ -556,5 +556,5 @@ Use os controles de compartilhamento de links disponíveis. No celular, a plataf
 
 - A comunicação deve mencionar apenas o compartilhamento de links de acesso e consultas.
 - Para materiais atuais, use `version.json` e confirme a versão efetivamente publicada; referências anteriores no histórico de versões não representam o estado corrente.
-- A versão publicada corrente é 1.13.0, cache v75 e dataset `tse-ms-2010-2024-v1`.
+- A versão publicada corrente é 1.13.1, cache v76 e dataset `tse-ms-2010-2024-v1`.
 - Toda divulgação deve manter a distinção entre dados históricos, projeção do simulador e resultado oficial.

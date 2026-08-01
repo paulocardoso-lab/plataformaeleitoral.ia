@@ -2090,17 +2090,25 @@ canvas {
 .sim-desfazer-limpeza button { width: 100%; margin-top: 8px; }
 .sim-modal-backdrop { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 14px; background: rgba(2,6,23,.9); }
 .sim-modal-backdrop.hidden { display: none; }
-.sim-modal { width: min(100%, 520px); max-height: min(86vh, 720px); overflow: auto; box-sizing: border-box; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-2); box-shadow: 0 18px 60px rgba(0,0,0,.5); }
-.sim-modal h2 { margin: 0 0 5px; color: var(--text-light); font-size: 1.125rem; }
-.sim-modal-sub { margin: 0 0 14px; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
-.sim-limpeza-opcoes { display: grid; gap: 8px; }
-.sim-limpeza-opcao { width: 100%; min-height: 54px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-1); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
+.sim-modal { width: min(100%, 440px); max-height: min(84vh, 600px); overflow: auto; box-sizing: border-box; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-2); box-shadow: 0 18px 60px rgba(0,0,0,.5); }
+.sim-modal .hidden { display: none !important; }
+.sim-modal-cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 5px; }
+.sim-modal h2 { margin: 0; color: var(--text-light); font-size: 1rem; }
+.sim-modal-fechar { width: 36px; height: 36px; flex: 0 0 36px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); font: inherit; font-size: 1.25rem; cursor: pointer; }
+.sim-modal-fechar:hover, .sim-modal-fechar:focus-visible { background: rgba(255,255,255,.05); color: var(--text-light); }
+.sim-modal-sub { margin: 0 0 10px; color: var(--text-muted); font-size: .75rem; line-height: 1.4; }
+.sim-limpeza-opcoes { overflow: hidden; border: 1px solid rgba(148,163,184,.24); border-radius: 9px; }
+.sim-limpeza-opcao { position: relative; width: 100%; min-height: 46px; padding: 8px 34px 8px 10px; border: 0; border-bottom: 1px solid rgba(148,163,184,.18); background: rgba(255,255,255,.015); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
+.sim-limpeza-opcao:last-child { border-bottom: 0; }
+.sim-limpeza-opcao::after { content: '›'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem; }
+.sim-limpeza-opcao:hover, .sim-limpeza-opcao:focus-visible { background: rgba(255,255,255,.045); }
 .sim-limpeza-opcao strong, .sim-limpeza-opcao small { display: block; }
 .sim-limpeza-opcao small { margin-top: 3px; color: var(--text-muted); font-size: .75rem; line-height: 1.35; }
-.sim-limpeza-opcao.perigo { border-color: rgba(255,139,139,.45); }
 .sim-limpeza-opcao:disabled { cursor: not-allowed; opacity: .45; }
-.sim-limpeza-resumo { padding: 11px; border: 1px solid rgba(255,139,139,.45); border-radius: 9px; background: rgba(255,139,139,.06); color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
-.sim-btn-destrutivo { min-height: 48px; border: 1px solid #ff8b8b; border-radius: 9px; background: rgba(255,139,139,.12); color: #ffb0b0; padding: 10px 14px; font: inherit; font-weight: 800; cursor: pointer; }
+.sim-limpeza-resumo { padding: 10px; border: 1px solid rgba(255,139,139,.38); border-radius: 9px; background: rgba(255,139,139,.05); color: var(--text-light); font-size: .775rem; line-height: 1.45; }
+.sim-modal-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.sim-modal-acoes button { min-height: 44px; padding: 7px 10px; }
+.sim-btn-destrutivo { border: 1px solid #ff8b8b; border-radius: 9px; background: rgba(255,139,139,.1); color: #ffb0b0; font: inherit; font-size: .8125rem; font-weight: 800; cursor: pointer; }
 .sim-form-acoes { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 14px; }
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
@@ -2834,22 +2842,19 @@ canvas {
 
   <div class="sim-modal-backdrop hidden" id="simLimpezaModal" role="dialog" aria-modal="true" aria-labelledby="simLimpezaTitulo">
     <div class="sim-modal">
+      <div class="sim-modal-cabecalho"><h2 id="simLimpezaTitulo">Reiniciar simulador</h2><button type="button" class="sim-modal-fechar" id="simLimpezaFechar" aria-label="Fechar">×</button></div>
       <div id="simLimpezaEtapa1">
-        <h2 id="simLimpezaTitulo">Reiniciar simulador</h2>
-        <p class="sim-modal-sub">Escolha o alcance do reinício. As listas também podem ser excluídas individualmente em seus próprios cards.</p>
+        <p class="sim-modal-sub">Escolha o que deseja reiniciar.</p>
         <div class="sim-limpeza-opcoes">
-          <button type="button" class="sim-limpeza-opcao perigo" data-sim-limpeza-tipo="cenario"><strong>Reiniciar cenário do cargo atual</strong><small>Apaga votos válidos, listas, candidaturas e resultados deste cargo.</small></button>
-          <button type="button" class="sim-limpeza-opcao perigo" data-sim-limpeza-tipo="tudo"><strong>Reiniciar todo o simulador</strong><small>Apaga os cenários de deputado federal e estadual.</small></button>
+          <button type="button" class="sim-limpeza-opcao" data-sim-limpeza-tipo="cenario"><strong>Cargo atual</strong><small>Apaga somente o cenário aberto.</small></button>
+          <button type="button" class="sim-limpeza-opcao" data-sim-limpeza-tipo="tudo"><strong>Todo o simulador</strong><small>Apaga os cenários federal e estadual.</small></button>
         </div>
-        <button type="button" class="sim-btn-secundario sim-continuar" id="simLimpezaFechar">Cancelar</button>
       </div>
       <div class="hidden" id="simLimpezaEtapa2">
-        <h2>Confirmar ação</h2>
-        <p class="sim-modal-sub">Confira cuidadosamente o impacto desta ação.</p>
         <div class="sim-limpeza-resumo" id="simLimpezaResumo"></div>
-        <div class="sim-form-acoes">
+        <div class="sim-modal-acoes">
           <button type="button" class="sim-btn-secundario" id="simLimpezaVoltar">Voltar</button>
-          <button type="button" class="sim-btn-destrutivo" id="simLimpezaConfirmar">Confirmar limpeza</button>
+          <button type="button" class="sim-btn-destrutivo" id="simLimpezaConfirmar">Confirmar</button>
         </div>
       </div>
     </div>
@@ -5295,6 +5300,7 @@ let simEtapa1Confirmada = false;
 let simVisualizacaoCenario = 'montagem';
 let simLimpezaPendente = null;
 let simLimpezaBackup = null;
+let simLimpezaGatilho = null;
 let simEstado = carregarSimulador();
 
 function novoCenarioSimulador() {
@@ -5764,7 +5770,8 @@ function simImpactoLimpeza(tipo, chave = null) {
   if (tipo === 'lista') {
     const lista = simResumirListas(cenario).find(item => item.chave === chave);
     if (!lista) return null;
-    return { tipo, chave, resumo:`A lista ${lista.nome} será removida com ${lista.candidaturas.length} candidaturas e ${formatarNum(lista.votos)} votos. As demais listas e o total de votos válidos serão preservados.` };
+    const quantidade = lista.candidaturas.length;
+    return { tipo, chave, resumo:`A lista ${lista.nome} será removida com ${quantidade} ${quantidade === 1 ? 'candidatura' : 'candidaturas'} e ${formatarNum(lista.votos)} votos. As demais listas e o total de votos válidos serão preservados.` };
   }
   if (tipo === 'cenario') {
     return { tipo, chave:null, resumo:`O cenário de ${SIM_CARGOS[simEstado.cargo].label.toLowerCase()} será reiniciado. Serão removidos ${itens.length} registros, ${candidaturas.length} candidaturas e o total estimado de ${formatarNum(cenario.votosValidos)} votos válidos. O outro cargo será preservado.` };
@@ -5802,6 +5809,7 @@ function simAplicarLimpezaEstado(estado, tipo, chave = null) {
 
 function simAbrirLimpeza(chaveLista = null) {
   const modal = document.getElementById('simLimpezaModal');
+  simLimpezaGatilho = document.activeElement;
   document.getElementById('simLimpezaTitulo').textContent = chaveLista ? 'Excluir lista' : 'Reiniciar simulador';
   document.getElementById('simLimpezaEtapa1').classList.remove('hidden');
   document.getElementById('simLimpezaEtapa2').classList.add('hidden');
@@ -5816,6 +5824,11 @@ function simMostrarConfirmacaoLimpeza(tipo, chave = null) {
   const impacto = simImpactoLimpeza(tipo, chave);
   if (!impacto) return;
   simLimpezaPendente = impacto;
+  const titulos = { lista:'Excluir lista', cenario:'Reiniciar cargo atual', tudo:'Reiniciar todo o simulador' };
+  const acoes = { lista:'Excluir', cenario:'Reiniciar cargo', tudo:'Reiniciar tudo' };
+  document.getElementById('simLimpezaTitulo').textContent = titulos[tipo] || 'Confirmar ação';
+  document.getElementById('simLimpezaConfirmar').textContent = acoes[tipo] || 'Confirmar';
+  document.getElementById('simLimpezaVoltar').textContent = tipo === 'lista' ? 'Cancelar' : 'Voltar';
   document.getElementById('simLimpezaResumo').textContent = impacto.resumo;
   document.getElementById('simLimpezaEtapa1').classList.add('hidden');
   document.getElementById('simLimpezaEtapa2').classList.remove('hidden');
@@ -5831,13 +5844,16 @@ function simVoltarLimpeza() {
   }
   document.getElementById('simLimpezaEtapa2').classList.add('hidden');
   document.getElementById('simLimpezaEtapa1').classList.remove('hidden');
+  document.getElementById('simLimpezaTitulo').textContent = 'Reiniciar simulador';
   requestAnimationFrame(() => document.getElementById('simLimpezaFechar').focus());
 }
 
 function simFecharLimpeza() {
   simLimpezaPendente = null;
   document.getElementById('simLimpezaModal').classList.add('hidden');
-  document.getElementById('simAbrirLimpeza').focus();
+  const destino = simLimpezaGatilho?.isConnected ? simLimpezaGatilho : document.getElementById('simAbrirLimpeza');
+  simLimpezaGatilho = null;
+  destino?.focus();
 }
 
 function simConfirmarLimpeza() {

@@ -200,7 +200,10 @@ assert(html.includes('id="simLimpezaEtapa1"') && html.includes('id="simLimpezaEt
   && html.includes('data-sim-limpar-lista')
   && !html.includes('data-sim-limpeza-tipo="votos"')
   && !html.includes('data-sim-limpeza-tipo="candidaturas"')
-  && !html.includes('data-sim-limpeza-tipo="lista"'),
+  && !html.includes('data-sim-limpeza-tipo="lista"')
+  && html.includes('.sim-modal .hidden { display: none !important; }')
+  && html.includes('class="sim-modal-acoes"')
+  && html.includes("lista:'Excluir'") && html.includes("cenario:'Reiniciar cargo'"),
   'Interface deve separar reinício geral, exclusão por card, confirmação e opção de desfazer.');
 assert(html.includes('id="simAdicionarLegenda"'), 'Botão de votos de legenda ausente.');
 assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutopreenchimento: 13'), 'Limites de liberação do autopreenchimento incorretos.');

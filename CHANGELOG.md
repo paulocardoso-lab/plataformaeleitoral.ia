@@ -2,6 +2,13 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.13.1 — 01/08/2026
+
+- Corrige a exibição simultânea das etapas de seleção e confirmação no modal do simulador.
+- Separa visualmente a exclusão individual de lista das opções de reinício geral.
+- Compacta modal, botões, espaçamentos e textos para reduzir rolagem no celular.
+- Adota ações específicas para excluir lista, reiniciar cargo e reiniciar todo o simulador.
+
 ## 1.13.0 — 01/08/2026
 
 - Simplifica o reinício do simulador para duas opções: cargo atual ou todos os cenários.
