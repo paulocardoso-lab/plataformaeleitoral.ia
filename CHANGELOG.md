@@ -2,6 +2,15 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.11.0 — 01/08/2026
+
+- Limites de candidaturas passam a ser aplicados separadamente a cada partido isolado ou federação: 9 para deputado federal e 25 para deputado estadual em Mato Grosso do Sul.
+- Identificação canônica da lista eleitoral corrige agrupamentos inconsistentes em cenários antigos, na contagem, no autopreenchimento e no cálculo de vagas.
+- Cadastro de candidaturas passa a registrar gênero e verificar os percentuais mínimo de 30% e máximo de 70%.
+- Federações são verificadas globalmente e também nas indicações de cada partido integrante.
+- Alertas orientam a regularização dentro da etapa 3 e inclusões que inviabilizariam a cota dentro do limite restante são bloqueadas.
+- Candidaturas criadas pelo preenchimento automático recebem gênero de forma equilibrada.
+
 ## 1.10.0 — 31/07/2026
 
 - Convites diretos passam a liberar acesso sem autenticação ou envio de e-mail pelo Supabase.

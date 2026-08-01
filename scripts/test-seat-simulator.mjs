@@ -26,13 +26,26 @@ function extractFunction(name) {
 
 const context = vm.createContext({
   SIM_CARGOS: {
-    'deputado estadual': { vagas: 24, limiteCandidatos:25, minimoAutopreenchimento:13, label: 'Deputado estadual' },
-    'deputado federal': { vagas: 8, limiteCandidatos:9, minimoAutopreenchimento:5, label: 'Deputado federal' }
+    'deputado estadual': { vagas: 24, limiteCandidatosPorLista:25, minimoAutopreenchimento:13, label: 'Deputado estadual' },
+    'deputado federal': { vagas: 8, limiteCandidatosPorLista:9, minimoAutopreenchimento:5, label: 'Deputado federal' }
   },
+  SIM_FEDERACOES: [
+    { nome:'Federação Brasil da Esperança', sigla:'Fe Brasil', partidos:['PT','PCdoB','PV'] },
+    { nome:'Federação PSDB Cidadania', sigla:'PSDB Cidadania', partidos:['PSDB','CIDADANIA'] },
+    { nome:'Federação PSOL REDE', sigla:'PSOL REDE', partidos:['PSOL','REDE'] }
+  ],
+  SIM_PARTIDOS: [
+    { sigla:'PT', federacao:'Federação Brasil da Esperança' },
+    { sigla:'PV', federacao:'Federação Brasil da Esperança' },
+    { sigla:'PSDB', federacao:'Federação PSDB Cidadania' },
+    { sigla:'CIDADANIA', federacao:'Federação PSDB Cidadania' },
+    { sigla:'PSOL', federacao:'Federação PSOL REDE' },
+    { sigla:'REDE', federacao:'Federação PSOL REDE' }
+  ],
   normalizarTexto: value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(),
   simId: (() => { let id=0; return () => `auto-${++id}`; })()
 });
-vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
+vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('simIdentificarLista')}\n${extractFunction('simContarCandidaturasLista')}\n${extractFunction('simSituacaoLimiteLista')}\n${extractFunction('simResumoCotaGenero')}\n${extractFunction('simAvaliarCotasGenero')}\n${extractFunction('simComposicaoGeneroPossivel')}\n${extractFunction('simValidarInclusaoGenero')}\n${extractFunction('simEscolherGeneroAutomatico')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
 
 assert(context.simQuociente(1_000, 4) === 250, 'Quociente exato incorreto.');
 assert(context.simQuociente(1_002, 4) === 250, 'Fração igual a 0,5 deveria ser desprezada.');
@@ -64,18 +77,65 @@ assert(result.eleitos.length <= 8, 'O motor ultrapassou a quantidade configurada
 const federationScenario = {
   votosValidos: 1_000,
   itens: [
-    { id:'f1', tipo:'candidato', nome:'PT 1', partido:'PT', chapa:'Federação X', votos:300 },
-    { id:'f2', tipo:'candidato', nome:'PV 1', partido:'PV', chapa:'Federação X', votos:200 },
-    { id:'fl', tipo:'legenda', nome:'Votos de legenda · PT', partido:'PT', chapa:'Federação X', votos:100 },
+    { id:'f1', tipo:'candidato', nome:'PT 1', partido:'PT', chapa:'valor antigo inconsistente', votos:300 },
+    { id:'f2', tipo:'candidato', nome:'PV 1', partido:'PV', votos:200 },
+    { id:'fl', tipo:'legenda', nome:'Votos de legenda · PT', partido:'PT', chapa:'valor antigo inconsistente', votos:100 },
     { id:'d1', tipo:'candidato', nome:'D 1', partido:'D', chapa:'D', votos:250 },
     { id:'d2', tipo:'candidato', nome:'D 2', partido:'D', chapa:'D', votos:150 }
   ]
 };
 const federationResult = context.calcularVagasSimulador(federationScenario, 'deputado federal');
 assert(federationResult.partidos.length === 2, 'Partidos federados não foram agrupados na mesma chapa.');
-assert(federationResult.partidos.find(p => p.nome === 'Federação X')?.votos === 600, 'Votos nominais e de legenda não foram somados à federação.');
-assert(federationResult.partidos.find(p => p.nome === 'Federação X')?.legenda === 100, 'Votos de legenda não foram identificados separadamente.');
-assert(html.includes('limiteCandidatos: 9') && html.includes('limiteCandidatos: 25'), 'Limites legais de candidaturas não estão configurados.');
+assert(federationResult.partidos.find(p => p.nome === 'Federação Brasil da Esperança')?.votos === 600, 'Votos nominais e de legenda não foram somados à federação.');
+assert(federationResult.partidos.find(p => p.nome === 'Federação Brasil da Esperança')?.legenda === 100, 'Votos de legenda não foram identificados separadamente.');
+assert(html.includes('limiteCandidatosPorLista: 9') && html.includes('limiteCandidatosPorLista: 25'), 'Limites de candidaturas por lista não estão configurados.');
+
+const criarCandidaturas = (quantidade, partido, chapa = 'chapa antiga') => Array.from({length:quantidade}, (_,indice) => ({
+  id:`${partido}-${indice}`, tipo:'candidato', nome:`${partido} ${indice + 1}`, partido, chapa, votos:1
+}));
+const listasIndependentes = {
+  itens: [
+    ...criarCandidaturas(9, 'PT'),
+    ...criarCandidaturas(8, 'PSDB'),
+    ...criarCandidaturas(8, 'PSOL')
+  ]
+};
+const limiteFederalA = context.simSituacaoLimiteLista(listasIndependentes, 'deputado federal', { partido:'PV' });
+const limiteFederalB = context.simSituacaoLimiteLista(listasIndependentes, 'deputado federal', { partido:'CIDADANIA' });
+const limiteFederalC = context.simSituacaoLimiteLista(listasIndependentes, 'deputado federal', { partido:'REDE' });
+assert(!limiteFederalA.permitido && limiteFederalA.quantidade === 9, 'A décima candidatura federal deveria ser bloqueada somente na Federação A.');
+assert(limiteFederalB.permitido && limiteFederalB.quantidade === 8, 'A Federação B deveria manter sua própria nona vaga para candidatura federal.');
+assert(limiteFederalC.permitido && limiteFederalC.quantidade === 8, 'A Federação C deveria manter sua própria nona vaga para candidatura federal.');
+
+const listasEstaduais = { itens:[...criarCandidaturas(25, 'PT'), ...criarCandidaturas(24, 'PSDB')] };
+assert(!context.simSituacaoLimiteLista(listasEstaduais, 'deputado estadual', { partido:'PV' }).permitido,
+  'A vigésima sexta candidatura estadual deveria ser bloqueada na própria federação.');
+assert(context.simSituacaoLimiteLista(listasEstaduais, 'deputado estadual', { partido:'CIDADANIA' }).permitido,
+  'Outra federação deveria manter sua própria vigésima quinta vaga para candidatura estadual.');
+
+const federacaoRegular = { itens:[
+  ...Array.from({length:3}, (_,indice) => ({ tipo:'candidato', partido:'PT', genero:'feminino', nome:`PT F${indice}` })),
+  ...Array.from({length:3}, (_,indice) => ({ tipo:'candidato', partido:'PT', genero:'masculino', nome:`PT M${indice}` })),
+  ...Array.from({length:2}, (_,indice) => ({ tipo:'candidato', partido:'PV', genero:'feminino', nome:`PV F${indice}` })),
+  ...Array.from({length:1}, (_,indice) => ({ tipo:'candidato', partido:'PV', genero:'masculino', nome:`PV M${indice}` }))
+] };
+assert(context.simAvaliarCotasGenero(federacaoRegular).regular,
+  'Federação e partidos integrantes com composição regular deveriam atender à cota de gênero.');
+const federacaoIrregular = { itens:criarCandidaturas(6, 'PT').map(item => ({ ...item, genero:'masculino' })) };
+assert(!context.simAvaliarCotasGenero(federacaoIrregular).regular,
+  'Lista composta por apenas um gênero deveria ser sinalizada como irregular.');
+const inclusaoSetimoMasculino = context.simValidarInclusaoGenero(federacaoIrregular, 'deputado federal', { partido:'PT' }, 'masculino');
+assert(!inclusaoSetimoMasculino.permitido,
+  'A sétima candidatura masculina deveria ser bloqueada quando restam apenas duas posições na lista federal.');
+assert(context.simValidarInclusaoGenero(federacaoIrregular, 'deputado federal', { partido:'PT' }, 'feminino').permitido,
+  'Uma candidatura feminina deveria continuar disponível para regularizar a lista federal.');
+assert(context.simResumoCotaGenero([
+  {genero:'feminino'},{genero:'feminino'},{genero:'feminino'},
+  {genero:'masculino'},{genero:'masculino'},{genero:'masculino'},
+  {genero:'masculino'},{genero:'masculino'},{genero:'masculino'}
+], 'Lista', 'lista').regular, 'Uma lista federal 3/6 deveria atender aos percentuais de 30% e 70%.');
+assert(html.includes('id="simGenero"') && html.includes('id="simCotaGeneroAlertas"'),
+  'Campo de gênero e alertas da etapa 3 devem existir.');
 assert(html.includes('id="simAdicionarLegenda"'), 'Botão de votos de legenda ausente.');
 assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutopreenchimento: 13'), 'Limites de liberação do autopreenchimento incorretos.');
 assert(html.includes('id="simAutoPrevia"') && html.includes('id="simAutoConfirmar"'), 'Prévia e confirmação do autopreenchimento ausentes.');
@@ -93,11 +153,12 @@ assert(avancarCampo.includes("scrollIntoView({ behavior: reduzirMovimento ? 'aut
   && avancarCampo.includes("destino.focus({ preventScroll: true })")
   && avancarCampo.includes("prefers-reduced-motion: reduce"),
   'Avanço entre campos deve controlar rolagem, foco e movimento reduzido.');
-assert(html.includes("simAvancarPara('simVotosValidos')")
-  && html.includes("simAvancarPara('simNome')")
+assert(html.includes("simAbrirEtapa(2, 'simVotosValidos')")
+  && html.includes("simAbrirEtapa(3, 'simNome')")
   && html.includes("simAvancarPara('simPartido')")
+  && html.includes("simAvancarPara('simGenero')")
   && html.includes("simAvancarPara('simVotosCandidato')")
-  && html.includes("simAvancarPara('simAdicionarCandidato')"),
+  && html.includes("simAdicionarItem('candidato')"),
   'Sequência de avanço automático do simulador está incompleta.');
 assert(html.includes("evento.key === 'Enter' && nome.value.trim() && !simSelecionado")
   && html.includes("evento.key === 'Enter' && partido.value.trim() && !simOrganizacaoSelecionada"),
@@ -105,8 +166,8 @@ assert(html.includes("evento.key === 'Enter' && nome.value.trim() && !simSelecio
 assert(/\.sim-sugestoes button\s*\{[^}]*font-size:\s*\.875rem/.test(html)
   && /\.sim-sugestoes small\s*\{[^}]*font-size:\s*\.8125rem/.test(html),
   'Sugestões do simulador não usam a tipografia compacta prevista.');
-assert(/\.sim-ajuda summary\s*\{[^}]*min-height:\s*44px[^}]*font-size:\s*\.8125rem/.test(html),
-  'Ajuda deve manter a área de toque e usar texto compacto.');
+assert(/\.sim-ajuda summary\s*\{[^}]*min-height:\s*40px[^}]*font-size:\s*\.8125rem/.test(html),
+  'Ajuda deve manter a altura e usar texto compacto.');
 assert(/\.sim-resultado li\s*\{[^}]*font-size:\s*\.875rem/.test(html),
   'Itens dos resultados do simulador não usam a tipografia compacta prevista.');
 

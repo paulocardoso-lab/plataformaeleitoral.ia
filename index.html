@@ -2047,6 +2047,8 @@ canvas {
 .sim-campo input, .sim-campo select { min-height: 54px; width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; }
 .sim-campo input[type="number"] { appearance: textfield; background: var(--bg-1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-light); font-family: var(--font-corpo); }
 .sim-campo input[type="number"]::-webkit-inner-spin-button { appearance: none; }
+.sim-cotas-genero { display: grid; gap: 8px; margin: 12px 0; }
+.sim-cotas-genero .sim-revisao-alerta { margin: 0; }
 .sim-form-acoes { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 14px; }
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
@@ -2070,7 +2072,7 @@ canvas {
 .sim-item-votos { color: var(--neon-yellow); font-weight: 800; }
 .sim-item-edicao { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: end; margin-top: 8px; }
 .sim-item-edicao label { color: var(--text-muted); font-size: .75rem; }
-.sim-item-edicao input { width: 100%; min-height: 46px; box-sizing: border-box; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-1); color: var(--text-light); font-size: 1rem; }
+.sim-item-edicao input, .sim-item-edicao select { width: 100%; min-height: 46px; box-sizing: border-box; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-1); color: var(--text-light); font-size: 1rem; }
 .sim-origem-votos { display: inline-block; margin-top: 5px; color: var(--neon-cyan); font-size: .75rem; font-weight: 700; }
 .sim-auto { margin-top: 14px; padding: 12px; border: 1px solid rgba(0,217,255,.35); border-radius: 10px; background: rgba(0,217,255,.05); }
 .sim-auto h3 { margin: 0 0 5px; color: var(--neon-cyan); font-size: 1rem; }
@@ -2718,6 +2720,7 @@ canvas {
             <div id="simPartidoSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Partidos e federações de 2026"></div>
             <div id="simOrganizacaoSelecionada" class="sim-selecionado hidden"></div>
           </div>
+          <div class="sim-campo"><label for="simGenero">Gênero da candidatura</label><select id="simGenero"><option value="">Selecione</option><option value="feminino">Feminino</option><option value="masculino">Masculino</option></select></div>
           <div class="sim-campo"><label for="simVotosCandidato">Votos estimados</label><input type="number" id="simVotosCandidato" min="0" step="1" inputmode="numeric" placeholder="Ex.: 35.000"></div>
           <div class="sim-form-acoes sim-acoes-inclusao">
             <button type="button" class="sim-btn-principal" id="simAdicionarCandidato">Adicionar candidatura</button>
@@ -2725,6 +2728,7 @@ canvas {
             <button type="button" class="sim-btn-secundario" id="simAdicionarOutros">Incluir outros votos</button>
           </div>
           <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
+          <div id="simCotaGeneroAlertas" class="sim-cotas-genero hidden" role="status" aria-live="polite"></div>
           <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
           <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
           <div class="sim-revisao hidden" id="simRevisao">
@@ -5164,8 +5168,8 @@ function renderMeuEstado() {
 // ---------- TELA 10: SIMULADOR DE VAGAS 2026 ----------
 const SIM_STORAGE_KEY = 'pe26_simulador_2026_v1';
 const SIM_CARGOS = Object.freeze({
-  'deputado estadual': { vagas: 24, limiteCandidatos: 25, minimoAutopreenchimento: 13, label: 'Deputado estadual' },
-  'deputado federal': { vagas: 8, limiteCandidatos: 9, minimoAutopreenchimento: 5, label: 'Deputado federal' }
+  'deputado estadual': { vagas: 24, limiteCandidatosPorLista: 25, minimoAutopreenchimento: 13, label: 'Deputado estadual' },
+  'deputado federal': { vagas: 8, limiteCandidatosPorLista: 9, minimoAutopreenchimento: 5, label: 'Deputado federal' }
 });
 const SIM_FEDERACOES = Object.freeze([
   { nome:'Federação União Progressista', sigla:'União Progressista', partidos:['UNIÃO','PP'] },
@@ -5251,6 +5255,113 @@ function simEscapar(valor) {
   return escaparHtml(valor);
 }
 function simId() { return crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+
+function simIdentificarLista(registro) {
+  registro = registro || {};
+  const partidoCadastrado = SIM_PARTIDOS.find(item => normalizarTexto(item.sigla) === normalizarTexto(registro.partido));
+  if (partidoCadastrado) {
+    const nome = partidoCadastrado.federacao || partidoCadastrado.sigla;
+    return { nome, chave:normalizarTexto(nome), federacao:partidoCadastrado.federacao || null };
+  }
+  const referenciaFederacao = registro.federacao || registro.chapa;
+  const federacaoCadastrada = SIM_FEDERACOES.find(item =>
+    normalizarTexto(item.nome) === normalizarTexto(referenciaFederacao) ||
+    normalizarTexto(item.sigla) === normalizarTexto(referenciaFederacao)
+  );
+  const nome = federacaoCadastrada?.nome || registro.chapa || registro.partido || 'Lista não identificada';
+  return { nome, chave:normalizarTexto(nome), federacao:federacaoCadastrada?.nome || registro.federacao || null };
+}
+
+function simContarCandidaturasLista(cenario, registro) {
+  const lista = simIdentificarLista(registro);
+  return cenario.itens.filter(item => item.tipo === 'candidato' && simIdentificarLista(item).chave === lista.chave).length;
+}
+
+function simSituacaoLimiteLista(cenario, cargo, registro) {
+  const lista = simIdentificarLista(registro);
+  const limite = SIM_CARGOS[cargo].limiteCandidatosPorLista;
+  const quantidade = simContarCandidaturasLista(cenario, registro);
+  return { lista, limite, quantidade, permitido:quantidade < limite };
+}
+
+function simResumoCotaGenero(candidaturas, nome, escopo) {
+  const femininas = candidaturas.filter(item => item.genero === 'feminino').length;
+  const masculinas = candidaturas.filter(item => item.genero === 'masculino').length;
+  const semGenero = candidaturas.length - femininas - masculinas;
+  const minimo = Math.ceil(candidaturas.length * .30);
+  const regular = candidaturas.length >= 2 && semGenero === 0 && femininas >= minimo && masculinas >= minimo;
+  return { nome, escopo, total:candidaturas.length, femininas, masculinas, semGenero, minimo, regular };
+}
+
+function simAvaliarCotasGenero(cenario) {
+  const candidaturas = cenario.itens.filter(item => item.tipo === 'candidato');
+  const listas = new Map();
+  candidaturas.forEach(item => {
+    const lista = simIdentificarLista(item);
+    if (!listas.has(lista.chave)) listas.set(lista.chave, { ...lista, candidaturas:[] });
+    listas.get(lista.chave).candidaturas.push(item);
+  });
+  const resultados = [];
+  listas.forEach(lista => {
+    resultados.push(simResumoCotaGenero(lista.candidaturas, lista.nome, 'lista'));
+    if (!lista.federacao) return;
+    const porPartido = new Map();
+    lista.candidaturas.forEach(item => {
+      const partido = item.partido || 'Partido não identificado';
+      const chave = normalizarTexto(partido);
+      if (!porPartido.has(chave)) porPartido.set(chave, { nome:partido, candidaturas:[] });
+      porPartido.get(chave).candidaturas.push(item);
+    });
+    porPartido.forEach(partido => resultados.push(simResumoCotaGenero(
+      partido.candidaturas,
+      `${partido.nome} em ${lista.nome}`,
+      'partido-federado'
+    )));
+  });
+  return { resultados, regular:resultados.length > 0 && resultados.every(item => item.regular) };
+}
+
+function simComposicaoGeneroPossivel(candidaturas, adicionaisMaximos) {
+  const femininas = candidaturas.filter(item => item.genero === 'feminino').length;
+  const masculinas = candidaturas.filter(item => item.genero === 'masculino').length;
+  const indefinidas = candidaturas.length - femininas - masculinas;
+  for (let definirFeminino = 0; definirFeminino <= indefinidas; definirFeminino += 1) {
+    for (let adicionais = 0; adicionais <= adicionaisMaximos; adicionais += 1) {
+      for (let novasFemininas = 0; novasFemininas <= adicionais; novasFemininas += 1) {
+        const total = candidaturas.length + adicionais;
+        const minimo = Math.ceil(total * .30);
+        const totalFeminino = femininas + definirFeminino + novasFemininas;
+        const totalMasculino = masculinas + (indefinidas - definirFeminino) + (adicionais - novasFemininas);
+        if (total >= 2 && totalFeminino >= minimo && totalMasculino >= minimo) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function simValidarInclusaoGenero(cenario, cargo, organizacao, genero) {
+  const lista = simIdentificarLista(organizacao);
+  const candidaturasLista = cenario.itens.filter(item => item.tipo === 'candidato' && simIdentificarLista(item).chave === lista.chave);
+  const limite = SIM_CARGOS[cargo].limiteCandidatosPorLista;
+  const restanteAposInclusao = limite - candidaturasLista.length - 1;
+  const candidata = { tipo:'candidato', partido:organizacao.partido, chapa:lista.nome, federacao:lista.federacao, genero };
+  if (!simComposicaoGeneroPossivel([...candidaturasLista, candidata], restanteAposInclusao)) {
+    return { permitido:false, mensagem:`A inclusão ultrapassaria o limite de 70% de um gênero em ${lista.nome}. Inclua uma candidatura do outro gênero.` };
+  }
+  if (lista.federacao && organizacao.partido) {
+    const candidaturasPartido = candidaturasLista.filter(item => normalizarTexto(item.partido) === normalizarTexto(organizacao.partido));
+    if (!simComposicaoGeneroPossivel([...candidaturasPartido, candidata], restanteAposInclusao)) {
+      return { permitido:false, mensagem:`A inclusão impediria ${organizacao.partido} de cumprir a cota de gênero dentro da federação. Inclua uma candidatura do outro gênero.` };
+    }
+  }
+  return { permitido:true };
+}
+
+function simEscolherGeneroAutomatico(candidaturas) {
+  const femininas = candidaturas.filter(item => item.genero === 'feminino').length;
+  const masculinas = candidaturas.filter(item => item.genero === 'masculino').length;
+  return femininas <= masculinas ? 'feminino' : 'masculino';
+}
 
 function prepararHistoricoSimulador() {
   if (simHistorico.length) return;
@@ -5342,6 +5453,9 @@ function initSimulador() {
         evento.preventDefault();
         if (indice > 0) opcoes[indice - 1].focus(); else partido.focus();
       }
+    });
+    document.getElementById('simGenero').addEventListener('change', evento => {
+      if (evento.currentTarget.value) simAvancarPara('simVotosCandidato');
     });
     document.getElementById('simAdicionarCandidato').addEventListener('click', () => simAdicionarItem('candidato'));
     document.getElementById('simAdicionarLegenda').addEventListener('click', () => simAdicionarItem('legenda'));
@@ -5453,7 +5567,7 @@ function simSelecionarOrganizacao(indice) {
   }
   simMostrarOrganizacao();
   simFecharOrganizacoes();
-  simAvancarPara('simVotosCandidato');
+  simAvancarPara('simGenero');
 }
 
 function simFinalizarOrganizacaoDigitada() {
@@ -5471,7 +5585,7 @@ function simFinalizarOrganizacaoDigitada() {
   document.getElementById('simPartido').value = organizacao.partido || organizacao.federacao;
   simMostrarOrganizacao();
   simFecharOrganizacoes();
-  simAvancarPara('simVotosCandidato');
+  simAvancarPara('simGenero');
 }
 
 function simMostrarOrganizacao() {
@@ -5551,12 +5665,14 @@ function simFecharSugestoes() {
 function simAdicionarItem(tipo) {
   const nomeDigitado = document.getElementById('simNome').value.trim();
   const organizacaoDigitada = document.getElementById('simPartido').value.trim();
+  const genero = document.getElementById('simGenero').value;
   const votos = simNumero(document.getElementById('simVotosCandidato').value);
   const status = document.getElementById('simFormularioStatus');
   status.className = 'sim-status erro';
   if (!organizacaoDigitada) { status.textContent = 'Informe o partido ou a federação.'; return; }
   if (!votos) { status.textContent = 'Informe uma quantidade de votos maior que zero.'; return; }
   if (tipo === 'candidato' && !nomeDigitado) { status.textContent = 'Pesquise ou digite o nome da pessoa.'; return; }
+  if (tipo === 'candidato' && !['feminino','masculino'].includes(genero)) { status.textContent = 'Selecione o gênero da candidatura para verificar a cota eleitoral.'; return; }
   const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada);
   if (!org) {
     status.textContent = 'Selecione um partido ou uma federação da lista oficial.';
@@ -5567,21 +5683,23 @@ function simAdicionarItem(tipo) {
     status.textContent = 'Selecione o partido integrante da federação. A busca mostrará automaticamente a chapa correta.';
     return;
   }
-  const partido = org.partido || org.chapa;
-  const chapa = org.chapa;
+  const listaEleitoral = simIdentificarLista(org);
+  const partido = org.partido || listaEleitoral.nome;
+  const chapa = listaEleitoral.nome;
   const nome = tipo === 'agregado' ? 'Votos de outras candidaturas' : tipo === 'legenda' ? `Votos de legenda · ${partido}` : (simSelecionado?.nome || nomeDigitado);
   if (tipo === 'candidato') {
-    const repetido = simCenario().itens.some(item => item.tipo === 'candidato' && normalizarTexto(item.nome) === normalizarTexto(nome) && normalizarTexto(item.partido) === normalizarTexto(partido));
+    const repetido = simCenario().itens.some(item => item.tipo === 'candidato' && normalizarTexto(item.nome) === normalizarTexto(nome) && simIdentificarLista(item).chave === listaEleitoral.chave);
     if (repetido) { status.textContent = 'Esta candidatura já foi adicionada a essa chapa.'; return; }
-    const quantidadeChapa = simCenario().itens.filter(item => item.tipo === 'candidato' && normalizarTexto(item.chapa||item.partido) === normalizarTexto(chapa)).length;
-    const limite = SIM_CARGOS[simEstado.cargo].limiteCandidatos;
-    if (quantidadeChapa >= limite) {
-      status.textContent = `Esta lista já atingiu o máximo de ${limite} candidaturas para ${SIM_CARGOS[simEstado.cargo].label.toLowerCase()}.`;
+    const situacaoLimite = simSituacaoLimiteLista(simCenario(), simEstado.cargo, org);
+    if (!situacaoLimite.permitido) {
+      status.textContent = `${situacaoLimite.lista.nome} já atingiu o máximo de ${situacaoLimite.limite} candidaturas para ${SIM_CARGOS[simEstado.cargo].label.toLowerCase()}. As demais listas mantêm seus próprios limites.`;
       return;
     }
+    const validacaoGenero = simValidarInclusaoGenero(simCenario(), simEstado.cargo, org, genero);
+    if (!validacaoGenero.permitido) { status.textContent = validacaoGenero.mensagem; return; }
   }
   simCenario().itens.push({
-    id: simId(), tipo, nome, partido, chapa, federacao:org.federacao||null, organizacaoVerificada:org.verificada, votos,
+    id: simId(), tipo, nome, partido, chapa, federacao:listaEleitoral.federacao, genero:tipo === 'candidato' ? genero : null, organizacaoVerificada:org.verificada, votos,
     origem: tipo === 'candidato' ? (simSelecionado?.origem || 'cenario') : 'cenario', origemVotos: 'manual'
   });
   simCenario().ultimoAutopreenchimento = null;
@@ -5619,7 +5737,7 @@ function simAvancarPara(id) {
 function simLimparFormulario() {
   simSelecionado = null;
   simOrganizacaoSelecionada = null;
-  for (const id of ['simNome','simPartido','simVotosCandidato']) document.getElementById(id).value = '';
+  for (const id of ['simNome','simPartido','simGenero','simVotosCandidato']) document.getElementById(id).value = '';
   document.getElementById('simCandidatoSelecionado').classList.add('hidden');
   document.getElementById('simOrganizacaoSelecionada').classList.add('hidden');
   simFecharSugestoes();
@@ -5664,13 +5782,13 @@ function simListasAutopreenchiveis(cenario = simCenario()) {
   const config = SIM_CARGOS[simEstado.cargo];
   const listas = new Map();
   cenario.itens.filter(item => item.tipo === 'candidato').forEach(item => {
-    const chave = normalizarTexto(item.chapa || item.partido);
-    if (!listas.has(chave)) listas.set(chave, { chave, nome:item.chapa || item.partido, candidaturas:[] });
-    listas.get(chave).candidaturas.push(item);
+    const lista = simIdentificarLista(item);
+    if (!listas.has(lista.chave)) listas.set(lista.chave, { ...lista, candidaturas:[] });
+    listas.get(lista.chave).candidaturas.push(item);
   });
   return [...listas.values()].filter(lista =>
     lista.candidaturas.length >= config.minimoAutopreenchimento &&
-    (lista.candidaturas.some(item => item.origemVotos === 'automatico') || lista.candidaturas.length < config.limiteCandidatos)
+    (lista.candidaturas.some(item => item.origemVotos === 'automatico') || lista.candidaturas.length < config.limiteCandidatosPorLista)
   );
 }
 
@@ -5685,16 +5803,19 @@ function simCriarPlanoAutopreenchimento(metodo) {
   const novos = [];
   if (!automaticosExistentes.length) {
     listas.forEach(lista => {
-      const faltantes = config.limiteCandidatos - lista.candidaturas.length;
+      const faltantes = config.limiteCandidatosPorLista - lista.candidaturas.length;
       const referencia = lista.candidaturas[0];
+      const candidaturasPartido = lista.candidaturas.filter(item => normalizarTexto(item.partido) === normalizarTexto(referencia.partido));
       const mediaLista = Math.max(1, Math.round(lista.candidaturas.reduce((soma,item) => soma + simNumero(item.votos), 0) / lista.candidaturas.length));
       for (let indice = 1; indice <= faltantes; indice += 1) {
-        novos.push({
+        const nova = {
           id:simId(), tipo:'candidato', nome:`Outra candidatura simulada ${indice} · ${lista.nome}`,
-          partido:referencia.partido, chapa:referencia.chapa || referencia.partido,
-          federacao:referencia.federacao || null, organizacaoVerificada:referencia.organizacaoVerificada,
-          votos:mediaLista, origem:'simulada', origemVotos:'automatico', nova:true
-        });
+          partido:referencia.partido, chapa:lista.nome,
+          federacao:lista.federacao, organizacaoVerificada:referencia.organizacaoVerificada,
+          genero:simEscolherGeneroAutomatico(candidaturasPartido), votos:mediaLista, origem:'simulada', origemVotos:'automatico', nova:true
+        };
+        novos.push(nova);
+        candidaturasPartido.push(nova);
       }
     });
   }
@@ -5813,15 +5934,49 @@ function simEditarVotos(id, valor, input) {
   renderNavegacaoEtapas();
 }
 
+function simEditarGenero(id, genero) {
+  const item = simCenario().itens.find(registro => registro.id === id && registro.tipo === 'candidato');
+  if (!item || !['','feminino','masculino'].includes(genero)) return;
+  item.genero = genero || null;
+  salvarSimulador();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  renderCotasGenero();
+  renderRevisaoSimulador();
+  renderNavegacaoEtapas();
+}
+
+function renderCotasGenero() {
+  const area = document.getElementById('simCotaGeneroAlertas');
+  const avaliacao = simAvaliarCotasGenero(simCenario());
+  if (!avaliacao.resultados.length) {
+    area.classList.add('hidden');
+    area.innerHTML = '';
+    return;
+  }
+  const irregulares = avaliacao.resultados.filter(item => !item.regular);
+  area.innerHTML = irregulares.length ? irregulares.map(item => {
+    const pendenciaGenero = item.semGenero
+      ? `${item.semGenero} candidatura${item.semGenero === 1 ? '' : 's'} sem gênero informado. `
+      : '';
+    const faltas = [];
+    if (item.femininas < item.minimo) faltas.push(`${item.minimo - item.femininas} feminina${item.minimo - item.femininas === 1 ? '' : 's'}`);
+    if (item.masculinas < item.minimo) faltas.push(`${item.minimo - item.masculinas} masculina${item.minimo - item.masculinas === 1 ? '' : 's'}`);
+    const orientacao = faltas.length ? `Para a composição atual, inclua ou ajuste ${faltas.join(' e ')}.` : 'Informe os gêneros pendentes para concluir a verificação.';
+    return `<p class="sim-revisao-alerta aviso"><strong>Cota de gênero · ${simEscapar(item.nome)}.</strong> ${pendenciaGenero}${item.femininas} feminina${item.femininas === 1 ? '' : 's'} e ${item.masculinas} masculina${item.masculinas === 1 ? '' : 's'} em ${item.total}. ${orientacao}</p>`;
+  }).join('') : '<p class="sim-revisao-alerta ok"><strong>Cota de gênero atendida.</strong> Todas as listas e indicações partidárias estão entre 30% e 70%.</p>';
+  area.classList.remove('hidden');
+}
+
 function renderNavegacaoEtapas() {
   const cenario = simCenario();
   const validos = simNumero(cenario.votosValidos);
   const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
   const diferenca = validos - distribuido;
+  const cotasRegulares = simAvaliarCotasGenero(cenario).regular;
   const etapaConcluida = {
     1: simEtapa1Confirmada,
     2: validos > 0,
-    3: validos > 0 && cenario.itens.length > 0 && diferenca === 0
+    3: validos > 0 && cenario.itens.length > 0 && diferenca === 0 && cotasRegulares
   };
   document.getElementById('simNavCargo').textContent = SIM_CARGOS[simEstado.cargo].label;
   document.getElementById('simNavVotos').textContent = validos ? formatarNum(validos) : 'Pendente';
@@ -5829,6 +5984,8 @@ function renderNavegacaoEtapas() {
     ? 'Completo'
     : diferenca < 0
       ? `Excede ${formatarNum(Math.abs(diferenca))}`
+      : diferenca === 0 && cenario.itens.length && !cotasRegulares
+        ? 'Revisar gênero'
       : simRevisaoSolicitada && cenario.itens.length && diferenca > 0
         ? `Faltam ${formatarNum(diferenca)}`
         : cenario.itens.length ? 'Em montagem' : 'Pendente';
@@ -5836,7 +5993,7 @@ function renderNavegacaoEtapas() {
     const etapa = Number(botao.dataset.simEtapa);
     botao.classList.toggle('ativa', etapa === simEtapaAtiva);
     botao.classList.toggle('concluida', etapaConcluida[etapa]);
-    botao.classList.toggle('alerta', etapa === 3 && simRevisaoSolicitada && diferenca > 0 && cenario.itens.length > 0);
+    botao.classList.toggle('alerta', etapa === 3 && ((simRevisaoSolicitada && diferenca > 0 && cenario.itens.length > 0) || (cenario.itens.length > 0 && !cotasRegulares)));
     botao.classList.toggle('erro', etapa === 3 && diferenca < 0);
     if (etapa === simEtapaAtiva) botao.setAttribute('aria-current', 'step');
     else botao.removeAttribute('aria-current');
@@ -5869,12 +6026,12 @@ function renderSimulador() {
   const lista = document.getElementById('simLista');
   const contagemChapas = new Map();
   cenario.itens.filter(item=>item.tipo==='candidato').forEach(item => {
-    const chave=normalizarTexto(item.chapa||item.partido);
-    contagemChapas.set(chave,(contagemChapas.get(chave)||0)+1);
+    const listaEleitoral=simIdentificarLista(item);
+    contagemChapas.set(listaEleitoral.chave,(contagemChapas.get(listaEleitoral.chave)||0)+1);
   });
   lista.innerHTML = cenario.itens.length ? cenario.itens.map(item => `
     <article class="sim-item">
-      <div><div class="sim-item-nome">${simEscapar(item.nome)}</div><div class="sim-item-meta">${simEscapar(item.partido)}${normalizarTexto(item.chapa||item.partido)!==normalizarTexto(item.partido)?` → ${simEscapar(item.chapa)}`:''} · ${item.tipo === 'agregado' ? 'outras candidaturas não individualizadas' : item.tipo === 'legenda' ? 'votos de legenda' : item.origem === 'tse' ? 'selecionada do histórico' : item.origem === 'simulada' ? 'outra candidatura simulada' : 'nova neste cenário'}${item.tipo==='candidato'?` · ${contagemChapas.get(normalizarTexto(item.chapa||item.partido))} de ${config.limiteCandidatos} nomes na lista`:''}${item.tipo==='candidato'?`<br><span class="sim-origem-votos">${item.origemVotos === 'automatico' ? 'Estimativa automática' : item.origem === 'simulada' ? 'Candidatura simulada ajustada manualmente' : item.origemVotos === 'manual' && cenario.ultimoAutopreenchimento ? 'Ajustado manualmente' : 'Informado manualmente'}</span>`:''}${item.tipo==='candidato'?`<div class="sim-item-edicao"><label>Votos estimados<input type="number" min="0" step="1" inputmode="numeric" value="${simNumero(item.votos)}" data-sim-editar-votos="${simEscapar(item.id)}" aria-label="Editar votos de ${simEscapar(item.nome)}"></label></div>`:`<br><span class="sim-item-votos">${formatarNum(item.votos)} votos</span>`}</div></div>
+      <div><div class="sim-item-nome">${simEscapar(item.nome)}</div><div class="sim-item-meta">${simEscapar(item.partido)}${simIdentificarLista(item).chave!==normalizarTexto(item.partido)?` → ${simEscapar(simIdentificarLista(item).nome)}`:''} · ${item.tipo === 'agregado' ? 'outras candidaturas não individualizadas' : item.tipo === 'legenda' ? 'votos de legenda' : item.origem === 'tse' ? 'selecionada do histórico' : item.origem === 'simulada' ? 'outra candidatura simulada' : 'nova neste cenário'}${item.tipo==='candidato'?` · ${contagemChapas.get(simIdentificarLista(item).chave)} de ${config.limiteCandidatosPorLista} nomes nesta lista`:''}${item.tipo==='candidato'?`<br><span class="sim-origem-votos">${item.origemVotos === 'automatico' ? 'Estimativa automática' : item.origem === 'simulada' ? 'Candidatura simulada ajustada manualmente' : item.origemVotos === 'manual' && cenario.ultimoAutopreenchimento ? 'Ajustado manualmente' : 'Informado manualmente'}</span>`:''}${item.tipo==='candidato'?`<div class="sim-item-edicao"><label>Gênero<select data-sim-editar-genero="${simEscapar(item.id)}" aria-label="Editar gênero de ${simEscapar(item.nome)}"><option value="">Selecione</option><option value="feminino"${item.genero==='feminino'?' selected':''}>Feminino</option><option value="masculino"${item.genero==='masculino'?' selected':''}>Masculino</option></select></label><label>Votos estimados<input type="number" min="0" step="1" inputmode="numeric" value="${simNumero(item.votos)}" data-sim-editar-votos="${simEscapar(item.id)}" aria-label="Editar votos de ${simEscapar(item.nome)}"></label></div>`:`<br><span class="sim-item-votos">${formatarNum(item.votos)} votos</span>`}</div></div>
       <button type="button" class="sim-btn-remover" data-sim-remover-id="${simEscapar(item.id)}" aria-label="Remover ${simEscapar(item.nome)}">×</button>
     </article>`).join('') : '<p class="sim-card-sub">Nenhum voto distribuído ainda.</p>';
   lista.querySelectorAll('[data-sim-remover-id]').forEach(botao => {
@@ -5883,6 +6040,10 @@ function renderSimulador() {
   lista.querySelectorAll('[data-sim-editar-votos]').forEach(input => {
     input.addEventListener('input', () => simEditarVotos(input.dataset.simEditarVotos, input.value, input));
   });
+  lista.querySelectorAll('[data-sim-editar-genero]').forEach(select => {
+    select.addEventListener('change', () => simEditarGenero(select.dataset.simEditarGenero, select.value));
+  });
+  renderCotasGenero();
   renderAutopreenchimento();
   renderRevisaoSimulador();
 }
@@ -5913,6 +6074,7 @@ function renderRevisaoSimulador() {
   const distribuido = cenario.itens.reduce((soma, item) => soma + simNumero(item.votos), 0);
   const validos = simNumero(cenario.votosValidos);
   const diferenca = validos - distribuido;
+  const cotasRegulares = simAvaliarCotasGenero(cenario).regular;
   const revisao = document.getElementById('simRevisao');
   const status = document.getElementById('simRevisaoStatus');
   const calcular = document.getElementById('simCalcular');
@@ -5923,7 +6085,7 @@ function renderRevisaoSimulador() {
     status.textContent = '';
     return;
   }
-  calcular.textContent = diferenca === 0 && validos ? 'Calcular resultado' : 'Revisar e calcular';
+  calcular.textContent = diferenca === 0 && validos ? (cotasRegulares ? 'Calcular resultado' : 'Calcular com alertas') : 'Revisar e calcular';
   if (diferenca < 0) {
     status.className = 'sim-revisao-alerta erro';
     status.textContent = `O cenário excede o total estimado em ${formatarNum(Math.abs(diferenca))} votos. Corrija os valores antes de calcular.`;
@@ -5932,6 +6094,9 @@ function renderRevisaoSimulador() {
     status.textContent = !validos
       ? 'Informe os votos válidos estimados antes de calcular.'
       : `Ainda faltam ${formatarNum(diferenca)} votos para completar a estimativa.`;
+  } else if (diferenca === 0 && validos && !cotasRegulares) {
+    status.className = 'sim-revisao-alerta aviso';
+    status.textContent = 'Os votos estão completos, mas a composição de gênero ainda não atende aos limites de 30% e 70%. Você pode calcular a projeção, porém esta lista não estaria regular para registro.';
   } else if (diferenca === 0 && validos) {
     status.className = 'sim-revisao-alerta ok';
     status.textContent = 'Todos os votos foram distribuídos. O cenário está pronto para o cálculo.';
@@ -5957,10 +6122,9 @@ function calcularVagasSimulador(cenario, cargo) {
   const qe = simQuociente(cenario.votosValidos, config.vagas);
   const mapa = new Map();
   for (const item of cenario.itens) {
-    const nomeChapa = item.chapa || item.partido;
-    const chave = normalizarTexto(nomeChapa);
-    if (!mapa.has(chave)) mapa.set(chave, { nome: nomeChapa, votos: 0, vagas: [], candidatos: [], agregados: 0, legenda: 0 });
-    const partido = mapa.get(chave);
+    const listaEleitoral = simIdentificarLista(item);
+    if (!mapa.has(listaEleitoral.chave)) mapa.set(listaEleitoral.chave, { nome: listaEleitoral.nome, votos: 0, vagas: [], candidatos: [], agregados: 0, legenda: 0 });
+    const partido = mapa.get(listaEleitoral.chave);
     partido.votos += item.votos;
     if (item.tipo === 'candidato') partido.candidatos.push({ ...item, eleito: false });
     else if (item.tipo === 'legenda') partido.legenda += item.votos;
@@ -6017,6 +6181,7 @@ function simCalcularResultado() {
   const total = cenario.itens.reduce((soma,item) => soma + item.votos, 0);
   if (!cenario.votosValidos || total !== cenario.votosValidos) return;
   const resultado = calcularVagasSimulador(cenario, simEstado.cargo);
+  const cotasGenero = simAvaliarCotasGenero(cenario);
   const agregados = resultado.partidos.reduce((soma, partido) => soma + partido.agregados, 0);
   const legendas = resultado.partidos.reduce((soma, partido) => soma + partido.legenda, 0);
   const card = document.getElementById('simResultadoCard');
@@ -6026,6 +6191,7 @@ function simCalcularResultado() {
   const suplentes = resultado.suplentes.sort((a,b)=>a.partido.localeCompare(b.partido,'pt-BR') || b.votos-a.votos).map(item => `<li><strong>${simEscapar(item.nome)}</strong> · ${simEscapar(item.partido)} · ${formatarNum(item.votos)} votos</li>`).join('');
   out.innerHTML = `
     <p><strong>Quociente eleitoral:</strong> ${formatarNum(resultado.qe)} votos</p>
+    ${!cotasGenero.regular ? '<div class="sim-aviso"><strong>Composição de gênero irregular.</strong> A projeção foi calculada, mas uma ou mais listas não atendem aos limites de 30% e 70% exigidos para o registro de candidaturas.</div>' : ''}
     ${legendas ? `<p><strong>Votos de legenda:</strong> ${formatarNum(legendas)} votos, somados somente ao total das respectivas chapas.</p>` : ''}
     ${agregados ? `<div class="sim-aviso"><strong>Resultado nominal parcial.</strong> Existem ${formatarNum(agregados)} votos sem nome. Eles entram no total das chapas, mas podem pertencer a candidaturas capazes de alterar as pessoas eleitas ou suplentes. Para confirmar nomes, individualize as candidaturas competitivas.</div>` : ''}
     ${resultado.empates.map((empate, empateIndice) => `<div class="sim-aviso"><strong>Empate a resolver.</strong> ${simEscapar(empate.nomes.join(' e '))} receberam ${formatarNum(empate.votos)} votos no ${simEscapar(empate.partido)}. Quem é mais velho?<div class="sim-form-acoes">${empate.nomes.map((nome, nomeIndice) => `<button type="button" class="sim-btn-secundario" data-sim-empate="${empateIndice}" data-sim-nome="${nomeIndice}">${simEscapar(nome)}</button>`).join('')}</div></div>`).join('')}

@@ -1,8 +1,8 @@
-# Status de liberação — versão pública 1.10.0
+# Status de liberação — versão pública 1.11.0
 
-- Data: 31/07/2026
+- Data: 01/08/2026
 - Produção: `https://plataformaeleitoral.ia.br`
-- Cache: `v70`
+- Cache: `v72`
 - Dataset: `tse-ms-2010-2024-v1`
 
 ## Estado atual
@@ -17,7 +17,8 @@
 - Tela “Sobre” contém compartilhamento comercial, assinatura institucional e saída segura.
 - Dataset privado exige licença ou sessão administrativa válida.
 - Login orientado ao comprador, com primeira ativação por convite em fluxo secundário próprio.
-- Repositório de produção sincronizado com `main` no commit `851965a`.
+- Simulador aplica limites independentes por partido ou federação e valida cotas de gênero na lista global e por partido federado.
+- Repositório de produção sincronizado com a branch `main`.
 
 ## Ressalva operacional
 
