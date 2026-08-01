@@ -1,8 +1,8 @@
-# Status de liberação — versão pública 1.12.1
+# Status de liberação — versão pública 1.13.0
 
 - Data: 01/08/2026
 - Produção: `https://plataformaeleitoral.ia.br`
-- Cache: `v74`
+- Cache: `v75`
 - Dataset: `tse-ms-2010-2024-v1`
 
 ## Estado atual
@@ -19,6 +19,8 @@
 - Login orientado ao comprador, com primeira ativação por convite em fluxo secundário próprio.
 - Simulador aplica limites independentes por partido ou federação e valida cotas de gênero na lista global e por partido federado.
 - Etapa 3 oferece Painel das Listas com cards em tempo real, revisão visual e marcação explícita de conclusão.
+- O simulador separa o reinício geral da exclusão individual de listas, exige confirmação e permite desfazer a última ação.
+- Cards e controles de exclusão usam apresentação visual mais discreta.
 - Tela “Sobre” comunica somente o compartilhamento de links, mantendo a exportação de imagens desabilitada.
 - Repositório de produção sincronizado com a branch `main`.
 

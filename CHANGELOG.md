@@ -2,6 +2,14 @@
 
 Este arquivo registra alterações internas, correções e melhorias técnicas. O campo “Sobre” da plataforma exibe somente versões principais, como `1.0`, `2.0` e `3.0`.
 
+## 1.13.0 — 01/08/2026
+
+- Simplifica o reinício do simulador para duas opções: cargo atual ou todos os cenários.
+- Separa a exclusão individual de partido ou federação no card da própria lista.
+- Adiciona confirmação com resumo do impacto e opção temporária de desfazer.
+- Reduz o destaque visual dos cards e controles destrutivos.
+- Atualiza o relatório completo da plataforma com o novo fluxo.
+
 ## 1.12.1 — 01/08/2026
 
 - Tela “Sobre” deixa de mencionar exportação de análises e passa a comunicar somente o compartilhamento de links de acesso e consultas.

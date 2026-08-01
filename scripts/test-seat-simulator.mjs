@@ -45,7 +45,7 @@ const context = vm.createContext({
   normalizarTexto: value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(),
   simId: (() => { let id=0; return () => `auto-${++id}`; })()
 });
-vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('simIdentificarLista')}\n${extractFunction('simContarCandidaturasLista')}\n${extractFunction('simSituacaoLimiteLista')}\n${extractFunction('simResumoCotaGenero')}\n${extractFunction('simAvaliarCotasGenero')}\n${extractFunction('simComposicaoGeneroPossivel')}\n${extractFunction('simValidarInclusaoGenero')}\n${extractFunction('simEscolherGeneroAutomatico')}\n${extractFunction('simResumirListas')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
+vm.runInContext(`${extractFunction('simNumero')}\n${extractFunction('novoCenarioSimulador')}\n${extractFunction('simIdentificarLista')}\n${extractFunction('simContarCandidaturasLista')}\n${extractFunction('simSituacaoLimiteLista')}\n${extractFunction('simResumoCotaGenero')}\n${extractFunction('simAvaliarCotasGenero')}\n${extractFunction('simComposicaoGeneroPossivel')}\n${extractFunction('simValidarInclusaoGenero')}\n${extractFunction('simEscolherGeneroAutomatico')}\n${extractFunction('simResumirListas')}\n${extractFunction('simAplicarLimpezaEstado')}\n${extractFunction('simQuociente')}\n${extractFunction('simRatearVotos')}\n${extractFunction('simListasAutopreenchiveis')}\n${extractFunction('simCriarPlanoAutopreenchimento')}\n${extractFunction('calcularVagasSimulador')}`, context);
 
 assert(context.simQuociente(1_000, 4) === 250, 'Quociente exato incorreto.');
 assert(context.simQuociente(1_002, 4) === 250, 'Fração igual a 0,5 deveria ser desprezada.');
@@ -156,6 +156,52 @@ assert(resumoPainel[0].votos === 600 && resumoPainel[0].candidaturas.length === 
 assert(resumoPainel[0].percentualVotos === 60, 'Participação da federação nos votos válidos foi calculada incorretamente.');
 assert(html.includes('id="simVerPainel"') && html.includes('id="simListasCards"') && html.includes('data-sim-concluir-lista'),
   'Navegação, cards e controle de conclusão do painel das listas devem existir.');
+
+const estadoLimpezaBase = {
+  cargo:'deputado federal',
+  cenarios:{
+    'deputado federal':{
+      votosValidos:1_000, listasConcluidas:['federacao brasil da esperanca'], desempates:{}, ultimoAutopreenchimento:{ itens:[] },
+      itens:[
+        { id:'lf1', tipo:'candidato', partido:'PT', genero:'feminino', votos:300, origemVotos:'automatico' },
+        { id:'lf2', tipo:'candidato', partido:'PV', genero:'masculino', votos:200, origemVotos:'manual' },
+        { id:'ll1', tipo:'legenda', partido:'PT', votos:100 },
+        { id:'lb1', tipo:'candidato', partido:'PSDB', genero:'feminino', votos:400, origemVotos:'manual' }
+      ]
+    },
+    'deputado estadual':{ votosValidos:500, listasConcluidas:[], desempates:{}, ultimoAutopreenchimento:null, itens:[{ id:'e1', tipo:'candidato', partido:'D', genero:'feminino', votos:500 }] }
+  }
+};
+const clonarEstado = () => JSON.parse(JSON.stringify(estadoLimpezaBase));
+const limparVotos = context.simAplicarLimpezaEstado(clonarEstado(), 'votos');
+assert(limparVotos.cenarios['deputado federal'].itens.length === 4
+  && limparVotos.cenarios['deputado federal'].itens.every(item => item.votos === 0)
+  && limparVotos.cenarios['deputado federal'].votosValidos === 1_000,
+  'Limpeza de votos deve preservar candidaturas e total de votos válidos.');
+const limparCandidaturas = context.simAplicarLimpezaEstado(clonarEstado(), 'candidaturas');
+assert(limparCandidaturas.cenarios['deputado federal'].itens.length === 1
+  && limparCandidaturas.cenarios['deputado federal'].itens[0].tipo === 'legenda',
+  'Limpeza de candidaturas deve preservar votos de legenda e remover somente nomes.');
+const chaveListaPT = context.simIdentificarLista({ partido:'PT' }).chave;
+const limparLista = context.simAplicarLimpezaEstado(clonarEstado(), 'lista', chaveListaPT);
+assert(limparLista.cenarios['deputado federal'].itens.length === 1
+  && limparLista.cenarios['deputado federal'].itens[0].partido === 'PSDB',
+  'Limpeza de lista deve preservar as demais federações.');
+const limparCenario = context.simAplicarLimpezaEstado(clonarEstado(), 'cenario');
+assert(limparCenario.cenarios['deputado federal'].itens.length === 0
+  && limparCenario.cenarios['deputado estadual'].itens.length === 1,
+  'Reinício do cargo atual deve preservar o cenário do outro cargo.');
+const limparTudo = context.simAplicarLimpezaEstado(clonarEstado(), 'tudo');
+assert(limparTudo.cargo === 'deputado estadual'
+  && Object.values(limparTudo.cenarios).every(cenario => cenario.itens.length === 0),
+  'Reinício total deve limpar os dois cargos e retornar ao cargo estadual.');
+assert(html.includes('id="simLimpezaEtapa1"') && html.includes('id="simLimpezaEtapa2"')
+  && html.includes('id="simLimpezaConfirmar"') && html.includes('id="simDesfazerLimpeza"')
+  && html.includes('data-sim-limpar-lista')
+  && !html.includes('data-sim-limpeza-tipo="votos"')
+  && !html.includes('data-sim-limpeza-tipo="candidaturas"')
+  && !html.includes('data-sim-limpeza-tipo="lista"'),
+  'Interface deve separar reinício geral, exclusão por card, confirmação e opção de desfazer.');
 assert(html.includes('id="simAdicionarLegenda"'), 'Botão de votos de legenda ausente.');
 assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutopreenchimento: 13'), 'Limites de liberação do autopreenchimento incorretos.');
 assert(html.includes('id="simAutoPrevia"') && html.includes('id="simAutoConfirmar"'), 'Prévia e confirmação do autopreenchimento ausentes.');

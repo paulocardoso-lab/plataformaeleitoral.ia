@@ -2056,7 +2056,7 @@ canvas {
 .sim-painel-listas-cabecalho h3 { margin: 0 0 4px; color: var(--text-light); font-size: 1rem; }
 .sim-painel-listas-cabecalho p { margin: 0; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
 .sim-listas-cards { display: grid; gap: 10px; }
-.sim-lista-card { padding: 12px; border: 1px solid var(--border); border-left: 4px solid var(--text-muted); border-radius: 10px; background: var(--bg-1); }
+.sim-lista-card { padding: 11px; border: 1px solid rgba(148,163,184,.18); border-left: 2px solid var(--text-muted); border-radius: 9px; background: rgba(255,255,255,.018); }
 .sim-lista-card.atencao { border-left-color: var(--neon-yellow); }
 .sim-lista-card.pronta { border-left-color: var(--neon-cyan); }
 .sim-lista-card.concluida { border-left-color: var(--neon-green); }
@@ -2070,7 +2070,7 @@ canvas {
 .sim-lista-card.concluida .sim-lista-status { color: var(--neon-green); }
 .sim-lista-card.erro .sim-lista-status { color: #ffb0b0; }
 .sim-lista-metricas { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 11px; }
-.sim-lista-metrica { padding: 8px; border-radius: 8px; background: rgba(255,255,255,.035); }
+.sim-lista-metrica { padding: 7px 0; border-bottom: 1px solid rgba(148,163,184,.12); }
 .sim-lista-metrica small, .sim-lista-metrica strong { display: block; }
 .sim-lista-metrica small { color: var(--text-muted); font-size: .6875rem; }
 .sim-lista-metrica strong { margin-top: 2px; color: var(--text-light); font-size: .875rem; }
@@ -2080,6 +2080,27 @@ canvas {
 .sim-lista-card ul { margin: 0 0 8px; padding-left: 19px; color: var(--text-light); }
 .sim-lista-card li { margin-bottom: 5px; font-size: .75rem; line-height: 1.4; }
 .sim-lista-card .sim-btn-secundario { width: 100%; min-height: 42px; margin-top: 8px; font-size: .75rem; }
+.sim-lista-card-acoes { display: grid; grid-template-columns: 1fr; gap: 7px; }
+.sim-lista-excluir { justify-self: end; width: auto !important; min-height: 32px !important; margin-top: 2px !important; padding: 4px 7px !important; border-color: transparent !important; background: transparent !important; color: var(--text-muted) !important; font-size: .6875rem !important; font-weight: 600 !important; text-decoration: underline; text-underline-offset: 3px; }
+.sim-lista-excluir:hover, .sim-lista-excluir:focus-visible { color: #ffb0b0 !important; border-color: rgba(255,139,139,.25) !important; }
+.sim-limpeza-acoes { margin-top: 14px; text-align: right; }
+.sim-reiniciar-discreto { min-height: 34px; padding: 5px 8px; border: 0; background: transparent; color: var(--text-muted); font: inherit; font-size: .75rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.sim-reiniciar-discreto:hover, .sim-reiniciar-discreto:focus-visible { color: var(--text-light); }
+.sim-desfazer-limpeza { margin-top: 9px; padding: 10px; border: 1px solid rgba(0,217,255,.35); border-radius: 9px; background: rgba(0,217,255,.05); color: var(--text-light); font-size: .8125rem; line-height: 1.4; }
+.sim-desfazer-limpeza button { width: 100%; margin-top: 8px; }
+.sim-modal-backdrop { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 14px; background: rgba(2,6,23,.9); }
+.sim-modal-backdrop.hidden { display: none; }
+.sim-modal { width: min(100%, 520px); max-height: min(86vh, 720px); overflow: auto; box-sizing: border-box; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-2); box-shadow: 0 18px 60px rgba(0,0,0,.5); }
+.sim-modal h2 { margin: 0 0 5px; color: var(--text-light); font-size: 1.125rem; }
+.sim-modal-sub { margin: 0 0 14px; color: var(--text-muted); font-size: .8125rem; line-height: 1.45; }
+.sim-limpeza-opcoes { display: grid; gap: 8px; }
+.sim-limpeza-opcao { width: 100%; min-height: 54px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg-1); color: var(--text-light); text-align: left; font: inherit; cursor: pointer; }
+.sim-limpeza-opcao strong, .sim-limpeza-opcao small { display: block; }
+.sim-limpeza-opcao small { margin-top: 3px; color: var(--text-muted); font-size: .75rem; line-height: 1.35; }
+.sim-limpeza-opcao.perigo { border-color: rgba(255,139,139,.45); }
+.sim-limpeza-opcao:disabled { cursor: not-allowed; opacity: .45; }
+.sim-limpeza-resumo { padding: 11px; border: 1px solid rgba(255,139,139,.45); border-radius: 9px; background: rgba(255,139,139,.06); color: var(--text-light); font-size: .8125rem; line-height: 1.5; }
+.sim-btn-destrutivo { min-height: 48px; border: 1px solid #ff8b8b; border-radius: 9px; background: rgba(255,139,139,.12); color: #ffb0b0; padding: 10px 14px; font: inherit; font-weight: 800; cursor: pointer; }
 .sim-form-acoes { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 14px; }
 .sim-btn-principal, .sim-btn-secundario, .sim-btn-remover { min-height: 48px; border-radius: 9px; font: inherit; font-weight: 700; cursor: pointer; }
 .sim-btn-principal { border: 0; background: var(--neon-cyan); color: #06101b; padding: 10px 14px; }
@@ -2797,12 +2818,39 @@ canvas {
             </div>
             <div class="sim-listas-cards" id="simListasCards"></div>
           </section>
+          <div class="sim-limpeza-acoes">
+            <button type="button" class="sim-reiniciar-discreto" id="simAbrirLimpeza">Reiniciar simulador</button>
+            <div class="sim-desfazer-limpeza hidden" id="simDesfazerLimpezaArea" role="status" aria-live="polite">Ação concluída.<button type="button" class="sim-btn-secundario" id="simDesfazerLimpeza">Desfazer</button></div>
+          </div>
         </section>
 
         <section class="sim-card hidden" id="simResultadoCard" aria-labelledby="simResultadoTitulo">
           <h2 id="simResultadoTitulo">Resultado estimado</h2>
           <div id="simResultado" class="sim-resultado"></div>
         </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-modal-backdrop hidden" id="simLimpezaModal" role="dialog" aria-modal="true" aria-labelledby="simLimpezaTitulo">
+    <div class="sim-modal">
+      <div id="simLimpezaEtapa1">
+        <h2 id="simLimpezaTitulo">Reiniciar simulador</h2>
+        <p class="sim-modal-sub">Escolha o alcance do reinício. As listas também podem ser excluídas individualmente em seus próprios cards.</p>
+        <div class="sim-limpeza-opcoes">
+          <button type="button" class="sim-limpeza-opcao perigo" data-sim-limpeza-tipo="cenario"><strong>Reiniciar cenário do cargo atual</strong><small>Apaga votos válidos, listas, candidaturas e resultados deste cargo.</small></button>
+          <button type="button" class="sim-limpeza-opcao perigo" data-sim-limpeza-tipo="tudo"><strong>Reiniciar todo o simulador</strong><small>Apaga os cenários de deputado federal e estadual.</small></button>
+        </div>
+        <button type="button" class="sim-btn-secundario sim-continuar" id="simLimpezaFechar">Cancelar</button>
+      </div>
+      <div class="hidden" id="simLimpezaEtapa2">
+        <h2>Confirmar ação</h2>
+        <p class="sim-modal-sub">Confira cuidadosamente o impacto desta ação.</p>
+        <div class="sim-limpeza-resumo" id="simLimpezaResumo"></div>
+        <div class="sim-form-acoes">
+          <button type="button" class="sim-btn-secundario" id="simLimpezaVoltar">Voltar</button>
+          <button type="button" class="sim-btn-destrutivo" id="simLimpezaConfirmar">Confirmar limpeza</button>
+        </div>
       </div>
     </div>
   </div>
@@ -5245,6 +5293,8 @@ let simRevisaoSolicitada = false;
 let simEtapaAtiva = 1;
 let simEtapa1Confirmada = false;
 let simVisualizacaoCenario = 'montagem';
+let simLimpezaPendente = null;
+let simLimpezaBackup = null;
 let simEstado = carregarSimulador();
 
 function novoCenarioSimulador() {
@@ -5437,7 +5487,16 @@ function initSimulador() {
     document.querySelectorAll('[data-sim-etapa]').forEach(botao => botao.addEventListener('click', () => simAbrirEtapa(Number(botao.dataset.simEtapa))));
     document.getElementById('simVerMontagem').addEventListener('click', () => simAlternarVisualizacaoCenario('montagem'));
     document.getElementById('simVerPainel').addEventListener('click', () => simAlternarVisualizacaoCenario('painel'));
+    document.getElementById('simAbrirLimpeza').addEventListener('click', () => simAbrirLimpeza());
+    document.getElementById('simLimpezaFechar').addEventListener('click', simFecharLimpeza);
+    document.getElementById('simLimpezaVoltar').addEventListener('click', simVoltarLimpeza);
+    document.getElementById('simLimpezaConfirmar').addEventListener('click', simConfirmarLimpeza);
+    document.getElementById('simDesfazerLimpeza').addEventListener('click', simDesfazerUltimaLimpeza);
+    document.querySelectorAll('[data-sim-limpeza-tipo]').forEach(botao => botao.addEventListener('click', () => {
+      simMostrarConfirmacaoLimpeza(botao.dataset.simLimpezaTipo);
+    }));
     document.getElementById('simVotosValidos').addEventListener('input', evento => {
+      simDescartarDesfazerLimpeza();
       simCenario().votosValidos = simNumero(evento.target.value);
       simCenario().ultimoAutopreenchimento = null;
       simAutoPreview = null;
@@ -5523,6 +5582,9 @@ function initSimulador() {
     document.addEventListener('click', evento => {
       if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
       if (!evento.target.closest('#simPartido, #simPartidoSugestoes')) simFecharOrganizacoes();
+    });
+    document.addEventListener('keydown', evento => {
+      if (evento.key === 'Escape' && !document.getElementById('simLimpezaModal').classList.contains('hidden')) simFecharLimpeza();
     });
     simInit = true;
   }
@@ -5613,6 +5675,7 @@ function simResumirListas(cenario = simCenario()) {
 }
 
 function simAlternarListaConcluida(chave) {
+  simDescartarDesfazerLimpeza();
   const cenario = simCenario();
   const lista = simResumirListas(cenario).find(item => item.chave === chave);
   if (!lista) return;
@@ -5669,13 +5732,150 @@ function renderPainelListas() {
       </div>
       <p class="sim-lista-card-aviso">${simEscapar(aviso)}</p>
       <details><summary>Ver nomes (${lista.candidaturas.length})</summary><ul>${nomes || '<li>Nenhuma candidatura individualizada.</li>'}</ul></details>
-      <button type="button" class="sim-btn-secundario" data-sim-concluir-lista="${simEscapar(lista.chave)}"${!lista.marcadaConcluida && !lista.cotas.regular ? ' disabled' : ''}>${lista.marcadaConcluida ? 'Retirar marcação de concluída' : 'Marcar lista como concluída'}</button>
+      <div class="sim-lista-card-acoes"><button type="button" class="sim-btn-secundario" data-sim-concluir-lista="${simEscapar(lista.chave)}"${!lista.marcadaConcluida && !lista.cotas.regular ? ' disabled' : ''}>${lista.marcadaConcluida ? 'Retirar marcação de concluída' : 'Marcar lista como concluída'}</button><button type="button" class="sim-btn-secundario sim-lista-excluir" data-sim-limpar-lista="${simEscapar(lista.chave)}" aria-label="Excluir lista ${simEscapar(lista.nome)}">Excluir lista</button></div>
     </article>`;
   }).join('') : '<p class="sim-card-sub">Adicione candidaturas ou votos para criar os cards das listas.</p>';
   cards.querySelectorAll('[data-sim-concluir-lista]').forEach(botao => {
     botao.addEventListener('click', () => simAlternarListaConcluida(botao.dataset.simConcluirLista));
   });
+  cards.querySelectorAll('[data-sim-limpar-lista]').forEach(botao => {
+    botao.addEventListener('click', () => simAbrirLimpeza(botao.dataset.simLimparLista));
+  });
   renderVisualizacaoCenario();
+}
+
+function simDescartarDesfazerLimpeza() {
+  simLimpezaBackup = null;
+  document.getElementById('simDesfazerLimpezaArea')?.classList.add('hidden');
+}
+
+function simImpactoLimpeza(tipo, chave = null) {
+  const cenario = simCenario();
+  const itens = cenario.itens;
+  const candidaturas = itens.filter(item => item.tipo === 'candidato');
+  const somarVotos = registros => registros.reduce((soma,item) => soma + simNumero(item.votos), 0);
+  if (tipo === 'votos') {
+    const preenchidos = itens.filter(item => simNumero(item.votos) > 0);
+    return { tipo, chave:null, resumo:`Serão zerados ${formatarNum(somarVotos(preenchidos))} votos distribuídos em ${preenchidos.length} registro(s). As ${candidaturas.length} candidaturas, seus gêneros, o cargo e o total de votos válidos serão preservados.` };
+  }
+  if (tipo === 'candidaturas') {
+    return { tipo, chave:null, resumo:`Serão removidas ${candidaturas.length} candidaturas e ${formatarNum(somarVotos(candidaturas))} votos nominais. O cargo, os votos válidos, os votos de legenda e os outros votos serão preservados.` };
+  }
+  if (tipo === 'lista') {
+    const lista = simResumirListas(cenario).find(item => item.chave === chave);
+    if (!lista) return null;
+    return { tipo, chave, resumo:`A lista ${lista.nome} será removida com ${lista.candidaturas.length} candidaturas e ${formatarNum(lista.votos)} votos. As demais listas e o total de votos válidos serão preservados.` };
+  }
+  if (tipo === 'cenario') {
+    return { tipo, chave:null, resumo:`O cenário de ${SIM_CARGOS[simEstado.cargo].label.toLowerCase()} será reiniciado. Serão removidos ${itens.length} registros, ${candidaturas.length} candidaturas e o total estimado de ${formatarNum(cenario.votosValidos)} votos válidos. O outro cargo será preservado.` };
+  }
+  if (tipo === 'tudo') {
+    const cenarios = Object.values(simEstado.cenarios);
+    const todosItens = cenarios.flatMap(item => item.itens || []);
+    const totalCandidaturas = todosItens.filter(item => item.tipo === 'candidato').length;
+    return { tipo, chave:null, resumo:`Todo o simulador será reiniciado. Serão removidos os cenários de deputado federal e estadual, com ${totalCandidaturas} candidaturas e ${todosItens.length} registros no total.` };
+  }
+  return null;
+}
+
+function simAplicarLimpezaEstado(estado, tipo, chave = null) {
+  const cenario = estado.cenarios[estado.cargo];
+  if (tipo === 'votos') {
+    cenario.itens.forEach(item => { item.votos = 0; if (item.tipo === 'candidato') item.origemVotos = 'manual'; });
+    cenario.ultimoAutopreenchimento = null;
+    cenario.listasConcluidas = [];
+  } else if (tipo === 'candidaturas') {
+    cenario.itens = cenario.itens.filter(item => item.tipo !== 'candidato');
+    cenario.ultimoAutopreenchimento = null;
+    cenario.listasConcluidas = [];
+  } else if (tipo === 'lista') {
+    cenario.itens = cenario.itens.filter(item => simIdentificarLista(item).chave !== chave);
+    cenario.ultimoAutopreenchimento = null;
+    cenario.listasConcluidas = (cenario.listasConcluidas || []).filter(item => item !== chave);
+  } else if (tipo === 'cenario') {
+    estado.cenarios[estado.cargo] = novoCenarioSimulador();
+  } else if (tipo === 'tudo') {
+    estado = { cargo:'deputado estadual', cenarios:{ 'deputado estadual':novoCenarioSimulador(), 'deputado federal':novoCenarioSimulador() } };
+  }
+  return estado;
+}
+
+function simAbrirLimpeza(chaveLista = null) {
+  const modal = document.getElementById('simLimpezaModal');
+  document.getElementById('simLimpezaTitulo').textContent = chaveLista ? 'Excluir lista' : 'Reiniciar simulador';
+  document.getElementById('simLimpezaEtapa1').classList.remove('hidden');
+  document.getElementById('simLimpezaEtapa2').classList.add('hidden');
+  document.querySelector('[data-sim-limpeza-tipo="cenario"]').disabled = !simCenario().itens.length && !simNumero(simCenario().votosValidos);
+  document.querySelector('[data-sim-limpeza-tipo="tudo"]').disabled = !Object.values(simEstado.cenarios).some(cenario => cenario.itens?.length || simNumero(cenario.votosValidos));
+  modal.classList.remove('hidden');
+  if (chaveLista) simMostrarConfirmacaoLimpeza('lista', chaveLista);
+  else requestAnimationFrame(() => document.querySelector('[data-sim-limpeza-tipo]:not(:disabled)')?.focus());
+}
+
+function simMostrarConfirmacaoLimpeza(tipo, chave = null) {
+  const impacto = simImpactoLimpeza(tipo, chave);
+  if (!impacto) return;
+  simLimpezaPendente = impacto;
+  document.getElementById('simLimpezaResumo').textContent = impacto.resumo;
+  document.getElementById('simLimpezaEtapa1').classList.add('hidden');
+  document.getElementById('simLimpezaEtapa2').classList.remove('hidden');
+  requestAnimationFrame(() => document.getElementById('simLimpezaVoltar').focus());
+}
+
+function simVoltarLimpeza() {
+  const exclusaoDeLista = simLimpezaPendente?.tipo === 'lista';
+  simLimpezaPendente = null;
+  if (exclusaoDeLista) {
+    simFecharLimpeza();
+    return;
+  }
+  document.getElementById('simLimpezaEtapa2').classList.add('hidden');
+  document.getElementById('simLimpezaEtapa1').classList.remove('hidden');
+  requestAnimationFrame(() => document.getElementById('simLimpezaFechar').focus());
+}
+
+function simFecharLimpeza() {
+  simLimpezaPendente = null;
+  document.getElementById('simLimpezaModal').classList.add('hidden');
+  document.getElementById('simAbrirLimpeza').focus();
+}
+
+function simConfirmarLimpeza() {
+  if (!simLimpezaPendente) return;
+  simLimpezaBackup = JSON.parse(JSON.stringify(simEstado));
+  const { tipo, chave } = simLimpezaPendente;
+  simEstado = simAplicarLimpezaEstado(simEstado, tipo, chave);
+  if (tipo === 'tudo') {
+    simEtapaAtiva = 1;
+    simEtapa1Confirmada = false;
+    simVisualizacaoCenario = 'montagem';
+  }
+  simAutoPreview = null;
+  simRevisaoSolicitada = false;
+  simLimparFormulario();
+  localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(simEstado));
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  simLimpezaPendente = null;
+  document.getElementById('simLimpezaModal').classList.add('hidden');
+  renderSimulador();
+  const area = document.getElementById('simDesfazerLimpezaArea');
+  area.classList.remove('hidden');
+  document.getElementById('simDesfazerLimpeza').focus();
+}
+
+function simDesfazerUltimaLimpeza() {
+  if (!simLimpezaBackup) return;
+  simEstado = JSON.parse(JSON.stringify(simLimpezaBackup));
+  simLimpezaBackup = null;
+  localStorage.setItem(SIM_STORAGE_KEY, JSON.stringify(simEstado));
+  simAutoPreview = null;
+  simRevisaoSolicitada = false;
+  simLimparFormulario();
+  document.getElementById('simResultadoCard').classList.add('hidden');
+  document.getElementById('simDesfazerLimpezaArea').classList.add('hidden');
+  renderSimulador();
+  document.getElementById('simFormularioStatus').className = 'sim-status ok';
+  document.getElementById('simFormularioStatus').textContent = 'Última limpeza desfeita. O cenário anterior foi restaurado.';
 }
 
 function simPesquisarOrganizacoes() {
@@ -5861,6 +6061,7 @@ function simAdicionarItem(tipo) {
     const validacaoGenero = simValidarInclusaoGenero(simCenario(), simEstado.cargo, org, genero);
     if (!validacaoGenero.permitido) { status.textContent = validacaoGenero.mensagem; return; }
   }
+  simDescartarDesfazerLimpeza();
   simCenario().itens.push({
     id: simId(), tipo, nome, partido, chapa, federacao:listaEleitoral.federacao, genero:tipo === 'candidato' ? genero : null, organizacaoVerificada:org.verificada, votos,
     origem: tipo === 'candidato' ? (simSelecionado?.origem || 'cenario') : 'cenario', origemVotos: 'manual'
@@ -5909,6 +6110,7 @@ function simLimparFormulario() {
 }
 
 function simRemoverItem(id) {
+  simDescartarDesfazerLimpeza();
   const removido = simCenario().itens.find(item => item.id === id);
   if (removido) simInvalidarConclusaoLista(removido);
   simCenario().itens = simCenario().itens.filter(item => item.id !== id);
@@ -6041,6 +6243,7 @@ function simPrepararAutopreenchimento(metodo) {
 
 function simConfirmarAutopreenchimento() {
   if (!simAutoPreview) return;
+  simDescartarDesfazerLimpeza();
   const cenario = simCenario();
   cenario.ultimoAutopreenchimento = {
     criadoEm:new Date().toISOString(),
@@ -6066,6 +6269,7 @@ function simConfirmarAutopreenchimento() {
 }
 
 function simDesfazerAutopreenchimento() {
+  simDescartarDesfazerLimpeza();
   const cenario = simCenario();
   const anterior = cenario.ultimoAutopreenchimento;
   if (!anterior?.itens) return;
@@ -6089,6 +6293,7 @@ function simDesfazerAutopreenchimento() {
 }
 
 function simEditarVotos(id, valor, input) {
+  simDescartarDesfazerLimpeza();
   const item = simCenario().itens.find(registro => registro.id === id && registro.tipo === 'candidato');
   if (!item) return;
   item.votos = simNumero(valor);
@@ -6104,6 +6309,7 @@ function simEditarVotos(id, valor, input) {
 }
 
 function simEditarGenero(id, genero) {
+  simDescartarDesfazerLimpeza();
   const item = simCenario().itens.find(registro => registro.id === id && registro.tipo === 'candidato');
   if (!item || !['','feminino','masculino'].includes(genero)) return;
   item.genero = genero || null;
@@ -6384,6 +6590,7 @@ function simCalcularResultado() {
 }
 
 function simResolverEmpate(chave, nome) {
+  simDescartarDesfazerLimpeza();
   simCenario().desempates[chave] = nome;
   salvarSimulador();
   simCalcularResultado();
