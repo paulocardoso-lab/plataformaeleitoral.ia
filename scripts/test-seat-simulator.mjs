@@ -224,11 +224,10 @@ assert(avancarCampo.includes("scrollIntoView({ behavior: reduzirMovimento ? 'aut
   'Avanço entre campos deve controlar rolagem, foco e movimento reduzido.');
 assert(html.includes("simAbrirEtapa(2, 'simVotosValidos')")
   && html.includes("simAbrirEtapa(3, 'simNome')")
-  && html.includes("simAvancarPara('simPartido')")
-  && html.includes("simAvancarPara('simGenero')")
+  && html.includes('function simSelecionarCandidatura2026')
   && html.includes("simAvancarPara('simVotosCandidato')")
   && html.includes("simAdicionarItem('candidato')"),
-  'Sequência de avanço automático do simulador está incompleta.');
+  'Sequência de seleção da candidatura oficial está incompleta.');
 assert(html.includes("evento.key === 'Enter' && nome.value.trim() && !simSelecionado")
   && html.includes("evento.key === 'Enter' && partido.value.trim() && !simOrganizacaoSelecionada"),
   'Nomes e organizações digitados não avançam mediante confirmação explícita.');

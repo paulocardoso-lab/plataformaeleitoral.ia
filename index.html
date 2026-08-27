@@ -2775,9 +2775,9 @@ canvas {
           </div>
           <div id="simMontagemView">
           <div class="sim-campo">
-            <label for="simNome">Nome da pessoa</label>
+            <label for="simNome">Candidatura oficial de 2026</label>
             <input type="search" id="simNome" placeholder="Digite pelo menos 3 letras" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="simSugestoes" autocomplete="off">
-            <div id="simSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Candidaturas do histórico eleitoral"></div>
+            <div id="simSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Candidaturas oficiais de 2026"></div>
             <div id="simCandidatoSelecionado" class="sim-selecionado hidden"></div>
           </div>
           <div class="sim-campo">
@@ -2791,17 +2791,16 @@ canvas {
           <div class="sim-form-acoes sim-acoes-inclusao">
             <button type="button" class="sim-btn-principal" id="simAdicionarCandidato">Adicionar candidatura</button>
             <button type="button" class="sim-btn-secundario" id="simAdicionarLegenda">Incluir votos de legenda</button>
-            <button type="button" class="sim-btn-secundario" id="simAdicionarOutros">Incluir outros votos</button>
           </div>
           <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
           <div id="simCotaGeneroAlertas" class="sim-cotas-genero hidden" role="status" aria-live="polite"></div>
-          <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Use “candidatura” para uma pessoa identificada, “votos de legenda” para votos dados somente ao partido e “outras candidaturas” para nomes que você não deseja cadastrar um a um. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
+          <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Selecione uma candidatura oficial e informe sua projeção de votos. Use “votos de legenda” apenas para votos dados diretamente ao partido. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
           <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
           <div class="sim-revisao hidden" id="simRevisao">
             <p class="sim-revisao-alerta hidden" id="simRevisaoStatus" role="status" aria-live="polite"></p>
             <button type="button" class="sim-btn-principal" id="simCalcular">Revisar e calcular</button>
           </div>
-          <section class="sim-auto hidden" id="simAutoArea" aria-labelledby="simAutoTitulo">
+          <section class="sim-auto hidden" id="simAutoArea" aria-labelledby="simAutoTitulo" hidden>
             <h3 id="simAutoTitulo">Preenchimento rápido</h3>
             <p class="sim-card-sub" id="simAutoResumo"></p>
             <div class="sim-form-acoes">
@@ -2878,11 +2877,12 @@ canvas {
       </ul>
 
       <div class="sec-titulo">Fontes dos dados</div>
-      <p class="sobre-p">Os resultados eleitorais e os históricos de candidaturas têm como fonte o <b>Tribunal Superior Eleitoral (TSE)</b>. Os indicadores do Panorama de MS utilizam fontes públicas identificadas em cada seção, incluindo a <b>SEMADESC/MS</b>.</p>
+      <p class="sobre-p">Os resultados eleitorais, históricos e a lista de candidaturas 2026 têm como fonte o <b>Tribunal Superior Eleitoral (TSE)</b>. Os indicadores do Panorama de MS utilizam fontes públicas identificadas em cada seção, incluindo a <b>SEMADESC/MS</b>.</p>
 
       <div class="sec-titulo">Simulador de Vagas 2026</div>
-      <p class="sobre-p">O simulador aplica as regras do sistema proporcional aos valores informados na simulação. Seus resultados são <b>projeções</b> e não representam pesquisa eleitoral, resultado oficial ou garantia de eleição.</p>
-      <p class="sobre-p">Candidaturas, organizações e estimativas criadas no simulador pertencem somente ao cenário salvo e <b>não alteram a base histórica oficial</b>.</p>
+      <p class="sobre-p">O simulador utiliza a lista oficial de candidaturas a deputado estadual e federal de Mato Grosso do Sul em 2026. Ao selecionar uma candidatura, nome, partido e gênero são preenchidos a partir dessa base. Registros com situação processual diferente de <b>deferida</b> permanecem identificados de forma discreta para contextualizar a projeção.</p>
+      <p class="sobre-p">A distribuição aplica o quociente eleitoral, o quociente partidário, a exigência individual de 10% do quociente eleitoral, as sobras pela regra 80/20 e a etapa final de sobras por maiores médias. Cada rodada de sobra fica disponível para consulta, com partido ou federação, divisor, média e candidatura contemplada.</p>
+      <p class="sobre-p">Os valores de votos são estimativas informadas no cenário. Seus resultados são <b>projeções</b> e não representam pesquisa eleitoral, resultado oficial ou garantia de eleição. Cenários ficam somente neste navegador e <b>não alteram as bases oficiais</b>.</p>
 
       <div class="sec-titulo">Conexão e armazenamento</div>
       <p class="sobre-p">A autenticação e o carregamento dos dados protegidos exigem conexão com a internet. Preferências e cenários do simulador ficam salvos neste navegador para permitir a continuação do preenchimento.</p>
@@ -3078,7 +3078,7 @@ const ChartMini = {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0,0,W,H);
 
-    const padL = 44, padR = 14, padT = 14, padB = 26;
+    const padL = 68, padR = 14, padT = 14, padB = 26;
     const plotW = W - padL - padR, plotH = H - padT - padB;
 
     const allVals = series.flatMap(s => s.pontos.map(p => p.y));
@@ -3097,7 +3097,7 @@ const ChartMini = {
       ctx.beginPath();
       ctx.moveTo(padL, y); ctx.lineTo(W-padR, y);
       ctx.stroke();
-      ctx.fillText(formatarNumCurto(maxV*i/steps), padL-6, y+3);
+      ctx.fillText(formatarNum(Math.round(maxV*i/steps)), padL-6, y+3);
     }
 
     // eixo X labels
@@ -3146,11 +3146,6 @@ function roundRect(ctx, x, y, w, h, r) {
 
 function formatarNum(n) {
   return Number(n).toLocaleString('pt-BR');
-}
-function formatarNumCurto(n) {
-  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
-  if (n >= 1000) return (n/1000).toFixed(0)+'k';
-  return Math.round(n).toString();
 }
 function formatarPercentual(valor, casas=2) {
   if (!Number.isFinite(valor)) return '—';
@@ -4491,9 +4486,9 @@ function renderMeuMunicipio() {
     ${tem2Turno ? chipsTurno('mm', turno) : ''}
 
     <div class="stat-grid">
-      <div class="stat-card"><div class="stat-valor">${formatarNumCurto(principal.aptos)}</div><div class="stat-label">Eleitores aptos</div></div>
+      <div class="stat-card"><div class="stat-valor">${formatarNum(principal.aptos)}</div><div class="stat-label">Eleitores aptos</div></div>
       <div class="stat-card"><div class="stat-valor">${principal.pct_comparecimento.toFixed(1)}%</div><div class="stat-label">Comparecimento</div></div>
-      <div class="stat-card"><div class="stat-valor">${formatarNumCurto(principal.abstencoes)}</div><div class="stat-label">Abstenções</div></div>
+      <div class="stat-card"><div class="stat-valor">${formatarNum(principal.abstencoes)}</div><div class="stat-label">Abstenções</div></div>
       <div class="stat-card"><div class="stat-valor">${principal.pct_validos.toFixed(1)}%</div><div class="stat-label">Votos válidos</div></div>
     </div>
 
@@ -5290,7 +5285,8 @@ const SIM_PARTIDOS = Object.freeze([
   return Object.freeze({sigla,nome,federacao:federacao?.nome||null});
 }));
 let simInit = false;
-let simHistorico = [];
+let simCandidaturas2026 = [];
+let simCandidaturas2026Promise = null;
 let simSelecionado = null;
 let simOrganizacaoSelecionada = null;
 let simAutoPreview = null;
@@ -5471,23 +5467,30 @@ function simEscolherGeneroAutomatico(candidaturas) {
   return femininas <= masculinas ? 'feminino' : 'masculino';
 }
 
-function prepararHistoricoSimulador() {
-  if (simHistorico.length) return;
-  const unicos = new Map();
-  for (const voto of DB.votos) {
-    if (!SIM_CARGOS[voto.cargo] || voto.turno !== '1' || !voto.candidato) continue;
-    const nome = nomeExibicaoCandidato(voto);
-    const chave = normalizarTexto(nome);
-    const atual = unicos.get(chave);
-    if (!atual || Number(voto.ano) > Number(atual.ano)) {
-      unicos.set(chave, { nome, ano: voto.ano, partido: voto.partido, cargo: voto.cargo });
-    }
-  }
-  simHistorico = [...unicos.values()].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+function carregarCandidaturas2026() {
+  if (simCandidaturas2026Promise) return simCandidaturas2026Promise;
+  simCandidaturas2026Promise = fetch('/data/candidaturas-2026-ms.json', { cache:'no-store' })
+    .then(resposta => {
+      if (!resposta.ok) throw new Error(`Base oficial indisponível (${resposta.status})`);
+      return resposta.json();
+    })
+    .then(base => {
+      if (!Array.isArray(base.candidaturas)) throw new Error('Formato inválido da base oficial.');
+      simCandidaturas2026 = base.candidaturas.filter(item => SIM_CARGOS[item.cargo] && item.id && item.nome && item.partido && ['feminino','masculino'].includes(item.genero));
+      if (!simCandidaturas2026.length) throw new Error('A base oficial não contém candidaturas válidas para o simulador.');
+      return simCandidaturas2026;
+    })
+    .catch(erro => {
+      simCandidaturas2026Promise = null;
+      throw erro;
+    });
 }
 
 function initSimulador() {
-  prepararHistoricoSimulador();
+  carregarCandidaturas2026().catch(() => {
+    const status = document.getElementById('simFormularioStatus');
+    if (status) { status.className = 'sim-status erro'; status.textContent = 'Não foi possível carregar a lista oficial de candidaturas 2026. Tente novamente com conexão à internet.'; }
+  });
   if (!simInit) {
     document.querySelectorAll('[data-sim-cargo]').forEach(botao => botao.addEventListener('click', () => simTrocarCargo(botao.dataset.simCargo)));
     document.querySelectorAll('[data-sim-etapa]').forEach(botao => botao.addEventListener('click', () => simAbrirEtapa(Number(botao.dataset.simEtapa))));
@@ -5521,13 +5524,10 @@ function initSimulador() {
     });
     document.getElementById('simContinuarVotos').addEventListener('click', simConfirmarVotosValidos);
     const nome = document.getElementById('simNome');
-    nome.addEventListener('input', simPesquisarHistorico);
+    nome.addEventListener('input', simPesquisarCandidaturas2026);
     nome.addEventListener('keydown', evento => {
       if (evento.key === 'Escape') simFecharSugestoes();
-      if (evento.key === 'Enter' && nome.value.trim() && !simSelecionado) {
-        evento.preventDefault();
-        simUsarNomeNovo();
-      }
+      if (evento.key === 'Enter' && nome.value.trim() && !simSelecionado) evento.preventDefault();
       if (evento.key === 'ArrowDown') {
         const primeira = document.querySelector('#simSugestoes [role="option"]');
         if (primeira) { evento.preventDefault(); primeira.focus(); }
@@ -5578,12 +5578,6 @@ function initSimulador() {
     });
     document.getElementById('simAdicionarCandidato').addEventListener('click', () => simAdicionarItem('candidato'));
     document.getElementById('simAdicionarLegenda').addEventListener('click', () => simAdicionarItem('legenda'));
-    document.getElementById('simAdicionarOutros').addEventListener('click', () => simAdicionarItem('agregado'));
-    document.getElementById('simAbrirAuto').addEventListener('click', simAbrirAutopreenchimento);
-    document.getElementById('simAutoProporcional').addEventListener('click', () => simPrepararAutopreenchimento('proporcional'));
-    document.getElementById('simAutoIgual').addEventListener('click', () => simPrepararAutopreenchimento('igual'));
-    document.getElementById('simAutoCancelar').addEventListener('click', simCancelarAutopreenchimento);
-    document.getElementById('simDesfazerAuto').addEventListener('click', simDesfazerAutopreenchimento);
     document.getElementById('simCalcular').addEventListener('click', simRevisarCalculo);
     document.addEventListener('click', evento => {
       if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
@@ -5991,48 +5985,45 @@ function simResolverOrganizacaoDigitada(valor) {
   return null;
 }
 
-function simPesquisarHistorico() {
+function simPesquisarCandidaturas2026() {
   simSelecionado = null;
   document.getElementById('simCandidatoSelecionado').classList.add('hidden');
   const input = document.getElementById('simNome');
-  const termoOriginal = input.value.trim();
-  const termo = normalizarTexto(termoOriginal);
+  const termo = normalizarTexto(input.value.trim());
   const box = document.getElementById('simSugestoes');
   if (termo.length < 3) return simFecharSugestoes();
-  const encontrados = simHistorico.filter(item => normalizarTexto(item.nome).includes(termo)).slice(0, 7);
-  const historico = encontrados.map((item, indice) => `<button type="button" role="option" data-sim-historico-indice="${indice}"><strong>${simEscapar(item.nome)}</strong><small>${simEscapar(CARGO_LABEL[item.cargo])} em ${simEscapar(item.ano)} · ${simEscapar(item.partido || 'partido não informado')}</small></button>`).join('');
-  box.innerHTML = historico + `<button type="button" role="option" data-sim-nome-novo><strong>Usar “${simEscapar(termoOriginal)}” como novo nome</strong><small>Será salvo somente neste cenário, fora da base histórica.</small></button>`;
-  box.querySelectorAll('[data-sim-historico-indice]').forEach(botao => {
-    botao.addEventListener('click', () => simSelecionarHistorico(Number(botao.dataset.simHistoricoIndice)));
+  if (!simCandidaturas2026.length) {
+    box.innerHTML = '<p class="sim-status">Carregando candidaturas oficiais de 2026...</p>';
+    box.classList.remove('hidden');
+    return;
+  }
+  const encontrados = simCandidaturas2026.filter(item => item.cargo === simEstado.cargo && normalizarTexto(item.nome).includes(termo)).slice(0, 7);
+  box.innerHTML = encontrados.length
+    ? encontrados.map((item, indice) => `<button type="button" role="option" data-sim-candidatura-indice="${indice}"><strong>${simEscapar(item.nome)}</strong><small>${simEscapar(item.partido)} · ${item.genero === 'feminino' ? 'Feminino' : 'Masculino'}${item.situacaoJulgamento && item.situacaoJulgamento !== 'DEFERIDO' ? ` · Situação: ${simEscapar(item.situacaoJulgamento)}` : ''}</small></button>`).join('')
+    : '<p class="sim-status">Nenhuma candidatura oficial encontrada para este cargo.</p>';
+  box.querySelectorAll('[data-sim-candidatura-indice]').forEach(botao => {
+    botao.addEventListener('click', () => simSelecionarCandidatura2026(Number(botao.dataset.simCandidaturaIndice)));
   });
-  box.querySelector('[data-sim-nome-novo]')?.addEventListener('click', simUsarNomeNovo);
   box.dataset.resultados = JSON.stringify(encontrados);
   box.classList.remove('hidden');
   input.setAttribute('aria-expanded', 'true');
 }
 
-function simSelecionarHistorico(indice) {
+function simSelecionarCandidatura2026(indice) {
   const encontrados = JSON.parse(document.getElementById('simSugestoes').dataset.resultados || '[]');
   const item = encontrados[indice];
   if (!item) return;
-  simSelecionado = { origem: 'tse', ...item };
+  simSelecionado = { origem: 'tse-2026', ...item };
   document.getElementById('simNome').value = item.nome;
+  document.getElementById('simPartido').value = item.partido;
+  document.getElementById('simGenero').value = item.genero;
+  simOrganizacaoSelecionada = simResolverOrganizacaoDigitada(item.partido) || { partido:item.partido, chapa:item.federacao || item.partido, federacao:item.federacao || null, verificada:true };
+  simMostrarOrganizacao();
   const aviso = document.getElementById('simCandidatoSelecionado');
-  aviso.innerHTML = `<strong>Histórico selecionado:</strong> ${simEscapar(item.nome)} · ${simEscapar(CARGO_LABEL[item.cargo])} em ${simEscapar(item.ano)}. Informe abaixo o partido de 2026.`;
+  aviso.innerHTML = `<strong>Candidatura oficial selecionada:</strong> ${simEscapar(item.nome)} · ${simEscapar(item.partido)} · ${item.genero === 'feminino' ? 'Feminino' : 'Masculino'}${item.situacaoJulgamento && item.situacaoJulgamento !== 'DEFERIDO' ? `. <span class="sim-status aviso">Situação do registro: ${simEscapar(item.situacaoJulgamento)}.</span>` : ''}`;
   aviso.classList.remove('hidden');
   simFecharSugestoes();
-  simAvancarPara('simPartido');
-}
-
-function simUsarNomeNovo() {
-  const nome = document.getElementById('simNome').value.trim();
-  if (!nome) return;
-  simSelecionado = { origem: 'cenario', nome };
-  const aviso = document.getElementById('simCandidatoSelecionado');
-  aviso.innerHTML = `<strong>Novo nome:</strong> ${simEscapar(nome)}. Ele ficará restrito a este cenário e não entrará na busca histórica.`;
-  aviso.classList.remove('hidden');
-  simFecharSugestoes();
-  simAvancarPara('simPartido');
+  simAvancarPara('simVotosCandidato');
 }
 
 function simFecharSugestoes() {
@@ -6050,8 +6041,8 @@ function simAdicionarItem(tipo) {
   status.className = 'sim-status erro';
   if (!organizacaoDigitada) { status.textContent = 'Informe o partido ou a federação.'; return; }
   if (!votos) { status.textContent = 'Informe uma quantidade de votos maior que zero.'; return; }
-  if (tipo === 'candidato' && !nomeDigitado) { status.textContent = 'Pesquise ou digite o nome da pessoa.'; return; }
-  if (tipo === 'candidato' && !['feminino','masculino'].includes(genero)) { status.textContent = 'Selecione o gênero da candidatura para verificar a cota eleitoral.'; return; }
+  if (tipo === 'candidato' && !simSelecionado?.id) { status.textContent = 'Selecione uma candidatura da lista oficial de 2026.'; return; }
+  if (tipo === 'candidato' && (simSelecionado.cargo !== simEstado.cargo || simSelecionado.nome !== nomeDigitado || simSelecionado.partido !== organizacaoDigitada || simSelecionado.genero !== genero)) { status.textContent = 'Use os dados preenchidos pela candidatura oficial selecionada.'; return; }
   const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada);
   if (!org) {
     status.textContent = 'Selecione um partido ou uma federação da lista oficial.';
@@ -6516,7 +6507,7 @@ function calcularVagasSimulador(cenario, cargo) {
   const mapa = new Map();
   for (const item of cenario.itens) {
     const listaEleitoral = simIdentificarLista(item);
-    if (!mapa.has(listaEleitoral.chave)) mapa.set(listaEleitoral.chave, { nome: listaEleitoral.nome, votos: 0, vagas: [], candidatos: [], agregados: 0, legenda: 0 });
+    if (!mapa.has(listaEleitoral.chave)) mapa.set(listaEleitoral.chave, { nome: listaEleitoral.nome, votos: 0, vagas: [], candidatos: [], agregados: 0, legenda: 0, qp:0, vagasQp:0, vagasSobra8020:0, vagasSobraGeral:0 });
     const partido = mapa.get(listaEleitoral.chave);
     partido.votos += item.votos;
     if (item.tipo === 'candidato') partido.candidatos.push({ ...item, eleito: false });
@@ -6533,12 +6524,15 @@ function calcularVagasSimulador(cenario, cargo) {
     return a.nome.localeCompare(b.nome, 'pt-BR');
   }));
   let preenchidas = 0;
+  const rodadasSobras = [];
   for (const partido of partidos) {
     const qp = Math.floor(partido.votos / qe);
+    partido.qp = qp;
     const elegiveis = partido.candidatos.filter(candidato => candidato.votos >= qe * .10);
     for (const candidato of elegiveis.slice(0, qp)) {
       candidato.eleito = true;
       partido.vagas.push({ candidato, fase: 'quociente partidário' });
+      partido.vagasQp += 1;
       preenchidas += 1;
     }
   }
@@ -6550,8 +6544,12 @@ function calcularVagasSimulador(cenario, cargo) {
       }).filter(Boolean).sort((a,b) => b.media - a.media || b.partido.votos - a.partido.votos);
       if (!concorrentes.length) break;
       const vencedor = concorrentes[0];
+      const vagasAntes = vencedor.partido.vagas.length;
       vencedor.candidato.eleito = true;
       vencedor.partido.vagas.push({ candidato: vencedor.candidato, fase, media: vencedor.media });
+      if (fase === 'sobra 80/20') vencedor.partido.vagasSobra8020 += 1;
+      else vencedor.partido.vagasSobraGeral += 1;
+      rodadasSobras.push({ rodada:rodadasSobras.length + 1, fase, partido:vencedor.partido.nome, votos:vencedor.partido.votos, vagasAntes, divisor:vagasAntes + 1, media:vencedor.media, candidato:vencedor.candidato.nome, votosCandidato:vencedor.candidato.votos });
       preenchidas += 1;
     }
   }
@@ -6566,7 +6564,7 @@ function calcularVagasSimulador(cenario, cargo) {
     if (cenario.desempates?.[chave]) return [];
     return [{ chave, partido: partido.nome, votos: candidato.votos, nomes: [anterior.nome, candidato.nome] }];
   }));
-  return { qe, partidos, eleitos, suplentes, empates, vagasNaoPreenchidas: config.vagas - preenchidas };
+  return { qe, partidos, eleitos, suplentes, empates, rodadasSobras, vagasNaoPreenchidas: config.vagas - preenchidas, conferencia:{ distribuidas:preenchidas, total:config.vagas, confere:preenchidas === config.vagas } };
 }
 
 function simCalcularResultado() {
@@ -6579,7 +6577,7 @@ function simCalcularResultado() {
   const legendas = resultado.partidos.reduce((soma, partido) => soma + partido.legenda, 0);
   const card = document.getElementById('simResultadoCard');
   const out = document.getElementById('simResultado');
-  const resumoPartidos = resultado.partidos.sort((a,b)=>b.vagas.length-a.vagas.length || b.votos-a.votos).map(partido => `<li><strong>${simEscapar(partido.nome)}</strong>: ${formatarNum(partido.votos)} votos · ${partido.vagas.length} vaga${partido.vagas.length===1?'':'s'}</li>`).join('');
+  const resumoPartidos = resultado.partidos.sort((a,b)=>b.vagas.length-a.vagas.length || b.votos-a.votos).map(partido => `<li><strong>${simEscapar(partido.nome)}</strong>: ${formatarNum(partido.votos)} votos · QP ${partido.qp} · ${partido.vagasQp} QP · ${partido.vagasSobra8020} sobra 80/20 · ${partido.vagasSobraGeral} sobra geral · ${partido.vagas.length} vaga${partido.vagas.length===1?'':'s'}</li>`).join('');
   const eleitos = resultado.eleitos.map(item => `<li><strong>${simEscapar(item.candidato.nome)}</strong> · ${simEscapar(item.partido)}<br><span class="sim-item-meta">${formatarNum(item.candidato.votos)} votos · ${simEscapar(item.fase)}</span></li>`).join('');
   const suplentes = resultado.suplentes.sort((a,b)=>a.partido.localeCompare(b.partido,'pt-BR') || b.votos-a.votos).map(item => `<li><strong>${simEscapar(item.nome)}</strong> · ${simEscapar(item.partido)} · ${formatarNum(item.votos)} votos</li>`).join('');
   out.innerHTML = `
@@ -6588,10 +6586,12 @@ function simCalcularResultado() {
     ${legendas ? `<p><strong>Votos de legenda:</strong> ${formatarNum(legendas)} votos, somados somente ao total das respectivas chapas.</p>` : ''}
     ${agregados ? `<div class="sim-aviso"><strong>Resultado nominal parcial.</strong> Existem ${formatarNum(agregados)} votos sem nome. Eles entram no total das chapas, mas podem pertencer a candidaturas capazes de alterar as pessoas eleitas ou suplentes. Para confirmar nomes, individualize as candidaturas competitivas.</div>` : ''}
     ${resultado.empates.map((empate, empateIndice) => `<div class="sim-aviso"><strong>Empate a resolver.</strong> ${simEscapar(empate.nomes.join(' e '))} receberam ${formatarNum(empate.votos)} votos no ${simEscapar(empate.partido)}. Quem é mais velho?<div class="sim-form-acoes">${empate.nomes.map((nome, nomeIndice) => `<button type="button" class="sim-btn-secundario" data-sim-empate="${empateIndice}" data-sim-nome="${nomeIndice}">${simEscapar(nome)}</button>`).join('')}</div></div>`).join('')}
-    ${resultado.vagasNaoPreenchidas ? `<div class="sim-aviso"><strong>Faltam nomes competitivos.</strong> ${resultado.vagasNaoPreenchidas} vaga(s) não puderam ser atribuídas nominalmente. Cadastre as candidaturas que podem ocupar essas posições.</div>` : ''}
+    <p><strong>Conferência:</strong> ${resultado.conferencia.distribuidas} de ${resultado.conferencia.total} vagas distribuídas${resultado.conferencia.confere ? ' ✓' : ''}.</p>
+    ${resultado.vagasNaoPreenchidas ? `<div class="sim-aviso"><strong>Faltam candidaturas oficiais elegíveis.</strong> ${resultado.vagasNaoPreenchidas} vaga(s) não puderam ser atribuídas nominalmente neste cenário.</div>` : ''}
     <h3>Vagas por partido ou federação</h3><ul>${resumoPartidos || '<li>Nenhuma vaga calculada.</li>'}</ul>
     <h3>Pessoas eleitas — projeção</h3><ol>${eleitos || '<li>Nenhum nome pôde ser confirmado.</li>'}</ol>
     <h3>Pessoas suplentes — projeção</h3><ul>${suplentes || '<li>Nenhuma pessoa suplente individualizada.</li>'}</ul>
+    <details class="sim-ajuda"><summary>Auditoria das sobras (${resultado.rodadasSobras.length})</summary><ol>${resultado.rodadasSobras.map(rodada => `<li>${simEscapar(rodada.fase)} · ${simEscapar(rodada.partido)} · divisor ${rodada.divisor} · média ${formatarNum(Math.round(rodada.media * 100) / 100)} · ${simEscapar(rodada.candidato)} (${formatarNum(rodada.votosCandidato)} votos)</li>`).join('') || '<li>Não houve sobras distribuídas.</li>'}</ol></details>
     <details class="sim-ajuda"><summary>Como o resultado foi calculado?</summary><p>O simulador aplicou o quociente eleitoral, as vagas diretas, a etapa de sobras 80/20 e, depois, as sobras gerais por maiores médias. Esta é uma projeção baseada nos números informados, não um resultado oficial.</p></details>`;
   out.querySelectorAll('[data-sim-empate]').forEach(botao => {
     botao.addEventListener('click', () => {
@@ -6612,7 +6612,7 @@ function simResolverEmpate(chave, nome) {
   simCalcularResultado();
 }
 
-Object.assign(window, { simSelecionarHistorico, simUsarNomeNovo, simRemoverItem, simResolverEmpate });
+Object.assign(window, { simSelecionarCandidatura2026, simRemoverItem, simResolverEmpate });
 
 // ---------- TELA SOBRE ----------
 function abrirTelaSobre() {

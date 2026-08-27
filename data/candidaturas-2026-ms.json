@@ -1,0 +1,3372 @@
+{
+  "versao": "2026-08-19",
+  "fonte": "TSE — Consulta de candidaturas 2026, Mato Grosso do Sul",
+  "geradoEm": "2026-08-27T16:19:01.958Z",
+  "arquivoOrigem": "consulta_cand_2026_MS.csv",
+  "arquivoComplementar": "consulta_cand_complementar_2026_MS.csv",
+  "hashOrigem": "51cd27e30a50b3bf9005cb018efb29f0fa210b481aa581aedfd905cf5186b40b",
+  "totais": {
+    "estadual": 251,
+    "federal": 122,
+    "naoDeferidas": 315
+  },
+  "candidaturas": [
+    {
+      "id": "120002547059",
+      "cargo": "deputado estadual",
+      "nome": "AARON SALLES TORRES",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "31/03/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537515",
+      "cargo": "deputado estadual",
+      "nome": "ABEL FILHO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "20/09/1989",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535529",
+      "cargo": "deputado estadual",
+      "nome": "ADONIS",
+      "partido": "CIDADANIA",
+      "genero": "masculino",
+      "nascimento": "14/05/1984",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002547063",
+      "cargo": "deputado estadual",
+      "nome": "ADRIANE QUILOMBOLA",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "22/07/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551713",
+      "cargo": "deputado estadual",
+      "nome": "ADRIANO PAULINO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "02/04/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547046",
+      "cargo": "deputado estadual",
+      "nome": "AD�O SALEMAQ",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "21/05/1956",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535530",
+      "cargo": "deputado estadual",
+      "nome": "ALBI DE URRUTIA",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "15/05/1975",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537510",
+      "cargo": "deputado estadual",
+      "nome": "ALESSANDRA ALENCAR",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "24/08/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553017",
+      "cargo": "deputado estadual",
+      "nome": "ALEXANDRE MOURA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "12/09/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537514",
+      "cargo": "deputado estadual",
+      "nome": "ALISON AUGUSTO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "03/02/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552210",
+      "cargo": "deputado estadual",
+      "nome": "ALMIR MACHADO",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "01/09/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536076",
+      "cargo": "deputado estadual",
+      "nome": "ANA ABDO",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "17/08/1958",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547066",
+      "cargo": "deputado estadual",
+      "nome": "ANA DOMINGUES",
+      "partido": "PV",
+      "genero": "feminino",
+      "nascimento": "21/03/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536065",
+      "cargo": "deputado estadual",
+      "nome": "ANA PORTELA",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "13/02/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552215",
+      "cargo": "deputado estadual",
+      "nome": "ANDRADE",
+      "partido": "SOLIDARIEDADE",
+      "genero": "masculino",
+      "nascimento": "25/02/1943",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544979",
+      "cargo": "deputado estadual",
+      "nome": "ANDRE BAIRD",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "15/08/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552204",
+      "cargo": "deputado estadual",
+      "nome": "ANDRE KOVALSKI",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "27/07/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536068",
+      "cargo": "deputado estadual",
+      "nome": "ANDRE SALINEIRO",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "11/04/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551714",
+      "cargo": "deputado estadual",
+      "nome": "ANDR� PAULINO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "19/11/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544705",
+      "cargo": "deputado estadual",
+      "nome": "ANDR� PUCCINELLI",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "02/07/1948",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535527",
+      "cargo": "deputado estadual",
+      "nome": "ANDR�A FIM",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "04/04/1985",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537522",
+      "cargo": "deputado estadual",
+      "nome": "ANTONIO VAZ",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "23/09/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539698",
+      "cargo": "deputado estadual",
+      "nome": "BARBARA RESENDE",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "25/07/1997",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532704",
+      "cargo": "deputado estadual",
+      "nome": "BIRA MEC�NICO",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "17/01/1956",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535522",
+      "cargo": "deputado estadual",
+      "nome": "BIRO BIRO",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "02/06/1974",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002551715",
+      "cargo": "deputado estadual",
+      "nome": "BOLIVINHA BORRACHA",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "26/08/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549573",
+      "cargo": "deputado estadual",
+      "nome": "BONATTO",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "18/06/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536061",
+      "cargo": "deputado estadual",
+      "nome": "BRUNA LOPES",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "06/11/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537502",
+      "cargo": "deputado estadual",
+      "nome": "BRUNO ORTIZ",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "20/01/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551725",
+      "cargo": "deputado estadual",
+      "nome": "CAF�",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "21/11/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553022",
+      "cargo": "deputado estadual",
+      "nome": "CAMILA ARAUJO",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "08/09/2001",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535532",
+      "cargo": "deputado estadual",
+      "nome": "CARAVINA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "30/06/1970",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002553019",
+      "cargo": "deputado estadual",
+      "nome": "CARDOSO DO IMBIRUSSU",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "06/02/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549580",
+      "cargo": "deputado estadual",
+      "nome": "CARINA SALOM�O",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "02/11/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539712",
+      "cargo": "deputado estadual",
+      "nome": "CAROL MARQUEZ",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "26/03/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547053",
+      "cargo": "deputado estadual",
+      "nome": "CASSIANO DO G�S",
+      "partido": "PV",
+      "genero": "masculino",
+      "nascimento": "11/08/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549572",
+      "cargo": "deputado estadual",
+      "nome": "CHARLENE BORTOLETO",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "22/03/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537509",
+      "cargo": "deputado estadual",
+      "nome": "CHIC�O VIANNA",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "26/07/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549577",
+      "cargo": "deputado estadual",
+      "nome": "CHINA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "30/12/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536074",
+      "cargo": "deputado estadual",
+      "nome": "CHIT�O",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "07/02/1968",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544963",
+      "cargo": "deputado estadual",
+      "nome": "CHRISTIANO MENDES",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "10/03/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547057",
+      "cargo": "deputado estadual",
+      "nome": "CLARINEU NOGUEIRA",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "19/09/1963",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535533",
+      "cargo": "deputado estadual",
+      "nome": "COLETIVO DE SERVIDORES",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "28/11/1987",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002536066",
+      "cargo": "deputado estadual",
+      "nome": "CORONEL DAVID",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "27/01/1965",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537506",
+      "cargo": "deputado estadual",
+      "nome": "CRIA DO AERO RANCHO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "15/10/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536060",
+      "cargo": "deputado estadual",
+      "nome": "DAVERSON MATOS",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "31/08/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553012",
+      "cargo": "deputado estadual",
+      "nome": "DAVI RIBEIRO",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "07/09/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536071",
+      "cargo": "deputado estadual",
+      "nome": "DEFENSOR ERNANY",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "05/08/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551724",
+      "cargo": "deputado estadual",
+      "nome": "DEISE RIBEIRO",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "13/09/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552214",
+      "cargo": "deputado estadual",
+      "nome": "DEIVID NICOLINE",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "19/05/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535523",
+      "cargo": "deputado estadual",
+      "nome": "DHEINE MARTINS",
+      "partido": "CIDADANIA",
+      "genero": "feminino",
+      "nascimento": "16/06/1987",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544971",
+      "cargo": "deputado estadual",
+      "nome": "DIEGO CARVALHO",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "21/12/1989",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552161",
+      "cargo": "deputado estadual",
+      "nome": "DILSON ARRUDA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "08/02/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539711",
+      "cargo": "deputado estadual",
+      "nome": "DIONE HASHIOKA",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "23/06/1957",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552160",
+      "cargo": "deputado estadual",
+      "nome": "DOROTI JUSTINO",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "30/07/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549578",
+      "cargo": "deputado estadual",
+      "nome": "DR LUCIANO",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "28/10/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547064",
+      "cargo": "deputado estadual",
+      "nome": "DR. JORGE LAURICIO",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "09/05/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535514",
+      "cargo": "deputado estadual",
+      "nome": "DR. ROTTERDAM",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "30/03/1981",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549559",
+      "cargo": "deputado estadual",
+      "nome": "DR. RUY COSTA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "27/12/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539691",
+      "cargo": "deputado estadual",
+      "nome": "DRA SIRLEI RATIER",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "29/10/1948",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537508",
+      "cargo": "deputado estadual",
+      "nome": "DRA TATIANE WEHNER",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "15/12/1984",
+      "situacaoJulgamento": "REN�NCIA"
+    },
+    {
+      "id": "120002544706",
+      "cargo": "deputado estadual",
+      "nome": "DRA. KALANIT",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "03/06/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549565",
+      "cargo": "deputado estadual",
+      "nome": "DRA. ROSALINA",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "23/09/1958",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544713",
+      "cargo": "deputado estadual",
+      "nome": "EDER BRAMBILLA",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "22/06/1944",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535518",
+      "cargo": "deputado estadual",
+      "nome": "EDSON NOGUEIRA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "12/02/1963",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002547067",
+      "cargo": "deputado estadual",
+      "nome": "EDUARDO BORGES",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "20/11/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535536",
+      "cargo": "deputado estadual",
+      "nome": "EDUARDO ROCHA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "01/12/1966",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549561",
+      "cargo": "deputado estadual",
+      "nome": "ENFERMEIRA CIDA AMARAL",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "12/01/1960",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544709",
+      "cargo": "deputado estadual",
+      "nome": "ENFERMEIRO DANIEL",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "15/04/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544964",
+      "cargo": "deputado estadual",
+      "nome": "EUNICE TIKKA",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "11/08/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532709",
+      "cargo": "deputado estadual",
+      "nome": "FABIANO DUARTE",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "12/10/1979",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002552206",
+      "cargo": "deputado estadual",
+      "nome": "FABIO COSTA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "26/05/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539701",
+      "cargo": "deputado estadual",
+      "nome": "FABR�CIO VENTUROLI",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "02/11/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552212",
+      "cargo": "deputado estadual",
+      "nome": "FATIMA FIA",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "04/07/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552213",
+      "cargo": "deputado estadual",
+      "nome": "FERNANDA BREVE",
+      "partido": "SOLIDARIEDADE",
+      "genero": "feminino",
+      "nascimento": "26/02/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537516",
+      "cargo": "deputado estadual",
+      "nome": "FERNANDO ROBERTO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "09/08/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539695",
+      "cargo": "deputado estadual",
+      "nome": "FERNANDO SOUZA",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "15/04/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552162",
+      "cargo": "deputado estadual",
+      "nome": "FERNANDO VILLALBA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "16/03/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552203",
+      "cargo": "deputado estadual",
+      "nome": "FI�O",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "06/06/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553244",
+      "cargo": "deputado estadual",
+      "nome": "FLAVIA ARGEMIRO",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "29/04/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535516",
+      "cargo": "deputado estadual",
+      "nome": "FL�VIO CABO ALMI",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "25/06/1991",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535521",
+      "cargo": "deputado estadual",
+      "nome": "FL�VIO DIAS",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "10/07/1982",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544965",
+      "cargo": "deputado estadual",
+      "nome": "FRANK VALDEZ",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "19/07/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544712",
+      "cargo": "deputado estadual",
+      "nome": "F�TIMA BARBOSA",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "11/07/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539703",
+      "cargo": "deputado estadual",
+      "nome": "GERSON CLARO",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "08/11/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536054",
+      "cargo": "deputado estadual",
+      "nome": "GIANNI NOGUEIRA",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "25/04/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547050",
+      "cargo": "deputado estadual",
+      "nome": "GILMAR GARCIA",
+      "partido": "PV",
+      "genero": "masculino",
+      "nascimento": "31/01/1961",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532700",
+      "cargo": "deputado estadual",
+      "nome": "GILVAN FERNANDES",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "27/03/1979",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544707",
+      "cargo": "deputado estadual",
+      "nome": "GIOVANI DA CDL",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "10/01/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544966",
+      "cargo": "deputado estadual",
+      "nome": "GISLAINE BRITO",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "21/12/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549570",
+      "cargo": "deputado estadual",
+      "nome": "GLAUCIA IUNES",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "13/06/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552684",
+      "cargo": "deputado estadual",
+      "nome": "G�SSICA MACHADO",
+      "partido": "PCO",
+      "genero": "feminino",
+      "nascimento": "10/12/2000",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539694",
+      "cargo": "deputado estadual",
+      "nome": "HELIO PELUFFO",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "24/04/1961",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537503",
+      "cargo": "deputado estadual",
+      "nome": "HERCULANO BORGES",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "10/09/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547054",
+      "cargo": "deputado estadual",
+      "nome": "IDEVALDO CLAUDINO",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "15/06/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549574",
+      "cargo": "deputado estadual",
+      "nome": "INSPETOR RONNIE GONZAGA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "24/08/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535526",
+      "cargo": "deputado estadual",
+      "nome": "IZA�AS ROCHA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "11/09/1965",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002551719",
+      "cargo": "deputado estadual",
+      "nome": "JACKELINE MORENO",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "25/03/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539693",
+      "cargo": "deputado estadual",
+      "nome": "JAMILSON NAME",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "16/09/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535515",
+      "cargo": "deputado estadual",
+      "nome": "JANETE C�RDOBA",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "02/04/1980",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002532701",
+      "cargo": "deputado estadual",
+      "nome": "JEAN CARLOS",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "12/08/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544714",
+      "cargo": "deputado estadual",
+      "nome": "JENIR NEVES",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "07/11/1948",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539702",
+      "cargo": "deputado estadual",
+      "nome": "JERSON DOMINGOS",
+      "partido": "UNI�O",
+      "genero": "masculino",
+      "nascimento": "14/11/1950",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549566",
+      "cargo": "deputado estadual",
+      "nome": "JESSIKA MOTTA",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "17/10/1990",
+      "situacaoJulgamento": "REN�NCIA"
+    },
+    {
+      "id": "120002553245",
+      "cargo": "deputado estadual",
+      "nome": "JOAO FARIAS",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "23/06/1958",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549575",
+      "cargo": "deputado estadual",
+      "nome": "JOHNNATHAN JARA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "25/02/1989",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551723",
+      "cargo": "deputado estadual",
+      "nome": "JOICY LOUREIRO",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "24/10/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552686",
+      "cargo": "deputado estadual",
+      "nome": "JORGE BATISTA",
+      "partido": "PCO",
+      "genero": "masculino",
+      "nascimento": "10/09/1953",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547047",
+      "cargo": "deputado estadual",
+      "nome": "JOSENILDO CEAR�",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "11/01/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552683",
+      "cargo": "deputado estadual",
+      "nome": "JOSIEL MACHADO",
+      "partido": "PCO",
+      "genero": "masculino",
+      "nascimento": "03/08/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544968",
+      "cargo": "deputado estadual",
+      "nome": "JOSIEL QUIRINO VIEIRA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "23/07/1984",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544708",
+      "cargo": "deputado estadual",
+      "nome": "JO�O TRINDADE",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "30/11/2000",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539690",
+      "cargo": "deputado estadual",
+      "nome": "JULIANA ARANDA DO RU UNIFORMES",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "01/03/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539696",
+      "cargo": "deputado estadual",
+      "nome": "JULIANA GAIOSO",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "15/05/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553015",
+      "cargo": "deputado estadual",
+      "nome": "JULIANA LOPES",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "05/12/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544717",
+      "cargo": "deputado estadual",
+      "nome": "JUNIOR CORINGA",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "04/05/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551718",
+      "cargo": "deputado estadual",
+      "nome": "JUNIOR LOPES",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "30/07/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544722",
+      "cargo": "deputado estadual",
+      "nome": "JUNIOR MOCHI",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "23/08/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549569",
+      "cargo": "deputado estadual",
+      "nome": "JUNIOR RODRIGUES",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "03/09/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532705",
+      "cargo": "deputado estadual",
+      "nome": "JYENIFFER MULLER",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "18/01/1988",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535528",
+      "cargo": "deputado estadual",
+      "nome": "J�LIA NEWS",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "23/01/1992",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551720",
+      "cargo": "deputado estadual",
+      "nome": "J�SSICA M�E AT�PICA",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "27/08/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553018",
+      "cargo": "deputado estadual",
+      "nome": "KATIUSCI VALEJO",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "05/03/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532702",
+      "cargo": "deputado estadual",
+      "nome": "KELLI DA SEGURAN�A",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "16/07/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551721",
+      "cargo": "deputado estadual",
+      "nome": "KLEYTON RIBEIRO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "24/12/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547049",
+      "cargo": "deputado estadual",
+      "nome": "LADI SOUZA",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "19/08/1996",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535517",
+      "cargo": "deputado estadual",
+      "nome": "LAURA DA FIEL AMIGO",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "01/04/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532703",
+      "cargo": "deputado estadual",
+      "nome": "LEANDRO CAFE",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "02/01/1983",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549563",
+      "cargo": "deputado estadual",
+      "nome": "LEINHA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "07/10/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552209",
+      "cargo": "deputado estadual",
+      "nome": "LETICIA ARATANI",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "25/05/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535524",
+      "cargo": "deputado estadual",
+      "nome": "LIA NOGUEIRA O BICH�O DO MS",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "08/07/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549560",
+      "cargo": "deputado estadual",
+      "nome": "LIDIO LOPES",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "05/08/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539709",
+      "cargo": "deputado estadual",
+      "nome": "LILIAN VILELLA",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "08/04/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539710",
+      "cargo": "deputado estadual",
+      "nome": "LONDRES MACHADO",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "03/02/1942",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553676",
+      "cargo": "deputado estadual",
+      "nome": "LU MARTINS",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "11/07/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544976",
+      "cargo": "deputado estadual",
+      "nome": "LUANA RIQUEZA",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "01/09/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536069",
+      "cargo": "deputado estadual",
+      "nome": "LUCAS DE LIMA DO AMOR SEM FIM",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "03/08/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547051",
+      "cargo": "deputado estadual",
+      "nome": "LUCIA HELENA",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "30/09/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535392",
+      "cargo": "deputado estadual",
+      "nome": "LUCIANA DO FRETE",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "08/01/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544972",
+      "cargo": "deputado estadual",
+      "nome": "LUCIMARA PALACIO",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "17/05/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537507",
+      "cargo": "deputado estadual",
+      "nome": "LUIZ MS",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "12/08/2005",
+      "situacaoJulgamento": "REN�NCIA"
+    },
+    {
+      "id": "120002547060",
+      "cargo": "deputado estadual",
+      "nome": "LUIZA RIBEIRO",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "04/04/1968",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547048",
+      "cargo": "deputado estadual",
+      "nome": "LUSO DE QUEIROZ",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "26/06/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549582",
+      "cargo": "deputado estadual",
+      "nome": "L�IA BORGES",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "11/08/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551722",
+      "cargo": "deputado estadual",
+      "nome": "MALAQUIAS",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "28/08/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537517",
+      "cargo": "deputado estadual",
+      "nome": "MALU DO JULIANO VARELA",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "14/05/1963",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539697",
+      "cargo": "deputado estadual",
+      "nome": "MARCELO IUNES",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "23/01/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536073",
+      "cargo": "deputado estadual",
+      "nome": "MARCELO MOUR�O",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "18/05/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536072",
+      "cargo": "deputado estadual",
+      "nome": "MARCIO FERNANDES",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "15/02/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544973",
+      "cargo": "deputado estadual",
+      "nome": "MARCOS GUIMAR�ES",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "13/01/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532706",
+      "cargo": "deputado estadual",
+      "nome": "MARGILA LEAL",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "22/04/1975",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002553016",
+      "cargo": "deputado estadual",
+      "nome": "MARIA DO NATAL",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "06/08/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552208",
+      "cargo": "deputado estadual",
+      "nome": "MARIA FERNANDA RIBEIRO",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "15/01/2004",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544718",
+      "cargo": "deputado estadual",
+      "nome": "MARIANO",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "17/07/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537500",
+      "cargo": "deputado estadual",
+      "nome": "MARINES OLIVEIRA",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "13/12/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539699",
+      "cargo": "deputado estadual",
+      "nome": "MARJU AZAMBUJA",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "14/03/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544715",
+      "cargo": "deputado estadual",
+      "nome": "MARQUINHOS GARCIA",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "09/10/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553020",
+      "cargo": "deputado estadual",
+      "nome": "MAZINHO DO CHAVEIRO",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "06/02/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549568",
+      "cargo": "deputado estadual",
+      "nome": "MEZA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "11/12/1984",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547065",
+      "cargo": "deputado estadual",
+      "nome": "MILTINHO MADEIRAS",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "16/01/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549579",
+      "cargo": "deputado estadual",
+      "nome": "MILT�O",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "16/06/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551728",
+      "cargo": "deputado estadual",
+      "nome": "MISSIONARIA JANE",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "11/11/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551716",
+      "cargo": "deputado estadual",
+      "nome": "NAT�LIA FERREIRA",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "14/08/1997",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535535",
+      "cargo": "deputado estadual",
+      "nome": "NELSON LORDS",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "09/05/1963",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544719",
+      "cargo": "deputado estadual",
+      "nome": "NEZA LEITE",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "04/10/1968",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537513",
+      "cargo": "deputado estadual",
+      "nome": "NILVA RAMOS",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "28/04/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536067",
+      "cargo": "deputado estadual",
+      "nome": "ODILON RIBEIRO",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "02/03/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552159",
+      "cargo": "deputado estadual",
+      "nome": "ODINEY LOUBET",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "16/08/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544704",
+      "cargo": "deputado estadual",
+      "nome": "OLIVEIRA",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "29/01/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549562",
+      "cargo": "deputado estadual",
+      "nome": "PAM MAKE",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "24/09/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553247",
+      "cargo": "deputado estadual",
+      "nome": "PASTOR ADILSON OLIVEIRA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "11/04/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553248",
+      "cargo": "deputado estadual",
+      "nome": "PASTOR CL�UDIO DOMINGOS",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "01/06/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553013",
+      "cargo": "deputado estadual",
+      "nome": "PASTOR VALDIR",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "21/07/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549567",
+      "cargo": "deputado estadual",
+      "nome": "PASTORA BARBARA MESQUITA",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "15/01/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536056",
+      "cargo": "deputado estadual",
+      "nome": "PAULO CORR�A",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "24/07/1957",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535520",
+      "cargo": "deputado estadual",
+      "nome": "PAULO DUARTE",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "25/07/1963",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002551726",
+      "cargo": "deputado estadual",
+      "nome": "PAULO SWAT",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "01/01/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547061",
+      "cargo": "deputado estadual",
+      "nome": "PEDRO KEMP",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "05/05/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537505",
+      "cargo": "deputado estadual",
+      "nome": "PEDROSSIAN NETO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "25/04/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552211",
+      "cargo": "deputado estadual",
+      "nome": "PREGUI�A",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "27/07/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544716",
+      "cargo": "deputado estadual",
+      "nome": "PROF. ANDR� LUIS",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "25/11/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544981",
+      "cargo": "deputado estadual",
+      "nome": "PROF. L�O",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "22/08/1992",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551717",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR DOUGLAS",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "19/04/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544982",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR JF",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "02/12/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539692",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR MARCELO MIRANDA",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "11/09/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544720",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR PUFF",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "30/01/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539708",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR RINALDO MODESTO",
+      "partido": "UNI�O",
+      "genero": "masculino",
+      "nascimento": "30/05/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537504",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR TIM",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "26/11/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536058",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSOR WASHINGTON",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "04/07/1990",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547056",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSORA BART�",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "24/08/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552207",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSORA FERNANDA ARAUJO",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "15/03/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544711",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSORA GIANE TALGATTI",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "23/03/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547068",
+      "cargo": "deputado estadual",
+      "nome": "PROFESSORA GLEICE JANE",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "10/12/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553021",
+      "cargo": "deputado estadual",
+      "nome": "RAFAEL SILVA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "08/08/1990",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539700",
+      "cargo": "deputado estadual",
+      "nome": "RAYANA BENEDITA",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "03/08/1995",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544974",
+      "cargo": "deputado estadual",
+      "nome": "RENAN SILVA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "05/05/1997",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537512",
+      "cargo": "deputado estadual",
+      "nome": "RENATO C�MARA",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "07/09/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544710",
+      "cargo": "deputado estadual",
+      "nome": "RHAIZA MATOS",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "16/09/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544721",
+      "cargo": "deputado estadual",
+      "nome": "RICARDO BANNAK",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "21/11/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544970",
+      "cargo": "deputado estadual",
+      "nome": "RICHARD SILVA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "21/09/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532708",
+      "cargo": "deputado estadual",
+      "nome": "RINALDO PRASSA",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "10/11/1967",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002553014",
+      "cargo": "deputado estadual",
+      "nome": "ROBERTO TROV�O",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "29/09/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549571",
+      "cargo": "deputado estadual",
+      "nome": "ROG�RIO ROHR",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "06/05/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549564",
+      "cargo": "deputado estadual",
+      "nome": "RONALDINHO",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "28/01/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547045",
+      "cargo": "deputado estadual",
+      "nome": "RONALDO TERENA",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "22/07/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544975",
+      "cargo": "deputado estadual",
+      "nome": "ROSANA SANTANA",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "17/05/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002551727",
+      "cargo": "deputado estadual",
+      "nome": "SABRINO CARPES",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "14/11/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552205",
+      "cargo": "deputado estadual",
+      "nome": "SANDRA CABANHA",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "08/02/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547062",
+      "cargo": "deputado estadual",
+      "nome": "SANDRA MARIA",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "22/07/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539705",
+      "cargo": "deputado estadual",
+      "nome": "SANTULLO DA TEREZA",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "05/03/1961",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539707",
+      "cargo": "deputado estadual",
+      "nome": "SARGENTO ANA PAULA",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "15/02/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536075",
+      "cargo": "deputado estadual",
+      "nome": "SARGENTO BET�NIA",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "20/07/1979",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537501",
+      "cargo": "deputado estadual",
+      "nome": "SARGENTO CYNTHIA",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "25/09/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536064",
+      "cargo": "deputado estadual",
+      "nome": "SARGENTO PRATES",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "23/03/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544983",
+      "cargo": "deputado estadual",
+      "nome": "SAYMON PEREIRA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "13/03/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537520",
+      "cargo": "deputado estadual",
+      "nome": "SAYURI BAEZ",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "04/04/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549581",
+      "cargo": "deputado estadual",
+      "nome": "SIDCLEY BRASIL",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "17/07/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544980",
+      "cargo": "deputado estadual",
+      "nome": "SIDNEY DE PAULA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "10/06/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552685",
+      "cargo": "deputado estadual",
+      "nome": "SILVANA CASTEL�O",
+      "partido": "PCO",
+      "genero": "feminino",
+      "nascimento": "15/04/1994",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535393",
+      "cargo": "deputado estadual",
+      "nome": "SILVANA TERENA",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "31/07/1975",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532707",
+      "cargo": "deputado estadual",
+      "nome": "SILVANA VILALBA",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "11/05/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535519",
+      "cargo": "deputado estadual",
+      "nome": "SILVIO PITU",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "21/03/1984",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002536057",
+      "cargo": "deputado estadual",
+      "nome": "SINDOLEY MORAIS",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "31/01/1983",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002553246",
+      "cargo": "deputado estadual",
+      "nome": "SIRLENE SANTOS",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "22/05/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553243",
+      "cargo": "deputado estadual",
+      "nome": "SUBOFICIAL JESSON SANTOS",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "01/02/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544969",
+      "cargo": "deputado estadual",
+      "nome": "S�NIA PEIXOTO",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "10/08/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539706",
+      "cargo": "deputado estadual",
+      "nome": "TALITA TRINDADE",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "08/10/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544977",
+      "cargo": "deputado estadual",
+      "nome": "THIAGO LOUREIRO",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "09/01/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547055",
+      "cargo": "deputado estadual",
+      "nome": "TIAGO BOTELHO",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "17/04/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544978",
+      "cargo": "deputado estadual",
+      "nome": "TON BORGES",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "27/05/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002553249",
+      "cargo": "deputado estadual",
+      "nome": "TONH�O DO FORR�",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "28/11/1952",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536062",
+      "cargo": "deputado estadual",
+      "nome": "TONY GOL",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "13/09/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536063",
+      "cargo": "deputado estadual",
+      "nome": "T�NIA NOGUEIRA",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "20/10/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537499",
+      "cargo": "deputado estadual",
+      "nome": "VAGNER PANELA",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "04/04/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537519",
+      "cargo": "deputado estadual",
+      "nome": "VALCIRA BORGES",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "16/08/1963",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537521",
+      "cargo": "deputado estadual",
+      "nome": "VALDENIR MACHADO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "18/07/1948",
+      "situacaoJulgamento": "REN�NCIA"
+    },
+    {
+      "id": "120002537518",
+      "cargo": "deputado estadual",
+      "nome": "VANDERSON CARDOSO",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "01/04/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549576",
+      "cargo": "deputado estadual",
+      "nome": "VANILDO NEVES",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "15/09/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002539704",
+      "cargo": "deputado estadual",
+      "nome": "VETERIN�RIO FRANCISCO",
+      "partido": "UNI�O",
+      "genero": "masculino",
+      "nascimento": "15/08/1954",
+      "situacaoJulgamento": "REN�NCIA"
+    },
+    {
+      "id": "120002536070",
+      "cargo": "deputado estadual",
+      "nome": "VIVI TOBIAS",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "21/03/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536059",
+      "cargo": "deputado estadual",
+      "nome": "WAGNER HIGA",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "07/09/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535534",
+      "cargo": "deputado estadual",
+      "nome": "WAGNER PEREIRA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "25/01/1991",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544967",
+      "cargo": "deputado estadual",
+      "nome": "WALKIRIA SILVA",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "20/11/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547052",
+      "cargo": "deputado estadual",
+      "nome": "WEBERGTON SUD�RIO CORUMB�",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "01/02/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002547058",
+      "cargo": "deputado estadual",
+      "nome": "ZECA DO PT",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "24/02/1950",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535525",
+      "cargo": "deputado estadual",
+      "nome": "Z� DA FARM�CIA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "20/02/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537511",
+      "cargo": "deputado estadual",
+      "nome": "Z� FERNANDES",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "30/07/1957",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536055",
+      "cargo": "deputado estadual",
+      "nome": "Z� TEIXEIRA",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "06/03/1940",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544962",
+      "cargo": "deputado estadual",
+      "nome": "Z� TROV�O",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "29/12/1957",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535513",
+      "cargo": "deputado estadual",
+      "nome": "Z� WILSON",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "29/06/1985",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535531",
+      "cargo": "deputado estadual",
+      "nome": "�NGELO GUERREIRO",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "03/12/1968",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549685",
+      "cargo": "deputado federal",
+      "nome": "ADAUTO SOUTO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "23/03/1989",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552173",
+      "cargo": "deputado federal",
+      "nome": "ADRIANO LIMA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "18/01/1984",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549690",
+      "cargo": "deputado federal",
+      "nome": "AILTON FIGUEIREDO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "12/09/1968",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538787",
+      "cargo": "deputado federal",
+      "nome": "ALAN GUEDES",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "25/12/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537460",
+      "cargo": "deputado federal",
+      "nome": "ANA SARAVY",
+      "partido": "PV",
+      "genero": "feminino",
+      "nascimento": "13/10/1963",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002536280",
+      "cargo": "deputado federal",
+      "nome": "ANDR� CAMPOS",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "25/10/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536284",
+      "cargo": "deputado federal",
+      "nome": "ANGELO MARCON",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "11/06/1960",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538947",
+      "cargo": "deputado federal",
+      "nome": "ARIANE TAVARES",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "25/08/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537355",
+      "cargo": "deputado federal",
+      "nome": "BETO PEREIRA",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "14/11/1977",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535260",
+      "cargo": "deputado federal",
+      "nome": "BIA CAVASSA",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "14/01/1969",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549684",
+      "cargo": "deputado federal",
+      "nome": "BRUNA RIQUELME",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "31/01/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532717",
+      "cargo": "deputado federal",
+      "nome": "CABRAL",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "20/02/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537465",
+      "cargo": "deputado federal",
+      "nome": "CAMILA JARA",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "10/02/1995",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535257",
+      "cargo": "deputado federal",
+      "nome": "CAPIT�O ROLEDO",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "16/08/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538790",
+      "cargo": "deputado federal",
+      "nome": "CARLOS BERNARDO",
+      "partido": "UNI�O",
+      "genero": "masculino",
+      "nascimento": "18/07/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002534960",
+      "cargo": "deputado federal",
+      "nome": "CAROL AJALA",
+      "partido": "AGIR",
+      "genero": "feminino",
+      "nascimento": "19/02/1997",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002545236",
+      "cargo": "deputado federal",
+      "nome": "CAROL MOUR�O",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "20/02/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536283",
+      "cargo": "deputado federal",
+      "nome": "CASSY MONTEIRO",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "09/01/1999",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552174",
+      "cargo": "deputado federal",
+      "nome": "CESAR ALVES",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "07/01/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545242",
+      "cargo": "deputado federal",
+      "nome": "CHARLES GAMA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "02/04/1989",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550718",
+      "cargo": "deputado federal",
+      "nome": "CHICO S�",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "02/01/1940",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532718",
+      "cargo": "deputado federal",
+      "nome": "CLAUDIA TELES",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "01/12/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002534955",
+      "cargo": "deputado federal",
+      "nome": "CLAUDIO",
+      "partido": "AGIR",
+      "genero": "masculino",
+      "nascimento": "14/03/1980",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537357",
+      "cargo": "deputado federal",
+      "nome": "CORONEL BITTENCOURT",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "17/10/1966",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002538791",
+      "cargo": "deputado federal",
+      "nome": "DAGOBERTO NOGUEIRA",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "21/07/1955",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538792",
+      "cargo": "deputado federal",
+      "nome": "DELEGADO ANDR� MATSUSHITA",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "22/05/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552952",
+      "cargo": "deputado federal",
+      "nome": "DEYVID PESSUTI",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "04/07/2005",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538950",
+      "cargo": "deputado federal",
+      "nome": "DHARLENG CAMPOS",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "07/06/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550717",
+      "cargo": "deputado federal",
+      "nome": "DOMICIO JUNIOR",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "18/11/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538786",
+      "cargo": "deputado federal",
+      "nome": "DR. LUIZ OVANDO",
+      "partido": "PP",
+      "genero": "masculino",
+      "nascimento": "25/09/1949",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537358",
+      "cargo": "deputado federal",
+      "nome": "DR. PAULO VERON",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "08/05/1955",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535259",
+      "cargo": "deputado federal",
+      "nome": "DR. VICTOR ROCHA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "01/04/1980",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002538789",
+      "cargo": "deputado federal",
+      "nome": "DRA. CLEDIANE",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "17/06/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002534959",
+      "cargo": "deputado federal",
+      "nome": "EDNA PAIX�O",
+      "partido": "AGIR",
+      "genero": "feminino",
+      "nascimento": "26/08/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552179",
+      "cargo": "deputado federal",
+      "nome": "ELEANDRA PACHUKI",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "07/11/1974",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537462",
+      "cargo": "deputado federal",
+      "nome": "ELIAS ISHY",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "30/12/1958",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537463",
+      "cargo": "deputado federal",
+      "nome": "ELIEL KAIOW�",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "15/06/1979",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002549683",
+      "cargo": "deputado federal",
+      "nome": "FL�VIO NUNES",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "04/05/1980",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550715",
+      "cargo": "deputado federal",
+      "nome": "FRAN DA SA�DE",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "24/09/1969",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532713",
+      "cargo": "deputado federal",
+      "nome": "F�BIO RODRIGUES",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "19/08/1991",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532711",
+      "cargo": "deputado federal",
+      "nome": "F�TIMA SOUZA",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "02/12/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538945",
+      "cargo": "deputado federal",
+      "nome": "GABRIEL ROSSI",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "08/07/2000",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538784",
+      "cargo": "deputado federal",
+      "nome": "GERALDO RESENDE",
+      "partido": "UNI�O",
+      "genero": "masculino",
+      "nascimento": "20/04/1955",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544957",
+      "cargo": "deputado federal",
+      "nome": "GERMANO CAIRES",
+      "partido": "MISS�O",
+      "genero": "masculino",
+      "nascimento": "05/02/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536285",
+      "cargo": "deputado federal",
+      "nome": "GIROTO",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "23/09/1959",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537464",
+      "cargo": "deputado federal",
+      "nome": "GISELLE MARQUES",
+      "partido": "PT",
+      "genero": "feminino",
+      "nascimento": "07/04/1968",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002532715",
+      "cargo": "deputado federal",
+      "nome": "GLEYCIELLI NONATO GUAT�",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "07/03/1987",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537356",
+      "cargo": "deputado federal",
+      "nome": "ISA MARCONDES",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "05/07/1978",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002550712",
+      "cargo": "deputado federal",
+      "nome": "IVANISE ROTTA",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "05/04/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537361",
+      "cargo": "deputado federal",
+      "nome": "JAIME VERRUCK",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "14/09/1964",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002552177",
+      "cargo": "deputado federal",
+      "nome": "JARDELINO BAHIA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "10/01/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549688",
+      "cargo": "deputado federal",
+      "nome": "JEFFERSOM MARECCO",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "10/09/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552948",
+      "cargo": "deputado federal",
+      "nome": "JURACI DA AROEIRA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "01/10/1967",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002534956",
+      "cargo": "deputado federal",
+      "nome": "JURANDIR MACHADO",
+      "partido": "AGIR",
+      "genero": "masculino",
+      "nascimento": "05/02/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552178",
+      "cargo": "deputado federal",
+      "nome": "JUVENAL FERREIRA",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "05/03/1963",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538785",
+      "cargo": "deputado federal",
+      "nome": "KELIANA FERNANDES",
+      "partido": "PP",
+      "genero": "feminino",
+      "nascimento": "10/01/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544960",
+      "cargo": "deputado federal",
+      "nome": "KELLYANNE CORREA",
+      "partido": "MISS�O",
+      "genero": "feminino",
+      "nascimento": "14/01/2003",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532710",
+      "cargo": "deputado federal",
+      "nome": "LAHUANNY OLIVEIRA",
+      "partido": "PSOL",
+      "genero": "feminino",
+      "nascimento": "24/06/1987",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536287",
+      "cargo": "deputado federal",
+      "nome": "LUANA RUIZ",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "29/04/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544959",
+      "cargo": "deputado federal",
+      "nome": "LUCAS VENDITE",
+      "partido": "MISS�O",
+      "genero": "masculino",
+      "nascimento": "29/11/2003",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552176",
+      "cargo": "deputado federal",
+      "nome": "LUCIANA MENDON�A",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "27/05/1985",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552946",
+      "cargo": "deputado federal",
+      "nome": "LUCIANE COSTADELE",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "18/05/1972",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549691",
+      "cargo": "deputado federal",
+      "nome": "LUIS BRIZOLA",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "29/08/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552689",
+      "cargo": "deputado federal",
+      "nome": "LUIZ MATCHUA",
+      "partido": "PCO",
+      "genero": "masculino",
+      "nascimento": "08/11/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545238",
+      "cargo": "deputado federal",
+      "nome": "LUIZ ORCIRIO FIGUEIR�",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "21/04/1963",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552949",
+      "cargo": "deputado federal",
+      "nome": "LUIZ PEREIRA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "20/03/1995",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532716",
+      "cargo": "deputado federal",
+      "nome": "LYA SANTOS",
+      "partido": "REDE",
+      "genero": "feminino",
+      "nascimento": "30/09/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538952",
+      "cargo": "deputado federal",
+      "nome": "MANOEL VIT�RIO",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "07/12/1956",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536286",
+      "cargo": "deputado federal",
+      "nome": "MARA CASEIRO",
+      "partido": "PL",
+      "genero": "feminino",
+      "nascimento": "28/09/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536282",
+      "cargo": "deputado federal",
+      "nome": "MARCOS POLLON",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "19/01/1981",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552947",
+      "cargo": "deputado federal",
+      "nome": "MARIA ISABELA SALDANHA",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "19/06/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537466",
+      "cargo": "deputado federal",
+      "nome": "MARQUINHOS TRAD",
+      "partido": "PV",
+      "genero": "masculino",
+      "nascimento": "28/08/1964",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002544956",
+      "cargo": "deputado federal",
+      "nome": "MATEUS QUADROS",
+      "partido": "MISS�O",
+      "genero": "masculino",
+      "nascimento": "29/03/1999",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552180",
+      "cargo": "deputado federal",
+      "nome": "MAURICIO PICARELLI",
+      "partido": "PRD",
+      "genero": "masculino",
+      "nascimento": "24/04/1947",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544958",
+      "cargo": "deputado federal",
+      "nome": "MAVI CUNHA",
+      "partido": "MISS�O",
+      "genero": "feminino",
+      "nascimento": "19/12/2005",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002534957",
+      "cargo": "deputado federal",
+      "nome": "MILENA FERNANDES",
+      "partido": "AGIR",
+      "genero": "feminino",
+      "nascimento": "21/09/2004",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545234",
+      "cargo": "deputado federal",
+      "nome": "MIRIAM GIMENEZ",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "22/02/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537360",
+      "cargo": "deputado federal",
+      "nome": "NANAH CORDEIRO",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "02/09/1968",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002535258",
+      "cargo": "deputado federal",
+      "nome": "NATAL GONZAGA",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "25/12/1960",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537362",
+      "cargo": "deputado federal",
+      "nome": "NETO SANTOS",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "12/05/1984",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002538949",
+      "cargo": "deputado federal",
+      "nome": "PAULO MASSETTI",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "29/03/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537359",
+      "cargo": "deputado federal",
+      "nome": "PRISCILA BOMBEIRA",
+      "partido": "REPUBLICANOS",
+      "genero": "feminino",
+      "nascimento": "08/10/1980",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002534958",
+      "cargo": "deputado federal",
+      "nome": "PROF AGUILERA GUARANI",
+      "partido": "AGIR",
+      "genero": "masculino",
+      "nascimento": "06/07/1975",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002532712",
+      "cargo": "deputado federal",
+      "nome": "PROF. ANISIO GUAT�",
+      "partido": "PSOL",
+      "genero": "masculino",
+      "nascimento": "17/10/1966",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545239",
+      "cargo": "deputado federal",
+      "nome": "PROF. EDUARDO FERRUFINO",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "01/09/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535263",
+      "cargo": "deputado federal",
+      "nome": "PROFESSOR JUARI",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "23/07/1978",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002550716",
+      "cargo": "deputado federal",
+      "nome": "PROFESSORA R�BIA MARA",
+      "partido": "AVANTE",
+      "genero": "feminino",
+      "nascimento": "12/05/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535261",
+      "cargo": "deputado federal",
+      "nome": "PUKA VALDEZ",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "21/07/1962",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002552688",
+      "cargo": "deputado federal",
+      "nome": "RAM�O LOPES",
+      "partido": "PCO",
+      "genero": "masculino",
+      "nascimento": "24/07/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552950",
+      "cargo": "deputado federal",
+      "nome": "RAPHAEL CADEIRANTE",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "16/12/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552181",
+      "cargo": "deputado federal",
+      "nome": "REBECA COSTA",
+      "partido": "PRD",
+      "genero": "feminino",
+      "nascimento": "23/06/2000",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549686",
+      "cargo": "deputado federal",
+      "nome": "RHAUANE FARIA",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "01/08/1992",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535264",
+      "cargo": "deputado federal",
+      "nome": "RICARDINHO F�VARO",
+      "partido": "PSDB",
+      "genero": "masculino",
+      "nascimento": "11/07/1984",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537363",
+      "cargo": "deputado federal",
+      "nome": "ROBERTO HASHIOKA",
+      "partido": "REPUBLICANOS",
+      "genero": "masculino",
+      "nascimento": "17/01/1957",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002537467",
+      "cargo": "deputado federal",
+      "nome": "ROBERTO MATEUS",
+      "partido": "PCDOB",
+      "genero": "masculino",
+      "nascimento": "21/09/1965",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002536281",
+      "cargo": "deputado federal",
+      "nome": "RODOLFO NOGUEIRA",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "24/11/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002544961",
+      "cargo": "deputado federal",
+      "nome": "RODRIGO CORREA",
+      "partido": "MISS�O",
+      "genero": "masculino",
+      "nascimento": "01/01/1983",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549689",
+      "cargo": "deputado federal",
+      "nome": "ROSANE BACH",
+      "partido": "PDT",
+      "genero": "feminino",
+      "nascimento": "09/05/1973",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552687",
+      "cargo": "deputado federal",
+      "nome": "ROSANGELA BENITES",
+      "partido": "PCO",
+      "genero": "feminino",
+      "nascimento": "13/09/1997",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538788",
+      "cargo": "deputado federal",
+      "nome": "ROSE MODESTO",
+      "partido": "UNI�O",
+      "genero": "feminino",
+      "nascimento": "20/02/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538953",
+      "cargo": "deputado federal",
+      "nome": "ROSE PIRES",
+      "partido": "MDB",
+      "genero": "feminino",
+      "nascimento": "21/08/1977",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550711",
+      "cargo": "deputado federal",
+      "nome": "RUI SPINOLA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "06/05/1964",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538946",
+      "cargo": "deputado federal",
+      "nome": "SANDRO AZAMBUJA",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "19/06/1965",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537468",
+      "cargo": "deputado federal",
+      "nome": "SANDRO DO VANDER",
+      "partido": "PT",
+      "genero": "masculino",
+      "nascimento": "20/09/1965",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002545240",
+      "cargo": "deputado federal",
+      "nome": "SARGENTO BRUN�O",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "27/01/1978",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552175",
+      "cargo": "deputado federal",
+      "nome": "SERGIO FAHED",
+      "partido": "SOLIDARIEDADE",
+      "genero": "masculino",
+      "nascimento": "22/01/1962",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535262",
+      "cargo": "deputado federal",
+      "nome": "SIRLENE DOS SANTOS",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "26/10/1976",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552953",
+      "cargo": "deputado federal",
+      "nome": "SOPHIA SANTANA",
+      "partido": "DC",
+      "genero": "feminino",
+      "nascimento": "31/08/2001",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550714",
+      "cargo": "deputado federal",
+      "nome": "SUB DR ALMADA",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "17/04/1971",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545237",
+      "cargo": "deputado federal",
+      "nome": "SUBTENENTE MOTA",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "30/01/1968",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002549687",
+      "cargo": "deputado federal",
+      "nome": "TATO SOUZA",
+      "partido": "PDT",
+      "genero": "masculino",
+      "nascimento": "21/02/1979",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002536288",
+      "cargo": "deputado federal",
+      "nome": "TENENTE PORTELA",
+      "partido": "PL",
+      "genero": "masculino",
+      "nascimento": "16/08/1961",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552951",
+      "cargo": "deputado federal",
+      "nome": "TENETE BALEJO DE ARRUDA",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "15/10/1970",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002537461",
+      "cargo": "deputado federal",
+      "nome": "THALITA",
+      "partido": "PCDOB",
+      "genero": "feminino",
+      "nascimento": "18/02/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002550713",
+      "cargo": "deputado federal",
+      "nome": "TUTY TUTY",
+      "partido": "AVANTE",
+      "genero": "masculino",
+      "nascimento": "04/03/1982",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002532714",
+      "cargo": "deputado federal",
+      "nome": "URIAS ROCHA",
+      "partido": "REDE",
+      "genero": "masculino",
+      "nascimento": "15/02/1960",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545235",
+      "cargo": "deputado federal",
+      "nome": "VICTORIA PEIXOTO",
+      "partido": "NOVO",
+      "genero": "feminino",
+      "nascimento": "10/12/1993",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002538951",
+      "cargo": "deputado federal",
+      "nome": "VITINHO",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "12/03/2003",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002535265",
+      "cargo": "deputado federal",
+      "nome": "VIVIANE LUIZA",
+      "partido": "PSDB",
+      "genero": "feminino",
+      "nascimento": "01/09/1979",
+      "situacaoJulgamento": "DEFERIDO"
+    },
+    {
+      "id": "120002538948",
+      "cargo": "deputado federal",
+      "nome": "WELLISON MUCHIUTTI",
+      "partido": "MDB",
+      "genero": "masculino",
+      "nascimento": "22/02/1988",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002545241",
+      "cargo": "deputado federal",
+      "nome": "WESLEY DIAS",
+      "partido": "NOVO",
+      "genero": "masculino",
+      "nascimento": "19/07/1986",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    },
+    {
+      "id": "120002552945",
+      "cargo": "deputado federal",
+      "nome": "Z� LOPES",
+      "partido": "DC",
+      "genero": "masculino",
+      "nascimento": "15/04/1959",
+      "situacaoJulgamento": "AGUARDANDO JULGAMENTO"
+    }
+  ]
+}
