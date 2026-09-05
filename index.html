@@ -2780,21 +2780,13 @@ canvas {
             <div id="simSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Candidaturas oficiais de 2026"></div>
             <div id="simCandidatoSelecionado" class="sim-selecionado hidden"></div>
           </div>
-          <div class="sim-campo">
-            <label for="simPartido">Partido ou federação em 2026</label>
-            <input type="search" id="simPartido" maxlength="80" placeholder="Digite a sigla, o partido ou a federação" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="simPartidoSugestoes" autocomplete="off">
-            <div id="simPartidoSugestoes" class="sim-sugestoes hidden" role="listbox" aria-label="Partidos e federações de 2026"></div>
-            <div id="simOrganizacaoSelecionada" class="sim-selecionado hidden"></div>
-          </div>
-          <div class="sim-campo"><label for="simGenero">Gênero da candidatura</label><select id="simGenero"><option value="">Selecione</option><option value="feminino">Feminino</option><option value="masculino">Masculino</option></select></div>
           <div class="sim-campo"><label for="simVotosCandidato">Votos estimados</label><input type="number" id="simVotosCandidato" min="0" step="1" inputmode="numeric" placeholder="Ex.: 35.000"></div>
           <div class="sim-form-acoes sim-acoes-inclusao">
             <button type="button" class="sim-btn-principal" id="simAdicionarCandidato">Adicionar candidatura</button>
-            <button type="button" class="sim-btn-secundario" id="simAdicionarLegenda">Incluir votos de legenda</button>
           </div>
           <div id="simFormularioStatus" class="sim-status" role="status" aria-live="polite"></div>
           <div id="simCotaGeneroAlertas" class="sim-cotas-genero hidden" role="status" aria-live="polite"></div>
-          <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Selecione uma candidatura oficial e informe sua projeção de votos. Use “votos de legenda” apenas para votos dados diretamente ao partido. Partidos federados serão somados automaticamente na mesma chapa.</p></details>
+          <details class="sim-ajuda"><summary>Como adicionar os votos?</summary><p>Selecione uma candidatura oficial e informe sua projeção de votos. Partido, federação e gênero são preenchidos automaticamente a partir da base oficial.</p></details>
           <div class="sim-lista" id="simLista" aria-label="Participantes do cenário"></div>
           <div class="sim-revisao hidden" id="simRevisao">
             <p class="sim-revisao-alerta hidden" id="simRevisaoStatus" role="status" aria-live="polite"></p>
@@ -5492,7 +5484,6 @@ function initSimulador() {
     if (status) { status.className = 'sim-status erro'; status.textContent = 'Não foi possível carregar a lista oficial de candidaturas 2026. Tente novamente com conexão à internet.'; }
   });
   if (!simInit) {
-    document.querySelectorAll('[data-sim-cargo]').forEach(botao => botao.addEventListener('click', () => simTrocarCargo(botao.dataset.simCargo)));
     document.querySelectorAll('[data-sim-etapa]').forEach(botao => botao.addEventListener('click', () => simAbrirEtapa(Number(botao.dataset.simEtapa))));
     document.getElementById('simVerMontagem').addEventListener('click', () => simAlternarVisualizacaoCenario('montagem'));
     document.getElementById('simVerPainel').addEventListener('click', () => simAlternarVisualizacaoCenario('painel'));
@@ -5543,19 +5534,6 @@ function initSimulador() {
         if (indice > 0) opcoes[indice - 1].focus(); else nome.focus();
       }
     });
-    const partido = document.getElementById('simPartido');
-    partido.addEventListener('input', simPesquisarOrganizacoes);
-    partido.addEventListener('keydown', evento => {
-      if (evento.key === 'Escape') simFecharOrganizacoes();
-      if (evento.key === 'Enter' && partido.value.trim() && !simOrganizacaoSelecionada) {
-        evento.preventDefault();
-        simFinalizarOrganizacaoDigitada();
-      }
-      if (evento.key === 'ArrowDown') {
-        const primeira = document.querySelector('#simPartidoSugestoes [role="option"]');
-        if (primeira) { evento.preventDefault(); primeira.focus(); }
-      }
-    });
     const votosCandidato = document.getElementById('simVotosCandidato');
     votosCandidato.addEventListener('keydown', evento => {
       if (evento.key === 'Enter' && simNumero(evento.currentTarget.value)) {
@@ -5563,25 +5541,10 @@ function initSimulador() {
         simAdicionarItem('candidato');
       }
     });
-    document.getElementById('simPartidoSugestoes').addEventListener('keydown', evento => {
-      const opcoes = [...evento.currentTarget.querySelectorAll('[role="option"]')];
-      const indice = opcoes.indexOf(document.activeElement);
-      if (evento.key === 'Escape') { simFecharOrganizacoes(); partido.focus(); }
-      if (evento.key === 'ArrowDown' && indice < opcoes.length - 1) { evento.preventDefault(); opcoes[indice + 1].focus(); }
-      if (evento.key === 'ArrowUp') {
-        evento.preventDefault();
-        if (indice > 0) opcoes[indice - 1].focus(); else partido.focus();
-      }
-    });
-    document.getElementById('simGenero').addEventListener('change', evento => {
-      if (evento.currentTarget.value) simAvancarPara('simVotosCandidato');
-    });
     document.getElementById('simAdicionarCandidato').addEventListener('click', () => simAdicionarItem('candidato'));
-    document.getElementById('simAdicionarLegenda').addEventListener('click', () => simAdicionarItem('legenda'));
     document.getElementById('simCalcular').addEventListener('click', simRevisarCalculo);
     document.addEventListener('click', evento => {
       if (!evento.target.closest('#simNome, #simSugestoes')) simFecharSugestoes();
-      if (!evento.target.closest('#simPartido, #simPartidoSugestoes')) simFecharOrganizacoes();
     });
     document.addEventListener('keydown', evento => {
       if (evento.key === 'Escape' && !document.getElementById('simLimpezaModal').classList.contains('hidden')) simFecharLimpeza();
@@ -5610,6 +5573,17 @@ function simTrocarCargo(cargo) {
   renderSimulador();
   simAbrirEtapa(2, 'simVotosValidos');
 }
+
+// O listener é registrado uma única vez, fora da inicialização da tela. Assim,
+// a escolha do cargo permanece disponível mesmo se a tela for aberta por uma
+// rota/navegação que não tenha concluído a montagem do simulador.
+document.addEventListener('click', evento => {
+  const botao = evento.target.closest('[data-sim-cargo]');
+  if (!botao || !botao.closest('#simConteudo')) return;
+  if (!simInit) initSimulador();
+  evento.preventDefault();
+  simTrocarCargo(botao.dataset.simCargo);
+}, true);
 
 function simConfirmarVotosValidos() {
   if (!simNumero(document.getElementById('simVotosValidos').value)) {
@@ -6015,10 +5989,7 @@ function simSelecionarCandidatura2026(indice) {
   if (!item) return;
   simSelecionado = { origem: 'tse-2026', ...item };
   document.getElementById('simNome').value = item.nome;
-  document.getElementById('simPartido').value = item.partido;
-  document.getElementById('simGenero').value = item.genero;
   simOrganizacaoSelecionada = simResolverOrganizacaoDigitada(item.partido) || { partido:item.partido, chapa:item.federacao || item.partido, federacao:item.federacao || null, verificada:true };
-  simMostrarOrganizacao();
   const aviso = document.getElementById('simCandidatoSelecionado');
   aviso.innerHTML = `<strong>Candidatura oficial selecionada:</strong> ${simEscapar(item.nome)} · ${simEscapar(item.partido)} · ${item.genero === 'feminino' ? 'Feminino' : 'Masculino'}${item.situacaoJulgamento && item.situacaoJulgamento !== 'DEFERIDO' ? `. <span class="sim-status aviso">Situação do registro: ${simEscapar(item.situacaoJulgamento)}.</span>` : ''}`;
   aviso.classList.remove('hidden');
@@ -6034,19 +6005,16 @@ function simFecharSugestoes() {
 
 function simAdicionarItem(tipo) {
   const nomeDigitado = document.getElementById('simNome').value.trim();
-  const organizacaoDigitada = document.getElementById('simPartido').value.trim();
-  const genero = document.getElementById('simGenero').value;
+  const genero = simSelecionado?.genero;
   const votos = simNumero(document.getElementById('simVotosCandidato').value);
   const status = document.getElementById('simFormularioStatus');
   status.className = 'sim-status erro';
-  if (!organizacaoDigitada) { status.textContent = 'Informe o partido ou a federação.'; return; }
   if (!votos) { status.textContent = 'Informe uma quantidade de votos maior que zero.'; return; }
   if (tipo === 'candidato' && !simSelecionado?.id) { status.textContent = 'Selecione uma candidatura da lista oficial de 2026.'; return; }
-  if (tipo === 'candidato' && (simSelecionado.cargo !== simEstado.cargo || simSelecionado.nome !== nomeDigitado || simSelecionado.partido !== organizacaoDigitada || simSelecionado.genero !== genero)) { status.textContent = 'Use os dados preenchidos pela candidatura oficial selecionada.'; return; }
-  const org = simOrganizacaoSelecionada || simResolverOrganizacaoDigitada(organizacaoDigitada);
+  if (tipo === 'candidato' && (simSelecionado.cargo !== simEstado.cargo || simSelecionado.nome !== nomeDigitado || !genero)) { status.textContent = 'Selecione uma candidatura da lista oficial de 2026.'; return; }
+  const org = simOrganizacaoSelecionada;
   if (!org) {
-    status.textContent = 'Selecione um partido ou uma federação da lista oficial.';
-    simPesquisarOrganizacoes();
+    status.textContent = 'Selecione uma candidatura da lista oficial de 2026.';
     return;
   }
   if ((tipo === 'candidato' || tipo === 'legenda') && !org.partido) {
@@ -6109,11 +6077,9 @@ function simAvancarPara(id) {
 function simLimparFormulario() {
   simSelecionado = null;
   simOrganizacaoSelecionada = null;
-  for (const id of ['simNome','simPartido','simGenero','simVotosCandidato']) document.getElementById(id).value = '';
+  for (const id of ['simNome','simVotosCandidato']) document.getElementById(id).value = '';
   document.getElementById('simCandidatoSelecionado').classList.add('hidden');
-  document.getElementById('simOrganizacaoSelecionada').classList.add('hidden');
   simFecharSugestoes();
-  simFecharOrganizacoes();
 }
 
 function simRemoverItem(id) {

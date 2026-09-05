@@ -134,8 +134,8 @@ assert(context.simResumoCotaGenero([
   {genero:'masculino'},{genero:'masculino'},{genero:'masculino'},
   {genero:'masculino'},{genero:'masculino'},{genero:'masculino'}
 ], 'Lista', 'lista').regular, 'Uma lista federal 3/6 deveria atender aos percentuais de 30% e 70%.');
-assert(html.includes('id="simGenero"') && html.includes('id="simCotaGeneroAlertas"'),
-  'Campo de gênero e alertas da etapa 3 devem existir.');
+assert(!html.includes('id="simGenero"') && html.includes('id="simCotaGeneroAlertas"'),
+  'Gênero deve ser informado pela candidatura oficial, sem campo manual.');
 
 context.simEstado = { cargo:'deputado federal' };
 const painelCenario = {
@@ -205,7 +205,7 @@ assert(html.includes('id="simLimpezaEtapa1"') && html.includes('id="simLimpezaEt
   && html.includes('class="sim-modal-acoes"')
   && html.includes("lista:'Excluir'") && html.includes("cenario:'Reiniciar cargo'"),
   'Interface deve separar reinício geral, exclusão por card, confirmação e opção de desfazer.');
-assert(html.includes('id="simAdicionarLegenda"'), 'Botão de votos de legenda ausente.');
+assert(!html.includes('id="simAdicionarLegenda"'), 'Formulário enxuto não deve pedir votos de legenda manualmente.');
 assert(html.includes('minimoAutopreenchimento: 5') && html.includes('minimoAutopreenchimento: 13'), 'Limites de liberação do autopreenchimento incorretos.');
 assert(html.includes('id="simAutoPrevia"') && html.includes('id="simAutoConfirmar"'), 'Prévia e confirmação do autopreenchimento ausentes.');
 assert(html.includes('data-sim-editar-votos'), 'Edição individual de votos não foi implementada.');
@@ -229,8 +229,8 @@ assert(html.includes("simAbrirEtapa(2, 'simVotosValidos')")
   && html.includes("simAdicionarItem('candidato')"),
   'Sequência de seleção da candidatura oficial está incompleta.');
 assert(html.includes("evento.key === 'Enter' && nome.value.trim() && !simSelecionado")
-  && html.includes("evento.key === 'Enter' && partido.value.trim() && !simOrganizacaoSelecionada"),
-  'Nomes e organizações digitados não avançam mediante confirmação explícita.');
+  && !html.includes('id="simPartido"'),
+  'O formulário deve exigir apenas a candidatura oficial, sem campo de organização.');
 assert(/\.sim-sugestoes button\s*\{[^}]*font-size:\s*\.875rem/.test(html)
   && /\.sim-sugestoes small\s*\{[^}]*font-size:\s*\.8125rem/.test(html),
   'Sugestões do simulador não usam a tipografia compacta prevista.');
